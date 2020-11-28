@@ -10,13 +10,13 @@ import Board from '../Board'
 const CellView = ({ cell }: { cell: Case }) => {
 
 
-    if (cell.state == CellState.Revealed) {
+    if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed} />
         )
     } else {
         return (
-            <Pressable style={styles.caseIdle} onPressOut={() => { console.log(cell); cell.state = CellState.Revealed }} />
+            <Pressable style={styles.caseIdle} onPressOut={() => { cell.state = CellState.Revealed; console.log(cell); }} />
         )
     }
 
@@ -45,11 +45,8 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         backgroundColor: '#ccc',
-        borderWidth: 3,
-        borderTopColor: '#eee',
-        borderLeftColor: '#eee',
-        borderRightColor: '#7d7d7d',
-        borderBottomColor: '#7d7d7d'
+        borderWidth: 1,
+        borderColor: '#bbb',
     },
     row: {
         flex: 1,

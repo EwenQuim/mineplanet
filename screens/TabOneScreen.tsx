@@ -30,7 +30,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     this.setState(
       { board: new Board() },
       () => {
-        this.state.board.initializeGrid(3, 2, 3);
+        this.state.board.initializeGrid(10, 10, 3);
         this.playing = true;
         this.height = 500;
         this.width = 500;
