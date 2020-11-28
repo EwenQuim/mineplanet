@@ -17,7 +17,6 @@ export default class Board {
     initializeGrid = (
         width: number,
         height: number,
-        bombs: number,
     ): void => {
 
         let droppedBombs = 0;
@@ -25,11 +24,22 @@ export default class Board {
         for (let j = 0; j < height; j++) {
             let row: Case[] = new Array<Case>();
             for (let i = 0; i < width; i++) {
-                row.push(new Case(i, j, droppedBombs < bombs));
+                row.push(new Case(i, j));
             }
             grid.push(row);
         }
 
         this.grid = grid;
     };
+
+    dropBombs = (bombs: number, avoidX: number, avoidY: number): void => {
+        let bombsDropped = 0
+        while (bombsDropped < bombs) {
+
+        }
+    }
+
+    countBombs = () => {
+
+    }
 }
