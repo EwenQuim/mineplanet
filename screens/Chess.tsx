@@ -38,7 +38,6 @@ export default function Chess({ board }: { board: Board }) {
                     <View style={styles.caseWhite} />
                     <View style={styles.caseBlack} />
                     <View style={styles.caseWhite} />
-
                 </View>
             </View>
 
@@ -52,7 +51,7 @@ export default function Chess({ board }: { board: Board }) {
                         <View>
                             <View style={styles.caseWhite} />
                             <FlatList
-                                data={item}
+                                data={item.item}
                                 keyExtractor={item => item.x.toString()}
                                 renderItem={item => { console.log(item); return (<View><Text>y</Text></View>) }}
                             />
@@ -97,9 +96,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
     },
     row: {
+        flex: 1,
         flexDirection: "row"
     },
     col: {
+        flex: 1,
         flexDirection: "column"
     },
     boardBackground: {
