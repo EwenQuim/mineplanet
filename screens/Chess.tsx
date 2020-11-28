@@ -20,7 +20,7 @@ export default function Chess({ board }: { board: Board }) {
         />
     );
 
-    const _renderItem = ({ caseList }: { caseList: Case[] }) => (
+    const _renderRow = ({ caseList }: { caseList: Case[] }) => (
         <Text>{caseList}</Text>
     );
 
@@ -39,27 +39,42 @@ export default function Chess({ board }: { board: Board }) {
                     <View style={styles.caseBlack} />
                     <View style={styles.caseWhite} />
                 </View>
+                <View style={styles.row} >
+                    <View style={styles.caseBlack} />
+                    <View style={styles.caseWhite} />
+                    <View style={styles.caseBlack} />
+                </View>
+                <View style={styles.row} >
+                    <View style={styles.caseWhite} />
+                    <View style={styles.caseBlack} />
+                    <View style={styles.caseWhite} />
+                </View>
             </View>
 
             <Text>Hi</Text>
-            <Button title="Log state" onPress={() => console.log(board)} />
-            <FlatList
-                data={board.grid}
-                keyExtractor={item => item[0].y.toString() + "," + item[0].y.toString()}
-                renderItem={item => {
-                    console.log(item); return (
-                        <View>
-                            <View style={styles.caseWhite} />
-                            <FlatList
-                                data={item.item}
-                                keyExtractor={item => item.x.toString()}
-                                renderItem={item => { console.log(item); return (<View><Text>y</Text></View>) }}
-                            />
-                            <View style={styles.caseBlack} />
-                        </View>)
-                }}
+            <Button title="Log board variable" onPress={() => console.log(board)} />
+            <View style={styles.boardBackground} >
+                <FlatList
+                    data={board.grid}
+                    keyExtractor={item => item[0].y.toString() + "," + item[0].y.toString()}
+                    renderItem={rowItem => {
+                        console.log(rowItem); return (
+                            <View style={styles.row}>
+                                <View style={styles.caseWhite} />
+                                <FlatList
+                                    data={rowItem.item}
+                                    keyExtractor={item => item.x.toString()}
+                                    renderItem={(rowItem, index) => {
+                                        console.log(rowItem.item.x, rowItem.item.y);
+                                        return (<View><Text>y</Text></View>)
+                                    }}
+                                />
+                                <View style={styles.caseBlack} />
+                            </View>)
+                    }}
 
-            />
+                />
+            </View>
 
         </View>
     );
@@ -104,7 +119,7 @@ const styles = StyleSheet.create({
         flexDirection: "column"
     },
     boardBackground: {
-        width: 500, height: 300, backgroundColor: '#aaa', flexDirection: 'column'
+        width: 300, height: 300, backgroundColor: '#aaa', flexDirection: 'column'
     },
     item: {
 

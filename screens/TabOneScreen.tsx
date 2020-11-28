@@ -47,7 +47,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       <View style={styles.container}>
         <Text style={styles.title}>MineSweeper</Text>
         <Button title="Create board !" onPress={this.createBlankBoard} />
-        <Button title="Log state" onPress={() => console.log(this.state)} />
+        <Button title="Log T1 state" onPress={() => console.log(this.state)} />
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         {this._displayGrid()}
