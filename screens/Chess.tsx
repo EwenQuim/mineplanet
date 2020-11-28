@@ -58,14 +58,14 @@ export default function Chess({ board }: { board: Board }) {
                     renderItem={rowItem => {
                         console.log(rowItem); return (
                             <View style={styles.row}>
-                                <View style={styles.caseWhite} />
+
                                 <FlatList
                                     style={styles.row}
                                     data={rowItem.item}
                                     keyExtractor={item => item.x.toString()}
                                     renderItem={(caseItem) => {
-                                        console.log(caseItem.item.x, caseItem.item.y, "index");
-                                        if ((caseItem.index) % 2) {
+                                        console.log(caseItem.item, "index");
+                                        if ((caseItem.item.x + caseItem.item.y) % 2) {
                                             return (<View style={styles.caseBlack} />)
                                         } else {
                                             return (<View style={styles.caseWhite} />)
@@ -73,7 +73,7 @@ export default function Chess({ board }: { board: Board }) {
 
                                     }}
                                 />
-                                <View style={styles.caseBlack} />
+
                             </View>)
                     }}
 
