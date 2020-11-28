@@ -24,8 +24,6 @@ export default function Chess({ board }: { board: Board }) {
         <Text>{caseList}</Text>
     );
 
-    const rendering = ({ info, index }) => { return (<View><Text>Hi</Text> <View style={{ width: 30, height: 30, backgroundColor: '#555', flexDirection: 'column' }} /> </View>) }
-
     return (
         <View style={styles.container}>
             <View style={styles.boardBackground} >
@@ -62,11 +60,17 @@ export default function Chess({ board }: { board: Board }) {
                             <View style={styles.row}>
                                 <View style={styles.caseWhite} />
                                 <FlatList
+                                    style={styles.row}
                                     data={rowItem.item}
                                     keyExtractor={item => item.x.toString()}
-                                    renderItem={(rowItem, index) => {
-                                        console.log(rowItem.item.x, rowItem.item.y);
-                                        return (<View><Text>y</Text></View>)
+                                    renderItem={(caseItem) => {
+                                        console.log(caseItem.item.x, caseItem.item.y, "index");
+                                        if ((caseItem.index) % 2) {
+                                            return (<View style={styles.caseBlack} />)
+                                        } else {
+                                            return (<View style={styles.caseWhite} />)
+                                        }
+
                                     }}
                                 />
                                 <View style={styles.caseBlack} />
