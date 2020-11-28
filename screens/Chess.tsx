@@ -1,8 +1,9 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, FlatList, ListRenderItem, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, FlatList, ListRenderItem, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Case } from '../types'
 import Board from '../Board'
+import CellView from './CellView';
 
 const Row = ({ row }: { row: Case[] }) => (
     <View style={styles.item}>
@@ -20,34 +21,9 @@ export default function Chess({ board }: { board: Board }) {
         />
     );
 
-    const _renderRow = ({ caseList }: { caseList: Case[] }) => (
-        <Text>{caseList}</Text>
-    );
 
     return (
         <View style={styles.container}>
-            <View style={styles.boardBackground} >
-                <View style={styles.row} >
-                    <View style={styles.caseBlack} />
-                    <View style={styles.caseWhite} />
-                    <View style={styles.caseBlack} />
-                </View>
-                <View style={styles.row} >
-                    <View style={styles.caseWhite} />
-                    <View style={styles.caseBlack} />
-                    <View style={styles.caseWhite} />
-                </View>
-                <View style={styles.row} >
-                    <View style={styles.caseBlack} />
-                    <View style={styles.caseWhite} />
-                    <View style={styles.caseBlack} />
-                </View>
-                <View style={styles.row} >
-                    <View style={styles.caseWhite} />
-                    <View style={styles.caseBlack} />
-                    <View style={styles.caseWhite} />
-                </View>
-            </View>
 
             <Text>Hi</Text>
             <Button title="Log board variable" onPress={() => console.log(board)} />
@@ -63,13 +39,10 @@ export default function Chess({ board }: { board: Board }) {
                                     style={styles.row}
                                     data={rowItem.item}
                                     keyExtractor={item => item.x.toString()}
-                                    renderItem={(caseItem) => {
-                                        console.log(caseItem.item, "index");
-                                        if ((caseItem.item.x + caseItem.item.y) % 2) {
-                                            return (<View style={styles.caseBlack} />)
-                                        } else {
-                                            return (<View style={styles.caseWhite} />)
-                                        }
+                                    renderItem={({ item: cellItem, index }: { item: Case, index: number }) => {
+
+                                        return (<CellView cell={cellItem} />
+                                        )
 
                                     }}
                                 />
@@ -107,12 +80,22 @@ const styles = StyleSheet.create({
     caseBlack: {
         width: 30,
         height: 30,
-        backgroundColor: '#888',
+        backgroundColor: '#aaa',
+        borderWidth: 3,
+        borderTopColor: '#eee',
+        borderLeftColor: '#eee',
+        borderRightColor: '#7d7d7d',
+        borderBottomColor: '#7d7d7d'
     },
     caseWhite: {
         width: 30,
         height: 30,
         backgroundColor: '#ccc',
+        borderWidth: 3,
+        borderTopColor: '#eee',
+        borderLeftColor: '#eee',
+        borderRightColor: '#7d7d7d',
+        borderBottomColor: '#7d7d7d'
     },
     row: {
         flex: 1,
