@@ -28,7 +28,7 @@ export class Case {
   y: number;
   state: CellState;
   bomb: boolean;
-  bombCount: 0
+  bombCount: number;
 
   constructor(x: number = 0, y: number = 0, bomb: boolean = false) {
     this.x = x;
