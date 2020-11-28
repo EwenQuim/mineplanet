@@ -22,9 +22,9 @@ export default class Board {
 
         let droppedBombs = 0;
         let grid = Array<Array<Case>>();
-        for (let j = 0; j <= height; j++) {
+        for (let j = 0; j < height; j++) {
             let row: Case[] = new Array<Case>();
-            for (let i = 0; i <= width; i++) {
+            for (let i = 0; i < width; i++) {
                 row.push(new Case(i, j, droppedBombs < bombs));
             }
             grid.push(row);

@@ -16,7 +16,7 @@ export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
-export enum CaseState {
+export enum CellState {
   Idle,
   Flagged,
   QMark,
@@ -26,14 +26,16 @@ export enum CaseState {
 export class Case {
   x: number;
   y: number;
-  state: CaseState;
+  state: CellState;
   bomb: boolean;
+  bombCount: 0
 
   constructor(x: number = 0, y: number = 0, bomb: boolean = false) {
     this.x = x;
     this.y = y;
-    this.state = CaseState.Idle;
+    this.state = CellState.Idle;
     this.bomb = bomb;
+    this.bombCount = 0
   }
 }
 
