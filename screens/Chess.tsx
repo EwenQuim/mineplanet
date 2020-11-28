@@ -28,16 +28,36 @@ export default function Chess({ board }: { board: Board }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ width: 500, height: 300, backgroundColor: '#888', flexDirection: 'column' }} >
-                <View style={{ width: 30, height: 30, backgroundColor: '#555', flexDirection: 'column' }} />
+            <View style={styles.boardBackground} >
+                <View style={styles.row} >
+                    <View style={styles.caseBlack} />
+                    <View style={styles.caseWhite} />
+                    <View style={styles.caseBlack} />
+                </View>
+                <View style={styles.row} >
+                    <View style={styles.caseWhite} />
+                    <View style={styles.caseBlack} />
+                    <View style={styles.caseWhite} />
+
+                </View>
             </View>
+
             <Text>Hi</Text>
             <Button title="Log state" onPress={() => console.log(board)} />
             <FlatList
                 data={board.grid}
                 keyExtractor={item => item[0].y.toString() + "," + item[0].y.toString()}
-                renderItem={row => {
-                    console.log(row); return (<View><Text>y</Text></View>)
+                renderItem={item => {
+                    console.log(item); return (
+                        <View>
+                            <View style={styles.caseWhite} />
+                            <FlatList
+                                data={item}
+                                keyExtractor={item => item.x.toString()}
+                                renderItem={item => { console.log(item); return (<View><Text>y</Text></View>) }}
+                            />
+                            <View style={styles.caseBlack} />
+                        </View>)
                 }}
 
             />
@@ -65,6 +85,25 @@ const styles = StyleSheet.create({
     linkText: {
         fontSize: 14,
         color: '#2e78b7',
+    },
+    caseBlack: {
+        width: 30,
+        height: 30,
+        backgroundColor: '#888',
+    },
+    caseWhite: {
+        width: 30,
+        height: 30,
+        backgroundColor: '#ccc',
+    },
+    row: {
+        flexDirection: "row"
+    },
+    col: {
+        flexDirection: "column"
+    },
+    boardBackground: {
+        width: 500, height: 300, backgroundColor: '#aaa', flexDirection: 'column'
     },
     item: {
 
