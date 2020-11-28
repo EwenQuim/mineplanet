@@ -5,32 +5,18 @@ import { Case } from '../types'
 import Board from '../Board'
 import CellView from './CellView';
 
-const Row = ({ row }: { row: Case[] }) => (
-    <View style={styles.item}>
-        <Text style={styles.title}>Hi</Text>
-    </View>
-);
-
 
 export default function Chess({ board }: { board: Board }) {
-    const renderRow: ListRenderItem<Case[]> = ({ caseList }) => (
-        <FlatList
-            data={board.grid}
-            renderItem={() => <View> <Text>Yo</Text> </View>}
-            keyExtractor={item => item[0].y.toString()}
-        />
-    );
 
 
     return (
         <View style={styles.container}>
 
-            <Text>Hi</Text>
             <Button title="Log board variable" onPress={() => console.log(board)} />
             <View style={styles.boardBackground} >
                 <FlatList
                     data={board.grid}
-                    keyExtractor={item => item[0].y.toString() + "," + item[0].y.toString()}
+                    keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
                     renderItem={rowItem => {
                         console.log(rowItem); return (
                             <View style={styles.row}>
@@ -41,8 +27,7 @@ export default function Chess({ board }: { board: Board }) {
                                     keyExtractor={item => item.x.toString()}
                                     renderItem={({ item: cellItem, index }: { item: Case, index: number }) => {
 
-                                        return (<CellView cell={cellItem} />
-                                        )
+                                        return (<CellView cell={cellItem} />)
 
                                     }}
                                 />

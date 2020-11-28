@@ -12,11 +12,17 @@ const CellView = ({ cell }: { cell: Case }) => {
 
     if (cell.state === CellState.Revealed) {
         return (
-            <View style={styles.caseRevealed} />
+            <View style={styles.caseRevealed}>
+                <View style={styles.numberStyle}>
+                    <Text> 2</Text>
+                </View>
+            </View>
         )
     } else {
         return (
-            <Pressable style={styles.caseIdle} onPressOut={() => { cell.state = CellState.Revealed; console.log(cell); }} />
+            <View>
+                <Pressable style={styles.caseIdle} onPressOut={() => { cell.state = CellState.Revealed; console.log(cell); }} />
+            </View>
         )
     }
 
@@ -61,6 +67,11 @@ const styles = StyleSheet.create({
     },
     item: {
 
+    },
+    numberStyle: {
+        flex: 1,
+        alignContent: "center",
+        justifyContent: "center",
     }
 });
 
