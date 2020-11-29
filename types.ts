@@ -16,6 +16,12 @@ export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
+export enum GameState {
+  Playing,
+  Won,
+  Lost,
+}
+
 export enum CellState {
   Idle,
   Flagged,
@@ -35,18 +41,16 @@ export class Cell {
     this.y = y;
     this.state = CellState.Idle;
     this.bomb = bomb;
-    this.bombCount = 0
+    this.bombCount = 0;
   }
 
   displayCell(): string {
-
     if (this.bomb) {
-      return "💣"
+      return "💣";
     } else if (this.bombCount > 0) {
-      return this.bombCount.toString()
+      return this.bombCount.toString();
     } else {
-      return ""
+      return "";
     }
   }
 }
-

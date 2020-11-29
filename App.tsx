@@ -6,7 +6,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { Provider } from 'react-redux'
-import Store from './store/configureStore'
+//import Store from './store/configureStore'
 
 
 export default function App() {
@@ -18,9 +18,7 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <Provider store={Store}>
-          <Navigation colorScheme={colorScheme} />
-        </Provider>
+        <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </SafeAreaProvider>
     );

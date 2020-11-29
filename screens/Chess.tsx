@@ -13,17 +13,19 @@ export default function Chess({ board }: { board: Board }) {
         <View style={styles.container}>
 
             <Button title="Log board variable" onPress={() => console.log(board)} />
-            <View style={styles.boardBackground} >
+            <View  >
                 <FlatList
                     data={board.grid}
+                    extraData={board.grid}
                     keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
                     renderItem={rowItem => {
                         return (
                             <FlatList
-                                style={styles.row}
+                                style={{ flex: 1, flexDirection: "row" }}
                                 data={rowItem.item}
+                                extraData={rowItem.item}
                                 keyExtractor={item => item.x.toString()}
-                                renderItem={({ item: cellItem, index }: { item: Cell, index: number }) => {
+                                renderItem={({ item: cellItem }: { item: Cell }) => {
 
                                     return (<CellView cell={cellItem} />)
 
@@ -42,30 +44,8 @@ export default function Chess({ board }: { board: Board }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
-    },
-    caseBlack: {
-        width: 30,
-        height: 30,
-        backgroundColor: '#aaa',
-        borderWidth: 3,
-        borderTopColor: '#eee',
-        borderLeftColor: '#eee',
-        borderRightColor: '#7d7d7d',
-        borderBottomColor: '#7d7d7d'
-    },
-    caseWhite: {
-        width: 30,
-        height: 30,
-        backgroundColor: '#ccc',
-        borderWidth: 3,
-        borderTopColor: '#eee',
-        borderLeftColor: '#eee',
-        borderRightColor: '#7d7d7d',
-        borderBottomColor: '#7d7d7d'
     },
     row: {
         flex: 1,
@@ -74,9 +54,6 @@ const styles = StyleSheet.create({
     col: {
         flex: 1,
         flexDirection: "column"
-    },
-    boardBackground: {
-        width: 300, height: 300, backgroundColor: '#aaa', flexDirection: 'column'
     },
     item: {
 
