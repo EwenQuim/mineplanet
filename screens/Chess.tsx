@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, FlatList, ListRenderItem, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Case } from '../types'
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Cell } from '../types'
 import Board from '../Board'
 import CellView from './CellView';
 
@@ -18,21 +18,18 @@ export default function Chess({ board }: { board: Board }) {
                     data={board.grid}
                     keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
                     renderItem={rowItem => {
-                        console.log(rowItem); return (
-                            <View style={styles.row}>
+                        return (
+                            <FlatList
+                                style={styles.row}
+                                data={rowItem.item}
+                                keyExtractor={item => item.x.toString()}
+                                renderItem={({ item: cellItem, index }: { item: Cell, index: number }) => {
 
-                                <FlatList
-                                    style={styles.row}
-                                    data={rowItem.item}
-                                    keyExtractor={item => item.x.toString()}
-                                    renderItem={({ item: cellItem, index }: { item: Case, index: number }) => {
+                                    return (<CellView cell={cellItem} />)
 
-                                        return (<CellView cell={cellItem} />)
-
-                                    }}
-                                />
-
-                            </View>)
+                                }}
+                            />
+                        )
                     }}
 
                 />
@@ -49,18 +46,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    link: {
-        marginTop: 15,
-        paddingVertical: 15,
-    },
-    linkText: {
-        fontSize: 14,
-        color: '#2e78b7',
     },
     caseBlack: {
         width: 30,

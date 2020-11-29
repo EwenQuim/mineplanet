@@ -16,10 +16,7 @@ interface MainState {
 
 
 export class TabOneScreen extends React.Component<MainProps, MainState> {
-  searchedText = ""
   playing = false
-  height = 0
-  width = 0
 
   constructor(props: MainProps) {
     super(props);
@@ -30,10 +27,9 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     this.setState(
       { board: new Board() },
       () => {
-        this.state.board.initializeGrid(10, 10, 3);
+        this.state.board.dropBombs();
+        this.state.board.countBombsWholeGrid();
         this.playing = true;
-        this.height = 500;
-        this.width = 500;
       })
 
   }
@@ -41,24 +37,22 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   private _displayGrid() {
     if (this.playing) {
-      return (
-        <ScrollView contentContainerStyle={{ height: this.height }}>
-          <ScrollView horizontal contentContainerStyle={{ width: this.width }}>
-            <Chess board={this.state.board} />
-          </ScrollView>
-        </ScrollView>)
+      return <Chess board={this.state.board} />
+
     }
 
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={(this.playing) ? styles.container : styles.waitingToPlay}>
         <Text style={styles.title}>MineSweeper</Text>
         <View style={{ flexDirection: "row" }}>
           <Button title="Create board !" onPress={this.createBlankBoard} />
-          <Button title="Log tab state" onPress={() => console.log(this.state)} />
-          <Button title="Log else" onPress={() => console.log(this.playing, this.height, this.width)} />
+          <Button title="Log tab state" onPress={() => {
+            console.log(this.state)
+          }} />
+          <Button title="Log else" onPress={() => console.log(this.playing)} />
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
@@ -79,12 +73,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  waitingToPlay: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: "red"
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 1,
     width: '80%',
   },

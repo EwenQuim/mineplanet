@@ -1,30 +1,32 @@
-import { Case } from "./types";
+import { Cell } from "./types";
 
 export default class Board {
-    flagsTotal: number;
+
     flagsSet: number;
     bombsTotal: number;
+    bombsRemaining: number;
     width: number;
     height: number;
 
-    grid: Case[][];
+    grid: Cell[][];
 
-    constructor(flagsTotal: number = 10, bombsTotal: number = 10, height = 10, width = 10) {
-        this.flagsSet = 0;
-        this.flagsTotal = flagsTotal;
+    constructor(width = 10, height = 10, bombsTotal = 10) {
         this.grid = [];
         this.bombsTotal = bombsTotal;
+        this.bombsRemaining = 0;
+        this.flagsSet = 0; // differ from the previous as the player can be wrong
         this.height = height;
         this.width = width;
+        this.initializeGrid();
 
     }
 
-    initializeGrid = (width: number, height: number): void => {
-        let grid = Array<Array<Case>>();
-        for (let j = 0; j < height; j++) {
-            let row: Case[] = new Array<Case>();
-            for (let i = 0; i < width; i++) {
-                row.push(new Case(i, j));
+    initializeGrid = () => {
+        let grid = Array<Array<Cell>>();
+        for (let j = 0; j < this.height; j++) {
+            let row: Cell[] = new Array<Cell>();
+            for (let i = 0; i < this.width; i++) {
+                row.push(new Cell(i, j));
             }
             grid.push(row);
         }
@@ -51,7 +53,13 @@ export default class Board {
     countBombsWholeGrid = () => {
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.width; j++) {
-                this.grid[i][j].bombCount = this.countBombsOneCell(i, j)
+                if (!this.grid[i][j].bomb) {
+                    this.grid[i][j].bombCount = this.countBombsOneCell(i, j)
+                    console.log("On visite", i, j, ":", this.countBombsOneCell(i, j), "bombes")
+                } else {
+                    this.grid[i][j].bombCount = -1
+                }
+
             }
         }
     };
@@ -60,9 +68,11 @@ export default class Board {
         let bombCount = 0;
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
-                if (0 <= i && i < this.width && 0 <= j && j < this.height) {
-                    if (this.grid[i][j] === this.grid[x][y]) {
-                        bombCount++
+                let [iWatch, jWatch] = [i + x, j + y]
+                if (0 <= iWatch && iWatch < this.width && 0 <= jWatch && jWatch < this.height) {
+                    //console.log("ici", iWatch, jWatch, this.grid[iWatch][jWatch].bomb)
+                    if (this.grid[iWatch][jWatch].bomb) {
+                        bombCount += 1
                     }
                 }
             }
