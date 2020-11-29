@@ -7,11 +7,13 @@ import Board from '../Board'
 
 
 
-const CellView = ({ cell }: { cell: Cell }) => {
+const CellView = ({ cell, pressAction }: { cell: Cell, pressAction: any }) => {
 
     const _pressOnCell = () => {
         cell.state = CellState.Revealed;
         console.log(cell);
+        const action = { type: CellState.Revealed, value: [cell.x, cell.y] }
+        //this.props.dispatch(action)
     }
 
     if (cell.state === CellState.Revealed) {
@@ -25,7 +27,7 @@ const CellView = ({ cell }: { cell: Cell }) => {
     } else {
         return (
             <View>
-                <Pressable style={styles.caseIdle} onPress={_pressOnCell} />
+                <Pressable style={styles.caseIdle} onPress={pressAction} />
             </View>
         )
     }
