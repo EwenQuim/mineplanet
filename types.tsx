@@ -37,5 +37,16 @@ export class Cell {
     this.bomb = bomb;
     this.bombCount = 0
   }
+
+  displayCell(): string {
+
+    if (this.bomb) {
+      return "💣"
+    } else if (this.bombCount > 0) {
+      return this.bombCount.toString()
+    } else {
+      return ""
+    }
+  }
 }
 

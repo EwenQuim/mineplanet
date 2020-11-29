@@ -55,7 +55,6 @@ export default class Board {
             for (let j = 0; j < this.width; j++) {
                 if (!this.grid[i][j].bomb) {
                     this.grid[i][j].bombCount = this.countBombsOneCell(i, j)
-                    console.log("On visite", i, j, ":", this.countBombsOneCell(i, j), "bombes")
                 } else {
                     this.grid[i][j].bombCount = -1
                 }
@@ -70,7 +69,6 @@ export default class Board {
             for (let j = -1; j <= 1; j++) {
                 let [iWatch, jWatch] = [i + x, j + y]
                 if (0 <= iWatch && iWatch < this.width && 0 <= jWatch && jWatch < this.height) {
-                    //console.log("ici", iWatch, jWatch, this.grid[iWatch][jWatch].bomb)
                     if (this.grid[iWatch][jWatch].bomb) {
                         bombCount += 1
                     }
