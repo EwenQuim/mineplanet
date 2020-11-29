@@ -9,29 +9,20 @@ import Board from '../Board'
 
 const CellView = ({ cell }: { cell: Cell }) => {
 
-    const displayCell = (cell: Cell): string => {
 
-        if (cell.bomb) {
-            return "💣"
-        } else if (cell.bombCount > 0) {
-            return cell.bombCount.toString()
-        } else {
-            return ""
-        }
-    }
 
     if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed}>
                 <View style={styles.numberStyle}>
-                    <Text> {displayCell(cell)} </Text>
+                    <Text> {cell.displayCell()} </Text>
                 </View>
             </View>
         )
     } else {
         return (
             <View>
-                <Pressable style={styles.caseIdle} onPressOut={() => { cell.state = CellState.Revealed; console.log(cell); }} />
+                <Pressable style={styles.caseIdle} onPress={() => { cell.state = CellState.Revealed; console.log(cell); }} />
             </View>
         )
     }

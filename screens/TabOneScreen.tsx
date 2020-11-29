@@ -37,7 +37,11 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   private _displayGrid() {
     if (this.playing) {
-      return <Chess board={this.state.board} />
+      return (
+        <ScrollView horizontal contentContainerStyle={{ width: 500 }}>
+          <Chess board={this.state.board} />
+        </ScrollView>
+      )
 
     }
 
