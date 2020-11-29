@@ -1,20 +1,30 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
 import { Button, FlatList, ListRenderItem, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Case, CellState } from '../types'
+import { Cell, CellState } from '../types'
 import Board from '../Board'
 
 
 
 
-const CellView = ({ cell }: { cell: Case }) => {
+const CellView = ({ cell }: { cell: Cell }) => {
 
+    const displayCell = (cell: Cell): string => {
+
+        if (cell.bomb) {
+            return "💣"
+        } else if (cell.bombCount > 0) {
+            return cell.bombCount.toString()
+        } else {
+            return ""
+        }
+    }
 
     if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed}>
                 <View style={styles.numberStyle}>
-                    <Text> 2</Text>
+                    <Text> {displayCell(cell)} </Text>
                 </View>
             </View>
         )

@@ -23,7 +23,7 @@ export enum CellState {
   Revealed,
 }
 
-export class Case {
+export class Cell {
   x: number;
   y: number;
   state: CellState;
