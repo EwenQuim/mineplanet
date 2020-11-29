@@ -5,6 +5,8 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import Board from '../Board'
 import Chess from './Chess';
+import { connect } from 'react-redux'
+
 
 interface MainProps {
   //no props used : lists are stored in the state so we do not force rendering
@@ -94,3 +96,12 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+
+const mapStateToComponentProps = (state) => {
+  return {
+    board: state.board
+  }
+}
+
+
+export default connect(mapStateToComponentProps)(TabOneScreen)
