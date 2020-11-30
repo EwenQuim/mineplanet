@@ -6,7 +6,7 @@ import Board from '../Board'
 import CellView from './CellView';
 
 
-export default function Chess({ board, onPress }: { board: Board, onPress: any }) {
+export default function Chess({ board, onPress, onLongPress }: { board: Board, onPress: any, onLongPress: any }) {
 
 
     return (
@@ -31,7 +31,10 @@ export default function Chess({ board, onPress }: { board: Board, onPress: any }
                                         keyExtractor={item => item.x.toString() + "," + item.y.toString()}
                                         renderItem={({ item: cellItem }: { item: Cell }) => {
 
-                                            return (<CellView cell={cellItem} pressAction={() => onPress(cellItem)} />)
+                                            return (<CellView
+                                                cell={cellItem}
+                                                pressAction={() => onPress(cellItem)}
+                                                longPressAction={() => onLongPress(cellItem)} />)
 
                                         }}
                                     />

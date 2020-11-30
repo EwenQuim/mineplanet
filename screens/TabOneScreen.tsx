@@ -19,61 +19,59 @@ interface MainProps {
 
 interface MainState {
   board: Board;
-  dummy: number
+  playing: boolean
 }
 
 
 export class TabOneScreen extends React.Component<MainProps, MainState> {
-  playing = false
-  touch = 0
 
   constructor(props: MainProps) {
     super(props);
-    this.state = { board: undefined, dummy: 0 }
+    this.state = { board: undefined, playing: false }
   }
 
 
   private createBlankBoard = (): void => {
 
     let newBoard = new Board(5, 5, 3);
-    let newDummy = this.state.dummy + 1
     this.setState(
-      { board: newBoard, dummy: newDummy },
-      () => {
-        console.log("Creating new board");
-        console.log(this.state.board.grid);
-        console.log("Created new board", this.state.dummy);
-
-        this.playing = true;
-      })
+      { board: newBoard, playing: true })
 
   }
 
-  private pressAction = (cell: Cell) => {
-    console.log(cell, 'touch', this.touch)
-    this.touch = (this.touch + 1) || 0
+  // Reveal
+  private onPressAction = (cell: Cell) => {
     let newBoard = this.state.board;
     newBoard.revealCell(cell.x, cell.y)
     this.setState(
       { board: newBoard }
     )
+  }
 
+  // Flag / QMark
+  private onLongPressAction = (cell: Cell) => {
+    let newBoard = this.state.board;
+    newBoard.flagCell(cell.x, cell.y)
+    this.setState(
+      { board: newBoard }
+    )
   }
 
 
   private _displayGrid() {
-    if (this.playing) {
+    if (this.state.playing) {
       return (
-        <Chess board={this.state.board} onPress={this.pressAction} />
+        <Chess
+          board={this.state.board}
+          onPress={this.onPressAction}
+          onLongPress={this.onLongPressAction} />
       )
-
     }
-
   }
 
   render() {
     return (
-      <View style={(this.playing) ? styles.container : styles.waitingToPlay}>
+      <View style={(this.state.playing) ? styles.container : styles.waitingToPlay}>
         <Text style={styles.title}>MineSweeper</Text>
         <View style={{ flexDirection: "row" }}>
           <Button title="New board" onPress={this.createBlankBoard} />
