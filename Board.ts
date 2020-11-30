@@ -88,7 +88,7 @@ export default class Board {
       this.countBombsWholeGrid();
     }
 
-    // Can be revealed only if Idle (avoiding missclick and infinite loops)
+    // Can be revealed only if Idle (avoiding missclick, flags and infinite loops)
     if (this.grid[x][y].state === CellState.Idle) {
       // Reveal Cell
       this.grid[x][y].state = CellState.Revealed;
@@ -115,7 +115,22 @@ export default class Board {
         }
       }
 
-      console.log("Revealing cell", x, y, this.gameState);
+      console.log("Revealing cell", x, y);
     }
+  };
+
+  flagCell = (x: number, y: number): void => {
+    switch (this.grid[x][y].state) {
+      case CellState.Idle:
+        this.grid[x][y].state = CellState.Flagged;
+        break;
+      case CellState.Flagged:
+        this.grid[x][y].state = CellState.QMark;
+        break;
+      case CellState.QMark:
+        this.grid[x][y].state = CellState.Idle;
+        break;
+    }
+    console.log("Flagging cell", x, y);
   };
 }

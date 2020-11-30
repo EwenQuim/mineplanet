@@ -7,7 +7,7 @@ import Board from '../Board'
 
 
 
-const CellView = ({ cell, pressAction }: { cell: Cell, pressAction: any }) => {
+const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAction: any, longPressAction: any }) => {
 
     const _pressOnCell = () => {
         cell.state = CellState.Revealed;
@@ -15,6 +15,8 @@ const CellView = ({ cell, pressAction }: { cell: Cell, pressAction: any }) => {
         const action = { type: CellState.Revealed, value: [cell.x, cell.y] }
         //this.props.dispatch(action)
     }
+
+    const logo = { 0: "", 1: "🚩", 2: "?" }
 
     if (cell.state === CellState.Revealed) {
         return (
@@ -27,7 +29,9 @@ const CellView = ({ cell, pressAction }: { cell: Cell, pressAction: any }) => {
     } else {
         return (
             <View>
-                <Pressable style={styles.caseIdle} onPress={pressAction} />
+                <Pressable style={styles.caseIdle} onPress={pressAction} onLongPress={longPressAction} >
+                    <Text> {logo[cell.state]} </Text>
+                </Pressable>
             </View>
         )
     }
