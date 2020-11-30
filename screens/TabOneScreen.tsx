@@ -64,42 +64,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   private _displayGrid() {
     if (this.playing) {
       return (
-        <ScrollView >
-          <ScrollView directionalLockEnabled={false}
-            horizontal={true}
-            contentContainerStyle={{ width: 500, backgroundColor: "white" }}>
-            <View style={styles.container}>
-
-              <Button title="Log board variable" onPress={() => console.log(this.state.board)} />
-              <View >
-                <FlatList
-                  data={this.state.board.grid}
-                  extraData={this.state.board.grid}
-                  keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
-                  renderItem={rowItem => {
-                    return (
-                      <FlatList
-                        style={{ flex: 1, flexDirection: "row" }}
-                        data={rowItem.item}
-                        extraData={rowItem.item}
-                        keyExtractor={item => item.x.toString() + "," + item.y.toString()}
-                        renderItem={({ item: cellItem }: { item: Cell }) => {
-
-                          return (<CellView cell={cellItem} pressAction={() => this.pressAction(cellItem)} />)
-
-                        }}
-                      />
-                    )
-                  }}
-
-                />
-              </View>
-              <Text>Hello</Text>
-            </View>
-            <Text>Hello</Text>
-
-          </ScrollView>
-        </ScrollView>
+        <Chess board={this.state.board} onPress={this.pressAction} />
       )
 
     }
