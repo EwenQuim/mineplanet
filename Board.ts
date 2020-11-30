@@ -40,8 +40,8 @@ export default class Board {
   dropBombs = (avoidX: number = 0, avoidY: number = 0): void => {
     let bombsDropped = 0;
     while (bombsDropped < this.bombsTotal) {
-      let x = Math.floor(Math.random() * this.width);
-      let y = Math.floor(Math.random() * this.height);
+      let x = Math.floor(Math.random() * this.height);
+      let y = Math.floor(Math.random() * this.width);
 
       if (
         !(Math.abs(x - avoidX) <= 1 && Math.abs(y - avoidY) <= 1) &&
@@ -54,7 +54,7 @@ export default class Board {
   };
 
   countBombsWholeGrid = () => {
-    for (let i = 0; i < this.width; i++) {
+    for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         if (!this.grid[i][j].bomb) {
           this.grid[i][j].bombCount = this.countBombsOneCell(i, j);

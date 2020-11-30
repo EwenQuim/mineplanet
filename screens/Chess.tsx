@@ -21,7 +21,7 @@ export default function Chess({ board, onPress, onLongPress }: { board: Board, o
                         <FlatList
                             data={board.grid}
                             extraData={board.grid}
-                            keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
+                            keyExtractor={item => item[0].x.toString() + ":" + item[0].y.toString()}
                             renderItem={rowItem => {
                                 return (
                                     <FlatList
@@ -43,11 +43,12 @@ export default function Chess({ board, onPress, onLongPress }: { board: Board, o
 
                         />
                     </View>
-                    <Text>Hello</Text>
+                    <Text>Hello1</Text>
                 </View>
-                <Text>Hello</Text>
+                <Text>Hello2</Text>
 
             </ScrollView>
+            <Text>Hello3</Text>
         </ScrollView>
 
     );
