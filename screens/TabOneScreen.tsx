@@ -29,15 +29,13 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   constructor(props: MainProps) {
     super(props);
-    this.state = { board: new Board(), dummy: 0 }
+    this.state = { board: undefined, dummy: 0 }
   }
 
 
   private createBlankBoard = (): void => {
 
-    let newBoard = new Board();
-    newBoard.dropBombs()
-    newBoard.countBombsWholeGrid()
+    let newBoard = new Board(5, 5, 3);
     let newDummy = this.state.dummy + 1
     this.setState(
       { board: newBoard, dummy: newDummy },
@@ -66,35 +64,41 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   private _displayGrid() {
     if (this.playing) {
       return (
-        <ScrollView horizontal contentContainerStyle={{ width: 500 }}>
-          <View style={styles.container}>
+        <ScrollView >
+          <ScrollView directionalLockEnabled={false}
+            horizontal={true}
+            contentContainerStyle={{ width: 500, backgroundColor: "white" }}>
+            <View style={styles.container}>
 
-            <Button title="Log board variable" onPress={() => console.log(this.state.board)} />
-            <View >
-              <FlatList
-                data={this.state.board.grid}
-                extraData={this.state.board.grid}
-                keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
-                renderItem={rowItem => {
-                  return (
-                    <FlatList
-                      style={{ flex: 1, flexDirection: "row" }}
-                      data={rowItem.item}
-                      extraData={rowItem.item}
-                      keyExtractor={item => item.x.toString() + "," + item.y.toString()}
-                      renderItem={({ item: cellItem }: { item: Cell }) => {
+              <Button title="Log board variable" onPress={() => console.log(this.state.board)} />
+              <View >
+                <FlatList
+                  data={this.state.board.grid}
+                  extraData={this.state.board.grid}
+                  keyExtractor={item => item[0].x.toString() + "," + item[0].y.toString()}
+                  renderItem={rowItem => {
+                    return (
+                      <FlatList
+                        style={{ flex: 1, flexDirection: "row" }}
+                        data={rowItem.item}
+                        extraData={rowItem.item}
+                        keyExtractor={item => item.x.toString() + "," + item.y.toString()}
+                        renderItem={({ item: cellItem }: { item: Cell }) => {
 
-                        return (<CellView cell={cellItem} pressAction={() => this.pressAction(cellItem)} />)
+                          return (<CellView cell={cellItem} pressAction={() => this.pressAction(cellItem)} />)
 
-                      }}
-                    />
-                  )
-                }}
+                        }}
+                      />
+                    )
+                  }}
 
-              />
+                />
+              </View>
+              <Text>Hello</Text>
             </View>
+            <Text>Hello</Text>
 
-          </View>
+          </ScrollView>
         </ScrollView>
       )
 
@@ -114,6 +118,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         {this._displayGrid()}
+
 
 
       </View>

@@ -17,6 +17,7 @@ export type TabTwoParamList = {
 };
 
 export enum GameState {
+  WaitingToPlay,
   Playing,
   Won,
   Lost,
