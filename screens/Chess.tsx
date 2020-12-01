@@ -10,45 +10,44 @@ export default function Chess({ board, onPress, onLongPress }: { board: Board, o
 
 
     return (
-        <ScrollView >
-            <ScrollView directionalLockEnabled={false}
-                horizontal={true}
-                contentContainerStyle={{ width: 500, backgroundColor: "white" }}>
-                <View style={styles.container}>
+        <ScrollView directionalLockEnabled={false}
+            horizontal={true}
+            contentContainerStyle={{ width: board.width * 30 + 60, height: 500 }}>
+            <View style={styles.container}>
+                <View >
+                    <FlatList
+                        data={board.grid}
+                        extraData={board.grid}
+                        keyExtractor={item => item[0].x.toString() + ":" + item[0].y.toString()}
+                        getItemLayout={(data, index) => (
+                            { length: board.height, offset: board.height * index, index }
+                        )}
+                        renderItem={rowItem => {
+                            return (
+                                <FlatList
+                                    style={{ flex: 1, flexDirection: "row" }}
+                                    data={rowItem.item}
+                                    extraData={rowItem.item}
+                                    keyExtractor={item => item.x.toString() + "," + item.y.toString()}
+                                    getItemLayout={(data, index) => (
+                                        { length: board.width, offset: board.width * index, index }
+                                    )}
+                                    renderItem={({ item: cellItem }: { item: Cell }) => {
 
-                    <Button title="Log board variable" onPress={() => console.log(board)} />
-                    <View >
-                        <FlatList
-                            data={board.grid}
-                            extraData={board.grid}
-                            keyExtractor={item => item[0].x.toString() + ":" + item[0].y.toString()}
-                            renderItem={rowItem => {
-                                return (
-                                    <FlatList
-                                        style={{ flex: 1, flexDirection: "row" }}
-                                        data={rowItem.item}
-                                        extraData={rowItem.item}
-                                        keyExtractor={item => item.x.toString() + "," + item.y.toString()}
-                                        renderItem={({ item: cellItem }: { item: Cell }) => {
+                                        return (<CellView
+                                            cell={cellItem}
+                                            pressAction={() => onPress(cellItem)}
+                                            longPressAction={() => onLongPress(cellItem)} />)
 
-                                            return (<CellView
-                                                cell={cellItem}
-                                                pressAction={() => onPress(cellItem)}
-                                                longPressAction={() => onLongPress(cellItem)} />)
+                                    }}
+                                />
+                            )
+                        }}
 
-                                        }}
-                                    />
-                                )
-                            }}
-
-                        />
-                    </View>
-                    <Text>Hello1</Text>
+                    />
                 </View>
-                <Text>Hello2</Text>
+            </View>
 
-            </ScrollView>
-            <Text>Hello3</Text>
         </ScrollView>
 
     );

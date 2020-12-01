@@ -36,7 +36,6 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
     }
 
 
-
     if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed}>
@@ -58,7 +57,7 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
 
 }
 
-// Not revealed correspondance
+// Not revealed correspondance (outside of function for performance reasons)
 const logo = {
     0: "",
     1: "🚩",

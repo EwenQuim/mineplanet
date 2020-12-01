@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, ScrollView, StyleSheet, FlatList, Modal, Alert, TouchableHighlight, Vibration, Pressable } from 'react-native';
+import { Button, Easing, ScrollView, StyleSheet, FlatList, Modal, Alert, TouchableHighlight, Vibration, Pressable, Animated, EasingFunction, EasingStatic } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -26,18 +26,81 @@ interface MainState {
 
 export class TabOneScreen extends React.Component<MainProps, MainState> {
 
+  modalAnimation: any;
+  animatedStyles: any;
+
   constructor(props: MainProps) {
     super(props);
-    this.state = { board: undefined, playing: false, endingScreen: false }
+    this.state = {
+      board: undefined,
+      playing: false,
+      endingScreen: false
+    }
+    this.modalAnimation = {
+      yPosition: new Animated.Value(0),
+      width: new Animated.Value(200),
+      height: new Animated.Value(200),
+      opacity: new Animated.Value(0)
+    }
+    this.modalAnimation.opacity = this.modalAnimation.yPosition.interpolate({
+      inputRange: [0, 300],
+      outputRange: [0, 1]
+    })
+    this.modalAnimation.height = this.modalAnimation.width.interpolate({
+      inputRange: [200, 280],
+      outputRange: [200, 280]
+    })
+
+    this.animatedStyles = [
+      styles.modalView,
+      {
+        marginBottom: this.modalAnimation.yPosition,
+        opacity: this.modalAnimation.opacity,
+        width: this.modalAnimation.width,
+        height: this.modalAnimation.height,
+      },
+    ];
   }
 
+  animate = () => {
+    this.modalAnimation.yPosition.setValue(0);
+    Animated.timing(this.modalAnimation.yPosition, {
+      duration: 1000,
+      easing: Easing.out(Easing.linear),
+      toValue: 300,
+      useNativeDriver: false,
+    }).start();
+    this.modalAnimation.width.setValue(200);
+    Animated.sequence([
+      Animated.timing(this.modalAnimation.width, {
+        delay: 1000,
+        duration: 200,
+        easing: Easing.cubic,
+        toValue: 280,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.modalAnimation.width, {
+        duration: 200,
+        easing: Easing.cubic,
+        toValue: 200,
+        useNativeDriver: false,
+      }
+      )
+    ]).start();
+
+    // Animated.timing(this.modalAnimation.width, {
+    //   delay: 1400,
+    //   duration: 200,
+    //   easing: Easing.cubic,
+    //   toValue: 200,
+    //   useNativeDriver: false,
+    // }).start();
+  };
 
   private createNewBoard = (): void => {
-
-    let newBoard = new Board(3, 6, 3);
+    let newBoard = new Board(3, 6, 2);
     this.setState(
       { board: newBoard, playing: true, endingScreen: false })
-
   }
 
   // Reveal
@@ -47,10 +110,15 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     switch (newBoard.gameState) {
       case GameState.Lost:
         Vibration.vibrate(2000)
+        console.log("animating def");
+        this.animate()
         this.setState({ endingScreen: true });
         break;
       case GameState.Won:
-        this.setState({ endingScreen: true });
+        Vibration.vibrate(Array(12).fill(100));
+        console.log("animating vic");
+        this.animate()
+        this.setState({ board: newBoard })
         break;
       default:
         this.setState({ board: newBoard }, () => Vibration.vibrate(50))
@@ -69,45 +137,33 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   private _displayEndingScreen() {
 
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.state.endingScreen}
-        onRequestClose={() => {
-          this.setState({ endingScreen: false });
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              {this.state.board?.gameState === GameState.Won
-                ? "You Won !"
-                : "Sorry, you lost..."}
-            </Text>
+    if (this.state.board?.gameState === GameState.Won || this.state.board?.gameState === GameState.Lost) {
 
-            <Pressable
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                this.createNewBoard();
-                this.setState({ endingScreen: false });
-              }}
-            >
-              <Text style={styles.textStyle}>
-                Play again !
-              </Text>
-            </Pressable>
+      return (
+        <Animated.View style={this.animatedStyles} >
 
-          </View>
-        </View>
-      </Modal>
-    )
+          <Text style={styles.modalText}>
+            {this.state.board?.gameState === GameState.Won
+              ? "You Won !"
+              : "Sorry, you lost..."}
+          </Text>
+
+          <Pressable
+            style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+            onPress={() => {
+              this.createNewBoard();
+              this.setState({ endingScreen: false });
+            }}
+          >
+            <Text style={styles.textStyle}>
+              Play again !
+          </Text>
+          </Pressable>
+
+        </Animated.View>
+      )
+    }
   }
-
-  private _triggerEndingScreen() {
-
-  }
-
 
   private _displayGrid() {
     if (this.state.playing) {
@@ -123,7 +179,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   render() {
     return (
       <View style={(this.state.playing) ? styles.container : styles.waitingToPlay}>
-        <Text style={styles.title}>MineSweeper</Text>
         <View style={{ flexDirection: "row" }}>
           <Button title="New board" onPress={this.createNewBoard} />
           <Button title="Log state" onPress={() => { console.log(this.state) }} />
@@ -132,6 +187,8 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         {this._displayGrid()}
+
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         {this._displayEndingScreen()}
 
@@ -161,7 +218,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 10,
+    marginVertical: 30,
     height: 1,
     width: '80%',
   },
@@ -173,7 +230,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    margin: 50,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
