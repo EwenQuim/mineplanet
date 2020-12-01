@@ -20,6 +20,22 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
         }
     }
 
+    const colorMatch = () => {
+        switch (cell.bombCount) {
+            case 1:
+                return 'blue'
+            case 2:
+                return 'green'
+            case 3:
+                return 'red'
+            case 4:
+                return 'darkblue'
+            default:
+                return 'black'
+        }
+    }
+
+
     //Hidden
     const logo = {
         0: "",
@@ -31,7 +47,7 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
         return (
             <View style={styles.caseRevealed}>
                 <View style={styles.numberStyle}>
-                    <Text> {displayCell()} </Text>
+                    <Text style={{ fontWeight: 'bold', color: colorMatch() }}> {displayCell()} </Text>
                 </View>
             </View>
         )
