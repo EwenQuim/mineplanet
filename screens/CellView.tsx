@@ -36,12 +36,6 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
     }
 
 
-    //Hidden
-    const logo = {
-        0: "",
-        1: "🚩",
-        2: "❓"
-    }
 
     if (cell.state === CellState.Revealed) {
         return (
@@ -62,6 +56,13 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
     }
 
 
+}
+
+// Not revealed correspondance
+const logo = {
+    0: "",
+    1: "🚩",
+    2: "❓"
 }
 
 const styles = StyleSheet.create({
