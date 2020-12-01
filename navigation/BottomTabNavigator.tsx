@@ -7,7 +7,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { TabOneScreen } from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import TabRulesScreen from '../screens/TabRulesScreen'
+import { BottomTabParamList, TabOneParamList, TabRulesParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -22,14 +23,21 @@ export default function BottomTabNavigator() {
         name="TabOne"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="logo-game-controller-a" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Rules"
+        component={TabRulesNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-list" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Credits"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-more" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -58,6 +66,21 @@ function TabOneNavigator() {
   );
 }
 
+const TabRulesStack = createStackNavigator<TabRulesParamList>();
+
+function TabRulesNavigator() {
+  return (
+    <TabRulesStack.Navigator>
+      <TabRulesStack.Screen
+        name="TabRulesScreen"
+        component={TabRulesScreen}
+        options={{ headerTitle: 'Rules' }}
+      />
+    </TabRulesStack.Navigator>
+  );
+}
+
+
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
@@ -66,7 +89,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Credits' }}
       />
     </TabTwoStack.Navigator>
   );
