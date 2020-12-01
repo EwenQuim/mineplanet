@@ -9,20 +9,29 @@ import Board from '../Board'
 
 const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAction: any, longPressAction: any }) => {
 
-    const _pressOnCell = () => {
-        cell.state = CellState.Revealed;
-        console.log(cell);
-        const action = { type: CellState.Revealed, value: [cell.x, cell.y] }
-        //this.props.dispatch(action)
+    // Revealed
+    const displayCell = (): string => {
+        if (cell.bomb) {
+            return "💣";
+        } else if (cell.bombCount > 0) {
+            return cell.bombCount.toString();
+        } else {
+            return "";
+        }
     }
 
-    const logo = { 0: "", 1: "🚩", 2: "?" }
+    //Hidden
+    const logo = {
+        0: "",
+        1: "🚩",
+        2: "❓"
+    }
 
     if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed}>
                 <View style={styles.numberStyle}>
-                    <Text> {cell.displayCell()} </Text>
+                    <Text> {displayCell()} </Text>
                 </View>
             </View>
         )
