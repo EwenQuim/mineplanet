@@ -23,6 +23,10 @@ export default class Board {
     this.initializeGrid();
   }
 
+  /**
+   * Initialize the entire grid EXCEPT the bombs positions
+   * (will be determined at the first player touch)
+   */
   initializeGrid = () => {
     let grid = Array<Array<Cell>>();
     for (let i = 0; i < this.height; i++) {
@@ -37,6 +41,11 @@ export default class Board {
     this.grid = grid;
   };
 
+  /**
+   * Set the bombs positions (random except at the player's first touch)
+   * @param avoidX
+   * @param avoidY
+   */
   dropBombs = (avoidX: number = 0, avoidY: number = 0): void => {
     let bombsDropped = 0;
     while (bombsDropped < this.bombsTotal) {
@@ -53,7 +62,9 @@ export default class Board {
     }
   };
 
-  // Display all the bombs when a game is lost
+  /**
+   * Display all the bombs when a game is lost
+   */
   explodesAllBombs = () => {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -69,7 +80,9 @@ export default class Board {
     }
   };
 
-  // Call the bomb count for each cell of the grid
+  /**
+   * Call the bomb count for each cell of the grid
+   */
   countBombsWholeGrid = () => {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -82,7 +95,11 @@ export default class Board {
     }
   };
 
-  // Count the numbers of neighbors that are bombs for a given cell (by its position)
+  /**
+   * Count the numbers of neighbors that are bombs for a given cell (by its position)
+   * @param x
+   * @param y
+   */
   countBombsOneCell = (x: number, y: number): number => {
     let bombCount = 0;
     for (const i of [x - 1, x, x + 1]) {
@@ -97,6 +114,12 @@ export default class Board {
     return bombCount;
   };
 
+  /**
+   * Reveals a cell given its position
+   * If there is not bomb on neighbors, recursively discovers neighbors
+   * @param x
+   * @param y
+   */
   revealCell = (x: number, y: number): void => {
     // On first touch, generate the bombs so the player can't lose immediately
     // Reduce frustration
@@ -138,6 +161,11 @@ export default class Board {
     }
   };
 
+  /**
+   * Put a (flag / question mark / nothing) on a cell
+   * @param x
+   * @param y
+   */
   flagCell = (x: number, y: number): void => {
     switch (this.grid[x][y].state) {
       case CellState.Idle:
