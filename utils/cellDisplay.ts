@@ -1,5 +1,9 @@
 import { Cell } from "../types";
 
+/**
+ * Displays what is under the cell, once revealed
+ * @param cell
+ */
 export const displayCell = (cell: Cell): string => {
   if (cell.bomb) {
     return "💣";
@@ -10,6 +14,10 @@ export const displayCell = (cell: Cell): string => {
   }
 };
 
+/**
+ * Mimics the original game
+ * @param cell
+ */
 export const colorMatch = (cell: Cell) => {
   switch (cell.bombCount) {
     case 1:
