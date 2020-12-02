@@ -1,14 +1,10 @@
 import * as React from 'react';
-import { Button, Easing, ScrollView, StyleSheet, FlatList, Modal, Alert, TouchableHighlight, Vibration, Pressable, Animated, EasingFunction, EasingStatic } from 'react-native';
+import { Button, Easing, StyleSheet, Vibration, Pressable, Animated } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import Board from '../Board'
 import Chess from './Chess';
 
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
-import { AppState, BoardState } from '../store/types';
-import { revealCell } from '../store/board/actions'
 import CellView from './CellView';
 import { Cell, GameState } from '../types'
 
@@ -90,13 +86,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       )
     ]).start();
 
-    // Animated.timing(this.modalAnimation.width, {
-    //   delay: 1400,
-    //   duration: 200,
-    //   easing: Easing.cubic,
-    //   toValue: 200,
-    //   useNativeDriver: false,
-    // }).start();
   };
 
   private createNewBoard = (): void => {
@@ -300,24 +289,3 @@ const styles = StyleSheet.create({
   }
 
 });
-
-const mapStateToComponentProps = (state: BoardState) => {
-  return {
-    board: state.board
-  }
-}
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onClick: (i: number, j: number) => {
-    dispatch(revealCell(i, j));
-  },
-  // other callbacks go here...
-});
-
-/*
-const TabOneScr = connect(
-  mapStateToComponentProps,
-  mapDispatchToProps
-)(TabOne);
-
-
-*/

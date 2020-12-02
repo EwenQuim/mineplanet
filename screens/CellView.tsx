@@ -1,60 +1,29 @@
-import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, FlatList, ListRenderItem, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Cell, CellState } from '../types'
-import Board from '../Board'
+import { displayCell, colorMatch } from '../utils/cellDisplay'
 
-
-
-
+/**
+ * Drawing a cell from its description
+ * @param cell a cell object to represent
+ * @param onPress the function triggered by a short press on a cell 
+ * @param onLongPress the function triggered by a long press on a cell 
+ */
 const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAction: any, longPressAction: any }) => {
-
-    // Revealed
-    const displayCell = (): string => {
-        if (cell.bomb) {
-            return "💣";
-        } else if (cell.bombCount > 0) {
-            return cell.bombCount.toString();
-        } else {
-            return "";
-        }
-    }
-
-    const colorMatch = () => {
-        switch (cell.bombCount) {
-            case 1:
-                return 'blue'
-            case 2:
-                return 'green'
-            case 3:
-                return 'red'
-            case 4:
-                return 'darkblue'
-            default:
-                return 'black'
-        }
-    }
-
 
     if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed}>
-                <View style={styles.numberStyle}>
-                    <Text style={{ fontWeight: 'bold', color: colorMatch() }}> {displayCell()} </Text>
-                </View>
+                <Text style={{ fontWeight: 'bold', color: colorMatch(cell) }}> {displayCell(cell)} </Text>
             </View>
         )
     } else {
         return (
-            <View>
-                <Pressable style={styles.caseIdle} onPress={pressAction} onLongPress={longPressAction} >
-                    <Text> {logo[cell.state]} </Text>
-                </Pressable>
-            </View>
+            <Pressable style={styles.caseIdle} onPress={pressAction} onLongPress={longPressAction} >
+                <Text> {logo[cell.state]} </Text>
+            </Pressable>
         )
     }
-
-
 }
 
 // Not revealed correspondance (outside of function for performance reasons)
@@ -67,13 +36,6 @@ const logo = {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
-    },
     caseIdle: {
         width: 30,
         height: 30,
@@ -90,23 +52,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
         borderWidth: 1,
         borderColor: '#bbb',
-    },
-    row: {
-        flex: 1,
-        flexDirection: "row"
-    },
-    col: {
-        flex: 1,
-        flexDirection: "column"
-    },
-    boardBackground: {
-        width: 300, height: 300, backgroundColor: '#aaa', flexDirection: 'column'
-    },
-    item: {
-
-    },
-    numberStyle: {
-        flex: 1,
         alignContent: "center",
         justifyContent: "center",
     }

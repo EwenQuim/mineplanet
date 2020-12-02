@@ -17,10 +17,10 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Game"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Game"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="logo-game-controller-a" color={color} />,
