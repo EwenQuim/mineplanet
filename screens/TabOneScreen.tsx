@@ -124,8 +124,9 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
         <Picker
           selectedValue={this.state.difficulty}
           style={{ height: 50, width: 150, color: "white" }}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({ difficulty: itemValue })
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({ difficulty: itemValue }, () => this.createNewBoard());
+          }
           }>
           <Picker.Item label="Easy" value={Difficulty.Easy} />
           <Picker.Item label="Medium" value={Difficulty.Medium} />
@@ -135,6 +136,10 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       </View>
     )
 
+  }
+
+  componentDidMount() {
+    this.createNewBoard()
   }
 
   render() {
