@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Button, Easing, StyleSheet, Vibration, Pressable, Animated } from 'react-native';
+import { Button, StyleSheet, Vibration } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 import Board from '../Board'
 import Chess from './Chess';
 
-import CellView from '../components/CellView';
 import { Cell, Difficulty, GameState } from '../types'
 import StatsScreen from './StatsScreen'
 import EndView from './EndView';
