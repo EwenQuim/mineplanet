@@ -6,17 +6,19 @@ import Board from '../Board'
 import Chess from './Chess';
 
 import CellView from '../components/CellView';
-import { Cell, GameState } from '../types'
+import { Cell, Difficulty, GameState } from '../types'
 import StatsScreen from './StatsScreen'
 import EndView from './EndView';
+import { Picker } from '@react-native-picker/picker';
+
 
 interface MainProps {
-  //no props used : lists are stored in the state so we do not force rendering
 }
 
 interface MainState {
   board: Board;
   playing: boolean;
+  difficulty: Difficulty
 }
 
 
@@ -27,12 +29,26 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     this.state = {
       board: undefined,
       playing: false,
+      difficulty: Difficulty.Easy
     }
   }
 
 
   private createNewBoard = () => {
-    this.setState({ board: new Board(8, 10, 2), playing: true })
+
+    switch (this.state.difficulty) {
+      case Difficulty.Easy:
+        this.setState({ board: new Board(8, 6, 6) });
+        break;
+      case Difficulty.Hard:
+        this.setState({ board: new Board(12, 12, 28) })
+        break;
+      default:
+        this.setState({ board: new Board(8, 12, 16) })
+        break;
+    }
+    this.setState({ playing: true })
+
   }
 
   // Reveal
@@ -102,21 +118,40 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     }
   }
 
+  private _displayOptions() {
+
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
+        <Picker
+          selectedValue={this.state.difficulty}
+          style={{ height: 50, width: 150, color: "white" }}
+          onValueChange={(itemValue, itemIndex) =>
+            this.setState({ difficulty: itemValue })
+          }>
+          <Picker.Item label="Easy" value={Difficulty.Easy} />
+          <Picker.Item label="Medium" value={Difficulty.Medium} />
+          <Picker.Item label="Hard" value={Difficulty.Hard} />
+        </Picker>
+        <Button title="New board" onPress={this.createNewBoard} />
+      </View>
+    )
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
 
-        <Button title="New board" onPress={this.createNewBoard} />
+        {this._displayOptions()}
 
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator} />
 
         {this._displayStats()}
 
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator} />
 
         {this._displayGrid()}
 
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         {this._displayEndingScreen()}
 
@@ -135,8 +170,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 20,
     height: 1,
     width: '80%',
+    backgroundColor: "#8888",
   },
 });

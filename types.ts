@@ -28,6 +28,12 @@ export enum GameState {
   Lost,
 }
 
+export enum Difficulty {
+  Easy,
+  Medium,
+  Hard,
+}
+
 export enum CellState {
   Idle,
   Flagged,
