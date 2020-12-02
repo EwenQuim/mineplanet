@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
+    position: "absolute",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,

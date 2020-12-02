@@ -53,6 +53,23 @@ export default class Board {
     }
   };
 
+  // Display all the bombs when a game is lost
+  explodesAllBombs = () => {
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
+        let cell = this.grid[i][j];
+        // We display all remaining bombs
+        if (cell.bomb && cell.state === CellState.Idle) {
+          this.grid[i][j].state = CellState.Revealed;
+          // Show wrong flags
+        } else if (!cell.bomb && cell.state === CellState.Flagged) {
+          this.grid[i][j].state = CellState.WronglyFlagged;
+        }
+      }
+    }
+  };
+
+  // Call the bomb count for each cell of the grid
   countBombsWholeGrid = () => {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -65,6 +82,7 @@ export default class Board {
     }
   };
 
+  // Count the numbers of neighbors that are bombs for a given cell (by its position)
   countBombsOneCell = (x: number, y: number): number => {
     let bombCount = 0;
     for (const i of [x - 1, x, x + 1]) {
@@ -97,13 +115,14 @@ export default class Board {
       // Checking if the game is won
       if (this.cellsRevealed === this.width * this.height - this.bombsTotal) {
         this.gameState = GameState.Won;
+        this.explodesAllBombs();
       }
 
       // If it's a bomb, BOOM
       if (this.grid[x][y].bomb) {
         this.gameState = GameState.Lost;
 
-        // else, and if it has 0 neighbours, let's clear the way recursively (Depth First Search-wise)
+        // else, and if it has 0 neighbors, let's clear the way recursively (Depth First Search-wise)
       } else if (this.grid[x][y].bombCount === 0) {
         for (const i of [x - 1, x, x + 1]) {
           for (const j of [y - 1, y, y + 1]) {

@@ -61,7 +61,9 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
 const logo = {
     0: "",
     1: "🚩",
-    2: "❓"
+    2: "❓",
+    3: "",
+    4: "❌"
 }
 
 const styles = StyleSheet.create({

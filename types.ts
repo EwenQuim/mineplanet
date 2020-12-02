@@ -32,6 +32,7 @@ export enum CellState {
   Flagged,
   QMark,
   Revealed,
+  WronglyFlagged,
 }
 
 export class Cell {
