@@ -22,10 +22,6 @@ interface MainState {
 
 export class TabOneScreen extends React.Component<MainProps, MainState> {
 
-  modalAnimation: any;
-  comingFromTheBottom: any;
-  zoomingFrame: any;
-
   constructor(props: MainProps) {
     super(props);
     this.state = {
@@ -35,18 +31,15 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   }
 
 
-  private createNewBoard = (): void => {
-    console.log('hiii');
-
-    let newBoard = new Board(8, 10, 2);
-    this.setState(
-      { board: newBoard, playing: true })
+  private createNewBoard = () => {
+    this.setState({ board: new Board(8, 10, 2), playing: true })
   }
 
   // Reveal
   private onPressAction = (cell: Cell) => {
     let newBoard = this.state.board;
     newBoard.revealCell(cell.x, cell.y) // and its neighbors if necessary
+
     switch (newBoard.gameState) {
 
       case GameState.Lost:
@@ -84,7 +77,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       return (
         <EndView
           victory={this.state.board?.gameState === GameState.Won}
-          newGame={this.createNewBoard}
+          newGameButton={this.createNewBoard}
         />
       )
     }
