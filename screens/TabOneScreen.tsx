@@ -26,7 +26,8 @@ interface MainState {
 export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   modalAnimation: any;
-  animatedStyles: any;
+  comingFromTheBottom: any;
+  zoomingFrame: any;
 
   constructor(props: MainProps) {
     super(props);
@@ -36,37 +37,39 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       endingScreen: false
     }
     this.modalAnimation = {
-      yPosition: new Animated.Value(0),
+      yPosition: new Animated.Value(1200),
       width: new Animated.Value(200),
       height: new Animated.Value(200),
-      opacity: new Animated.Value(0)
     }
-    this.modalAnimation.opacity = this.modalAnimation.yPosition.interpolate({
-      inputRange: [0, 300],
-      outputRange: [0, 1]
-    })
+
     this.modalAnimation.height = this.modalAnimation.width.interpolate({
       inputRange: [200, 280],
       outputRange: [200, 280]
     })
 
-    this.animatedStyles = [
-      styles.modalView,
+    this.comingFromTheBottom = [
+      styles.blankFullScreen,
       {
-        bottom: this.modalAnimation.yPosition,
-        opacity: this.modalAnimation.opacity,
-        width: this.modalAnimation.width,
-        height: this.modalAnimation.height,
+        top: this.modalAnimation.yPosition,
+
       },
     ];
+    this.zoomingFrame = [
+      styles.modalView,
+      {
+        width: this.modalAnimation.width,
+        height: this.modalAnimation.height,
+
+      },
+    ]
   }
 
   animate = () => {
-    this.modalAnimation.yPosition.setValue(0);
+    this.modalAnimation.yPosition.setValue(1200);
     Animated.timing(this.modalAnimation.yPosition, {
       duration: 1000,
       easing: Easing.out(Easing.ease),
-      toValue: 300,
+      toValue: 0,
       useNativeDriver: false,
     }).start();
     this.modalAnimation.width.setValue(200);
@@ -97,7 +100,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   };
 
   private createNewBoard = (): void => {
-    let newBoard = new Board(10, 8, 15);
+    let newBoard = new Board(3, 8, 2);
     this.setState(
       { board: newBoard, playing: true, endingScreen: false })
   }
@@ -135,29 +138,39 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   }
 
   private _displayEndingScreen() {
+    let modalStyle = [...this.zoomingFrame]
+    if (this.state.board?.gameState === GameState.Won) {
+      modalStyle.push(styles.modalViewWin)
+    }
 
     if (this.state.board?.gameState === GameState.Won || this.state.board?.gameState === GameState.Lost) {
 
       return (
-        <Animated.View style={this.animatedStyles} >
+        <Animated.View style={this.comingFromTheBottom} >
 
-          <Text style={styles.modalText}>
-            {this.state.board?.gameState === GameState.Won
-              ? "You Won !"
-              : "Sorry, you lost..."}
-          </Text>
+          <Animated.View style={modalStyle}>
+            <View style={styles.zoomingFrameCenterView}>
 
-          <Pressable
-            style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-            onPress={() => {
-              this.createNewBoard();
-              this.setState({ endingScreen: false });
-            }}
-          >
-            <Text style={styles.textStyle}>
-              Play again !
+              <Text style={styles.modalText}>
+                {this.state.board?.gameState === GameState.Won
+                  ? "You Won !"
+                  : "Sorry, you lost....dzqdjkznqkn.."}
+              </Text>
+
+              <Pressable
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  this.createNewBoard();
+                  this.setState({ endingScreen: false });
+                }}
+              >
+                <Text style={styles.textStyle}>
+                  Play again !
           </Text>
-          </Pressable>
+              </Pressable>
+
+            </View>
+          </Animated.View>
 
         </Animated.View>
       )
@@ -234,18 +247,21 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  centeredView: {
+  blankFullScreen: {
     flex: 1,
-    marginVertical: 50,
-    backgroundColor: "#0008",
-    justifyContent: "center",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#0000",
+    position: "absolute",
     alignItems: "center",
+    justifyContent: "center",
   },
   modalView: {
-    position: "absolute",
-    backgroundColor: "white",
+    backgroundColor: "lightgrey",
     borderRadius: 20,
-    padding: 35,
+    borderWidth: 2,
+    borderColor: "red",
     alignItems: "center",
     shadowColor: "#222",
     shadowOffset: {
@@ -255,6 +271,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
+  modalViewWin: {
+    borderColor: "green"
+  },
+  zoomingFrameCenterView: {
+    flex: 1,
+    backgroundColor: "#0000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
@@ -262,7 +287,7 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   textStyle: {
-    color: "black",
+    color: "white",
     fontWeight: "bold",
     textAlign: "center"
   },
