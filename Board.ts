@@ -115,12 +115,12 @@ export default class Board {
       // Checking if the game is won
       if (this.cellsRevealed === this.width * this.height - this.bombsTotal) {
         this.gameState = GameState.Won;
-        this.explodesAllBombs();
       }
 
       // If it's a bomb, BOOM
       if (this.grid[x][y].bomb) {
         this.gameState = GameState.Lost;
+        this.explodesAllBombs();
 
         // else, and if it has 0 neighbors, let's clear the way recursively (Depth First Search-wise)
       } else if (this.grid[x][y].bombCount === 0) {

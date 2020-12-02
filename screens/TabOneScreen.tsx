@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, Easing, ScrollView, StyleSheet, FlatList, Modal, Alert, TouchableHighlight, Vibration, Pressable, Animated, EasingFunction, EasingStatic } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import Board from '../Board'
 import Chess from './Chess';
