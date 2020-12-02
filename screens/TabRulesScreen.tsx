@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { Cell, CellState } from '../types';
-import CellView from './CellView';
+import CellView from '../components/CellView';
 
 export default function TabRulesScreen() {
 

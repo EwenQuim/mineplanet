@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import { Cell } from '../types'
 import Board from '../Board'
-import CellView from './CellView';
+import CellView from '../components/CellView';
 
 /**
  * Draws the grid board, that i call Chess 
