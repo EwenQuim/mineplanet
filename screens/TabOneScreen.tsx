@@ -100,7 +100,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   };
 
   private createNewBoard = (): void => {
-    let newBoard = new Board(3, 8, 2);
+    let newBoard = new Board(8, 10, 12);
     this.setState(
       { board: newBoard, playing: true, endingScreen: false })
   }
@@ -154,7 +154,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
               <Text style={styles.modalText}>
                 {this.state.board?.gameState === GameState.Won
                   ? "You Won !"
-                  : "Sorry, you lost....dzqdjkznqkn.."}
+                  : "Sorry, you lost..."}
               </Text>
 
               <Pressable
@@ -165,7 +165,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
                 }}
               >
                 <Text style={styles.textStyle}>
-                  Play again !
+                  Retry !
           </Text>
               </Pressable>
 
@@ -209,7 +209,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       <View style={styles.container}>
         <View style={{ flexDirection: "row" }}>
           <Button title="New board" onPress={this.createNewBoard} />
-          <Button title="Log state" onPress={() => { console.log(this.state) }} />
         </View>
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
