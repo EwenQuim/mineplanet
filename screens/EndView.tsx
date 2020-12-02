@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 
-const EndView = ({ victory, newGame }: { victory: boolean, newGame: any }) => {
+const EndView = ({ victory, newGameButton }: { victory: boolean, newGameButton: any }) => {
 
     let yPos = new Animated.Value(1200);
     let width = new Animated.Value(200);
@@ -79,7 +79,7 @@ const EndView = ({ victory, newGame }: { victory: boolean, newGame: any }) => {
 
                     <Pressable
                         style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                        onPress={() => { newGame() }}
+                        onPress={() => newGameButton()}
                     >
                         <Text style={styles.textStyle}>
                             Retry !
