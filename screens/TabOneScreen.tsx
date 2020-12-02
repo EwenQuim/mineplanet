@@ -5,8 +5,9 @@ import { Text, View } from '../components/Themed';
 import Board from '../Board'
 import Chess from './Chess';
 
-import CellView from './CellView';
+import CellView from '../components/CellView';
 import { Cell, GameState } from '../types'
+import StatsScreen from './StatsScreen'
 
 interface MainProps {
   //no props used : lists are stored in the state so we do not force rendering
@@ -180,15 +181,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   private _displayStats() {
     if (this.state.playing) {
       return (
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-
-          <CellView
-            cell={new Cell(0, 0)}
-            pressAction={() => console.log('hi')}
-            longPressAction={() => console.log('ho')} />
-
-          <Text style={styles.infos}> {this.state.board.height * this.state.board.width - this.state.board.cellsRevealed - this.state.board?.bombsTotal} remaining - {this.state.board?.flagsSet ?? 0} 🚩 / {this.state.board?.bombsTotal ?? 0} 💣</Text>
-        </View>
+        <StatsScreen board={this.state.board} />
       )
     }
   }
@@ -196,9 +189,8 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ flexDirection: "row" }}>
-          <Button title="New board" onPress={this.createNewBoard} />
-        </View>
+
+        <Button title="New board" onPress={this.createNewBoard} />
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
@@ -284,8 +276,4 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center"
   },
-  infos: {
-    fontSize: 16,
-  }
-
 });
