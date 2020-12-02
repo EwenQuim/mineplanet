@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, Image } from 'react-native';
+import { ScrollView, StyleSheet, Image, View } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { Text } from '../components/Themed';
 import { Cell, CellState } from '../types';
 import CellView from '../components/CellView';
 
@@ -32,7 +32,7 @@ export default function TabRulesScreen() {
         <Text >Do whatever you want but just don't detonate the bombs!  </Text>
       </View>
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
+      <View style={styles.separator} />
 
       <View style={styles.section}>
         <View style={styles.subSection}>
@@ -43,7 +43,7 @@ export default function TabRulesScreen() {
         <Text >  Simply <Text style={{ fontWeight: 'bold' }}> short press </Text> to discover what's under the tile ! </Text>
       </View>
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
+      <View style={styles.separator} />
 
       <View style={styles.section}>
 
@@ -55,7 +55,7 @@ export default function TabRulesScreen() {
         <Text > <Text style={{ fontWeight: 'bold' }}>Long press </Text> to plant a flag and prevent bombs from being accidentally detonated !  </Text>
       </View>
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
+      <View style={styles.separator} />
 
       <View style={styles.section}>
         <View style={styles.subSection}>
@@ -66,7 +66,7 @@ export default function TabRulesScreen() {
         <Text >If you miss... <Text style={{ fontWeight: 'bold' }}>BOOM!</Text> You lost!  </Text>
       </View>
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
+      <View style={styles.separator} />
 
       <View style={styles.section}>
 
@@ -78,7 +78,7 @@ export default function TabRulesScreen() {
         <Text > When a cell is flagged,  <Text style={{ fontWeight: 'bold' }}>long press again</Text> to mark as unknown, if you hesitate (it happens).  </Text>
       </View>
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
+      <View style={styles.separator} />
 
       <View style={styles.section}>
 
@@ -119,8 +119,9 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 30,
-    height: 2,
+    height: 1,
     width: '80%',
+    backgroundColor: "#8888",
   },
   image: {
     height: 100,
