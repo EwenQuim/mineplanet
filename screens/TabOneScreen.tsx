@@ -8,6 +8,7 @@ import Chess from './Chess';
 import CellView from '../components/CellView';
 import { Cell, GameState } from '../types'
 import StatsScreen from './StatsScreen'
+import EndView from './EndView';
 
 interface MainProps {
   //no props used : lists are stored in the state so we do not force rendering
@@ -33,64 +34,14 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       playing: false,
       endingScreen: false
     }
-    this.modalAnimation = {
-      yPosition: new Animated.Value(1200),
-      width: new Animated.Value(200),
-      height: new Animated.Value(200),
-    }
 
-    this.modalAnimation.height = this.modalAnimation.width.interpolate({
-      inputRange: [200, 280],
-      outputRange: [200, 280]
-    })
-
-    this.comingFromTheBottom = [
-      styles.blankFullScreen,
-      {
-        top: this.modalAnimation.yPosition,
-
-      },
-    ];
-    this.zoomingFrame = [
-      styles.modalView,
-      {
-        width: this.modalAnimation.width,
-        height: this.modalAnimation.height,
-
-      },
-    ]
   }
 
-  animate = () => {
-    this.modalAnimation.yPosition.setValue(1200);
-    Animated.timing(this.modalAnimation.yPosition, {
-      duration: 1000,
-      easing: Easing.out(Easing.ease),
-      toValue: 0,
-      useNativeDriver: false,
-    }).start();
-    this.modalAnimation.width.setValue(200);
-    Animated.sequence([
-      Animated.timing(this.modalAnimation.width, {
-        delay: 1000,
-        duration: 200,
-        easing: Easing.cubic,
-        toValue: 280,
-        useNativeDriver: false,
-      }),
-      Animated.timing(this.modalAnimation.width, {
-        duration: 200,
-        easing: Easing.cubic,
-        toValue: 200,
-        useNativeDriver: false,
-      }
-      )
-    ]).start();
-
-  };
 
   private createNewBoard = (): void => {
-    let newBoard = new Board(8, 10, 12);
+    console.log('hiii');
+
+    let newBoard = new Board(8, 10, 2);
     this.setState(
       { board: newBoard, playing: true, endingScreen: false })
   }
@@ -98,20 +49,22 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   // Reveal
   private onPressAction = (cell: Cell) => {
     let newBoard = this.state.board;
-    newBoard.revealCell(cell.x, cell.y)
+    newBoard.revealCell(cell.x, cell.y) // and its neighbors if necessary
     switch (newBoard.gameState) {
+
       case GameState.Lost:
         Vibration.vibrate(2000)
-        console.log("animating def");
-        this.animate()
+        console.log("Defeat...");
+        //this.animate()
         this.setState({ endingScreen: true });
         break;
+
       case GameState.Won:
         Vibration.vibrate(Array(12).fill(100));
-        console.log("animating vic");
-        this.animate()
+        console.log("Victory !");
         this.setState({ board: newBoard })
         break;
+
       default:
         this.setState({ board: newBoard }, () => Vibration.vibrate(50))
     }
@@ -128,41 +81,22 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   }
 
   private _displayEndingScreen() {
-    let modalStyle = [...this.zoomingFrame]
-    if (this.state.board?.gameState === GameState.Won) {
-      modalStyle.push(styles.modalViewWin)
-    }
 
     if (this.state.board?.gameState === GameState.Won || this.state.board?.gameState === GameState.Lost) {
 
       return (
-        <Animated.View style={this.comingFromTheBottom} >
+        <EndView
+          victory={this.state.board?.gameState === GameState.Won}
+          newGame={this.createNewBoard}
+        />
+      )
+    }
+  }
 
-          <Animated.View style={modalStyle}>
-            <View style={styles.zoomingFrameCenterView}>
-
-              <Text style={styles.modalText}>
-                {this.state.board?.gameState === GameState.Won
-                  ? "You Won !"
-                  : "Sorry, you lost..."}
-              </Text>
-
-              <Pressable
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  this.createNewBoard();
-                  this.setState({ endingScreen: false });
-                }}
-              >
-                <Text style={styles.textStyle}>
-                  Retry !
-          </Text>
-              </Pressable>
-
-            </View>
-          </Animated.View>
-
-        </Animated.View>
+  private _displayStats() {
+    if (this.state.playing) {
+      return (
+        <StatsScreen board={this.state.board} />
       )
     }
   }
@@ -174,14 +108,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
           board={this.state.board}
           onPress={this.onPressAction}
           onLongPress={this.onLongPressAction} />
-      )
-    }
-  }
-
-  private _displayStats() {
-    if (this.state.playing) {
-      return (
-        <StatsScreen board={this.state.board} />
       )
     }
   }
