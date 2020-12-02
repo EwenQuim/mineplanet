@@ -17,7 +17,6 @@ interface MainProps {
 interface MainState {
   board: Board;
   playing: boolean;
-  endingScreen: boolean;
 }
 
 
@@ -32,9 +31,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     this.state = {
       board: undefined,
       playing: false,
-      endingScreen: false
     }
-
   }
 
 
@@ -43,7 +40,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
     let newBoard = new Board(8, 10, 2);
     this.setState(
-      { board: newBoard, playing: true, endingScreen: false })
+      { board: newBoard, playing: true })
   }
 
   // Reveal
@@ -56,7 +53,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
         Vibration.vibrate(2000)
         console.log("Defeat...");
         //this.animate()
-        this.setState({ endingScreen: true });
+        this.setState({ board: newBoard })
         break;
 
       case GameState.Won:
@@ -144,62 +141,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
-  },
-  blankFullScreen: {
-    flex: 1,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "#0000",
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  modalView: {
-    backgroundColor: "lightgrey",
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: "red",
-    alignItems: "center",
-    shadowColor: "#222",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  modalViewWin: {
-    borderColor: "green"
-  },
-  zoomingFrameCenterView: {
-    flex: 1,
-    backgroundColor: "#0000",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    color: "black",
-    marginBottom: 15,
-    textAlign: "center"
   },
 });
