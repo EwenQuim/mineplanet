@@ -123,7 +123,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
         <Picker
           selectedValue={this.state.difficulty}
-          style={{ height: 50, width: 150, color: "white" }}
+          style={{ height: 50, width: 150, color: "grey" }}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({ difficulty: itemValue }, () => this.createNewBoard());
           }
