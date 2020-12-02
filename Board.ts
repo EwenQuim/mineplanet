@@ -101,9 +101,14 @@ export default class Board {
     // On first touch, generate the bombs so the player can't lose immediately
     // Reduce frustration
     if (this.gameState === GameState.WaitingToPlay) {
+      console.log("Waiting");
+
       this.gameState = GameState.Playing;
       this.dropBombs(x, y);
       this.countBombsWholeGrid();
+    } else {
+      console.log("Not anymor");
+      console.log(this.gameState);
     }
 
     // Can be revealed only if Idle (avoiding missclick, flags and infinite loops)

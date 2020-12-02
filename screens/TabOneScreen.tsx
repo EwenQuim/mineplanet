@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Button, Easing, StyleSheet, Vibration, Pressable, Animated } from 'react-native';
+import { Button, StyleSheet, Vibration } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import Board from '../Board'
 import Chess from './Chess';
 
-import CellView from '../components/CellView';
 import { Cell, GameState } from '../types'
 import StatsScreen from './StatsScreen'
 import EndView from './EndView';
+import { useState } from 'react';
 
 interface MainProps {
   //no props used : lists are stored in the state so we do not force rendering
@@ -20,111 +20,109 @@ interface MainState {
 }
 
 
-export class TabOneScreen extends React.Component<MainProps, MainState> {
+export function TabOneScreen() {
 
-  constructor(props: MainProps) {
-    super(props);
-    this.state = {
-      board: undefined,
-      playing: false,
-    }
-  }
+  let [board, setBoard] = useState(new Board())
+  let [isPlaying, setIsPlaying] = useState(false)
 
 
-  private createNewBoard = () => {
-    this.setState({ board: new Board(8, 10, 2), playing: true })
+  const createNewBoard = () => {
+    setBoard(new Board(2, 3, 1))
+    setIsPlaying(true)
   }
 
   // Reveal
-  private onPressAction = (cell: Cell) => {
-    let newBoard = this.state.board;
+  const onPressAction = (cell: Cell) => {
+
+    let newBoard = Object.assign({}, { ...board, gameState: board.gameState });
+
     newBoard.revealCell(cell.x, cell.y) // and its neighbors if necessary
+
+    console.log(newBoard);
+
+    console.log("gameState", newBoard.gameState)
+    console.log("cells", newBoard.cellsRevealed)
 
     switch (newBoard.gameState) {
 
       case GameState.Lost:
         Vibration.vibrate(2000)
         console.log("Defeat...");
-        //this.animate()
-        this.setState({ board: newBoard })
+        setBoard(newBoard)
         break;
 
       case GameState.Won:
         Vibration.vibrate(Array(12).fill(100));
         console.log("Victory !");
-        this.setState({ board: newBoard })
+        setBoard(newBoard)
         break;
 
       default:
-        this.setState({ board: newBoard }, () => Vibration.vibrate(50))
+        Vibration.vibrate(50)
+        setBoard(newBoard)
+
     }
   }
 
   // Flag / QMark
-  private onLongPressAction = (cell: Cell) => {
+  const onLongPressAction = (cell: Cell) => {
     Vibration.vibrate([0, 50, 50, 50])
-    let newBoard = this.state.board;
+    let newBoard = Object.assign({}, board);
     newBoard.flagCell(cell.x, cell.y)
-    this.setState(
-      { board: newBoard }
-    )
+    setBoard(newBoard)
   }
 
-  private _displayEndingScreen() {
+  const _displayEndingScreen = () => {
 
-    if (this.state.board?.gameState === GameState.Won || this.state.board?.gameState === GameState.Lost) {
+    if (board?.gameState === GameState.Won || board?.gameState === GameState.Lost) {
 
       return (
         <EndView
-          victory={this.state.board?.gameState === GameState.Won}
-          newGameButton={this.createNewBoard}
+          victory={board?.gameState === GameState.Won}
+          newGameButton={createNewBoard}
         />
       )
     }
   }
 
-  private _displayStats() {
-    if (this.state.playing) {
+  const _displayStats = () => {
+    if (isPlaying) {
       return (
-        <StatsScreen board={this.state.board} />
+        <StatsScreen board={board} />
       )
     }
   }
 
-  private _displayGrid() {
-    if (this.state.playing) {
+  const _displayGrid = () => {
+    if (isPlaying) {
       return (
         <Chess
-          board={this.state.board}
-          onPress={this.onPressAction}
-          onLongPress={this.onLongPressAction} />
+          board={board}
+          onPress={onPressAction}
+          onLongPress={onLongPressAction} />
       )
     }
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
+  return (
+    <View style={styles.container}>
 
-        <Button title="New board" onPress={this.createNewBoard} />
+      <Button title="New board" onPress={createNewBoard} />
 
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-        {this._displayStats()}
+      {_displayStats()}
 
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-        {this._displayGrid()}
+      {_displayGrid()}
 
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-        {this._displayEndingScreen()}
+      {_displayEndingScreen()}
 
-      </View>
-    )
-  }
-
-
+    </View>
+  )
 
 }
 
