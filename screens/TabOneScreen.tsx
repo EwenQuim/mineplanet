@@ -53,7 +53,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     this.animatedStyles = [
       styles.modalView,
       {
-        marginBottom: this.modalAnimation.yPosition,
+        bottom: this.modalAnimation.yPosition,
         opacity: this.modalAnimation.opacity,
         width: this.modalAnimation.width,
         height: this.modalAnimation.height,
@@ -65,7 +65,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     this.modalAnimation.yPosition.setValue(0);
     Animated.timing(this.modalAnimation.yPosition, {
       duration: 1000,
-      easing: Easing.out(Easing.linear),
+      easing: Easing.out(Easing.ease),
       toValue: 300,
       useNativeDriver: false,
     }).start();
@@ -97,7 +97,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   };
 
   private createNewBoard = (): void => {
-    let newBoard = new Board(3, 6, 2);
+    let newBoard = new Board(10, 8, 15);
     this.setState(
       { board: newBoard, playing: true, endingScreen: false })
   }
@@ -175,14 +175,34 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     }
   }
 
+  private _displayStats() {
+    if (this.state.playing) {
+      return (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+
+          <CellView
+            cell={new Cell(0, 0)}
+            pressAction={() => console.log('hi')}
+            longPressAction={() => console.log('ho')} />
+
+          <Text style={styles.infos}> {this.state.board.height * this.state.board.width - this.state.board.cellsRevealed - this.state.board?.bombsTotal} remaining - {this.state.board?.flagsSet ?? 0} 🚩 / {this.state.board?.bombsTotal ?? 0} 💣</Text>
+        </View>
+      )
+    }
+  }
+
   render() {
     return (
-      <View style={(this.state.playing) ? styles.container : styles.waitingToPlay}>
+      <View style={styles.container}>
         <View style={{ flexDirection: "row" }}>
           <Button title="New board" onPress={this.createNewBoard} />
           <Button title="Log state" onPress={() => { console.log(this.state) }} />
-          <Button title="Force" onPress={() => this.forceUpdate()} />
         </View>
+
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+        {this._displayStats()}
+
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         {this._displayGrid()}
@@ -204,13 +224,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  waitingToPlay: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: "red"
   },
   title: {
     fontSize: 20,
@@ -257,6 +270,9 @@ const styles = StyleSheet.create({
     color: "black",
     marginBottom: 15,
     textAlign: "center"
+  },
+  infos: {
+    fontSize: 16,
   }
 
 });

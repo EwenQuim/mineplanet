@@ -142,9 +142,11 @@ export default class Board {
     switch (this.grid[x][y].state) {
       case CellState.Idle:
         this.grid[x][y].state = CellState.Flagged;
+        this.flagsSet++;
         break;
       case CellState.Flagged:
         this.grid[x][y].state = CellState.QMark;
+        this.flagsSet--;
         break;
       case CellState.QMark:
         this.grid[x][y].state = CellState.Idle;

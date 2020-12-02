@@ -6,9 +6,9 @@ import { Text, View } from '../components/Themed';
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>This game has been realized by Ewen Quimerc'h for FreshPlanet</Text>
+      <Text style={styles.title}>Realized by Ewen Quimerc'h </Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
+      <Text style={styles.title}>for FreshPlanet</Text>
     </View>
   );
 }
