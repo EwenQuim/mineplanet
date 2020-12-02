@@ -5,6 +5,11 @@ import { Text } from '../components/Themed';
 import { Cell, CellState } from '../types';
 import CellView from '../components/CellView';
 
+
+/**
+ * Displays a help screen : how to play ? what are the rules
+ * Very simple, nothing special here
+ */
 export default function TabRulesScreen() {
 
   const displayCell = (state: CellState, bombCount: number, bomb = false) => {
