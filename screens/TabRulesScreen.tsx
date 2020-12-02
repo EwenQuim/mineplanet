@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     alignItems: "center",
     flex: 1,
-    //flexDirection: "row"
   },
   subSection: {
     marginHorizontal: 30,
