@@ -1,11 +1,34 @@
-# Mineplanet project
+# Mineplanet project 💣
 
 This is a prototype of a Minesweeper game realized in React Native using Expo.
 
-## Running it locally
+To play, visit [this website](https://expo.io/@feust/projects/mineplanet) on your computer, then scan the QR Code on your phone with the Expo app!
+
+If you don't have Expo, you can download the APK (for Android) [here](https://expo.io/artifacts/cf587f59-49e7-4c09-b425-3285a3aacc96)
+
+## 📸 Screenshots
+
+The game looks like this:
+
+![image of the game](example_game.jpg)
+
+## ✨ Features
+
+- full minesweeper game
+- pleasant user experience:
+  - simple touch to discover a cell
+  - double touch to pin a flag where you have located a bomb
+  - smart vibrations so it's easier to interact
+  - show wrongly flagged cells after defeat
+- easy / medium / hard levels
+- dark / light mode depending on your device default
+- explained rules for newcomers
+
+## 🏠 Running it locally
 
 ```
 git clone https://github.com/EwenQuim/mineplanet
+yarn install
 yarn start
 ```
 
@@ -17,7 +40,7 @@ This starts an Expo server.
 - Scan the QR Code provided by expo
 - Here you are 🎉
 
-## Technical choices & implementation
+## 🔀 Technical choices & implementation
 
 I have made some choices. As every technical choice, they must be documented.
 
