@@ -2,7 +2,7 @@
   "expo": {
     "name": "mineplanet",
     "slug": "mineplanet",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -25,10 +23,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.feust.mineplanet"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "description": "A simple MineSweeper made in React Native",
+    "githubUrl": "https://github.com/EwenQuim/mineplanet/"
   }
 }
