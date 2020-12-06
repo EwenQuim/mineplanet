@@ -2,7 +2,6 @@ import { Cell, CellState, GameState } from "./types";
 
 export default class Board {
   bombsTotal: number;
-  bombsRemaining: number;
   flagsSet: number;
   cellsRevealed: number;
   width: number;
@@ -13,7 +12,6 @@ export default class Board {
 
   constructor(width = 10, height = 10, bombsTotal = 10) {
     this.bombsTotal = bombsTotal;
-    this.bombsRemaining = 0;
     this.flagsSet = 0; // differ from the previous as the player can be wrong
     this.cellsRevealed = 0; // differ from the previous as the player can be wrong
     this.height = height;

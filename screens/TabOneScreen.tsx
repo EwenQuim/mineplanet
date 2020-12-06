@@ -50,8 +50,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
         this.setState({ board: new Board(8, 12, 16) })
         break;
     }
-    this.setState({ playing: true })
-
   }
 
   // Reveal
