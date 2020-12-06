@@ -19,7 +19,6 @@ interface MainProps {
 
 interface MainState {
   board: Board;
-  playing: boolean;
   difficulty: Difficulty
 }
 
@@ -32,7 +31,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     super(props);
     this.state = {
       board: new Board(8, 12, 16),
-      playing: false,
       difficulty: Difficulty.Medium
     }
     this.diffTemp = "Medium"
@@ -102,7 +100,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   }
 
   private _displayStats() {
-    if (this.state.playing) {
+    if (true) {
       return (
         <StatsScreen board={this.state.board} />
       )
@@ -110,7 +108,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   }
 
   private _displayGrid() {
-    if (this.state.playing) {
+    if (true) {
       return (
         <Chess
           board={this.state.board}
