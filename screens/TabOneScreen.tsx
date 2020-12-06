@@ -11,6 +11,8 @@ import { Cell, Difficulty, GameState } from '../types'
 import Board from '../Board'
 
 import { stringToDiff } from '../utils/difficultyString'
+import vibrateOnEnd from '../utils/vibrateOnEnd';
+import createBoard from '../utils/boardCreation';
 
 
 
@@ -38,42 +40,15 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
 
   private createNewBoard = () => {
-
-    switch (this.state.difficulty) {
-      case Difficulty.Easy:
-        this.setState({ board: new Board(8, 6, 6) });
-        break;
-      case Difficulty.Hard:
-        this.setState({ board: new Board(12, 12, 28) })
-        break;
-      default:
-        this.setState({ board: new Board(8, 12, 16) })
-        break;
-    }
+    this.setState({ board: createBoard(this.state.difficulty) });
   }
 
   // Reveal
   private onPressAction = (cell: Cell) => {
     let newBoard = this.state.board;
     newBoard.revealCell(cell.x, cell.y) // and its neighbors if necessary
-
-    switch (newBoard.gameState) {
-
-      case GameState.Lost:
-        Vibration.vibrate(2000)
-        console.log("Defeat...");
-        this.setState({ board: newBoard })
-        break;
-
-      case GameState.Won:
-        Vibration.vibrate(Array(12).fill(100));
-        console.log("Victory !");
-        this.setState({ board: newBoard })
-        break;
-
-      default:
-        this.setState({ board: newBoard }, () => Vibration.vibrate(50))
-    }
+    vibrateOnEnd(newBoard.gameState)
+    this.setState({ board: newBoard })
   }
 
   // Flag / QMark
@@ -97,35 +72,14 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     }
   }
 
-  private _displayStats() {
-    if (true) {
-      return (
-        <StatsScreen board={this.state.board} />
-      )
-    }
-  }
-
-  private _displayGrid() {
-    if (true) {
-      return (
-        <Chess
-          board={this.state.board}
-          onPress={this.onPressAction}
-          onLongPress={this.onLongPressAction} />
-      )
-    }
-  }
 
   private _displayOptions() {
-
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
         <Picker
           selectedValue={this.diffTemp}
           style={{ height: 50, width: 150, color: "grey" }}
           onValueChange={(itemValue, itemIndex) => {
-            console.log("hi", itemValue, itemValue.toString(), itemIndex);
-
             this.diffTemp = itemValue.toString()
             this.setState({ difficulty: stringToDiff(this.diffTemp) }, () => this.createNewBoard());
           }
@@ -152,12 +106,14 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
         <View style={styles.separator} />
 
-        {this._displayStats()}
+        <StatsScreen board={this.state.board} />
 
         <View style={styles.separator} />
 
-        {this._displayGrid()}
-
+        <Chess
+          board={this.state.board}
+          onPress={this.onPressAction}
+          onLongPress={this.onLongPressAction} />
 
         {this._displayEndingScreen()}
 
