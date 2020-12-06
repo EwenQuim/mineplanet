@@ -53,11 +53,11 @@ const EndView = ({ victory, newGameButton }: { victory: boolean, newGameButton: 
 
     const comingFromTheBottom = [styles.blankFullScreen, { top: yPos }];
 
-
+    let usedStyle;
     if (victory) {
-        var usedStyle = [styles.modalViewWin, { width: width, height: height }]
+        usedStyle = [styles.modalViewWin, { width: width, height: height }]
     } else {
-        var usedStyle = [styles.modalView, { width: width, height: height }]
+        usedStyle = [styles.modalView, { width: width, height: height }]
 
     }
 

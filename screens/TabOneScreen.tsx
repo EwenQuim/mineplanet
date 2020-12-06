@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { Button, StyleSheet, Vibration } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 import { View } from '../components/Themed';
-import Board from '../Board'
-import Chess from './Chess';
+import StatsScreen from '../components/StatsScreen'
+import Chess from '../components/Chess';
+import EndView from '../components/EndView';
 
 import { Cell, Difficulty, GameState } from '../types'
-import StatsScreen from './StatsScreen'
-import EndView from './EndView';
-import { Picker } from '@react-native-picker/picker';
+import Board from '../Board'
+
+import { stringToDiff } from '../utils/difficultyString'
+
 
 
 interface MainProps {
@@ -23,13 +26,16 @@ interface MainState {
 
 export class TabOneScreen extends React.Component<MainProps, MainState> {
 
+  diffTemp = ""
+
   constructor(props: MainProps) {
     super(props);
     this.state = {
-      board: undefined,
+      board: new Board(8, 12, 16),
       playing: false,
-      difficulty: Difficulty.Easy
+      difficulty: Difficulty.Medium
     }
+    this.diffTemp = "Medium"
   }
 
 
@@ -60,7 +66,6 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
       case GameState.Lost:
         Vibration.vibrate(2000)
         console.log("Defeat...");
-        //this.animate()
         this.setState({ board: newBoard })
         break;
 
@@ -86,12 +91,10 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
   }
 
   private _displayEndingScreen() {
-
-    if (this.state.board?.gameState === GameState.Won || this.state.board?.gameState === GameState.Lost) {
-
+    if (this.state.board.gameState === GameState.Won || this.state.board.gameState === GameState.Lost) {
       return (
         <EndView
-          victory={this.state.board?.gameState === GameState.Won}
+          victory={this.state.board.gameState === GameState.Won}
           newGameButton={this.createNewBoard}
         />
       )
@@ -122,15 +125,18 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
         <Picker
-          selectedValue={this.state.difficulty}
+          selectedValue={this.diffTemp}
           style={{ height: 50, width: 150, color: "grey" }}
           onValueChange={(itemValue, itemIndex) => {
-            this.setState({ difficulty: itemValue }, () => this.createNewBoard());
+            console.log("hi", itemValue, itemValue.toString(), itemIndex);
+
+            this.diffTemp = itemValue.toString()
+            this.setState({ difficulty: stringToDiff(this.diffTemp) }, () => this.createNewBoard());
           }
           }>
-          <Picker.Item label="Easy" value={Difficulty.Easy} />
-          <Picker.Item label="Medium" value={Difficulty.Medium} />
-          <Picker.Item label="Hard" value={Difficulty.Hard} />
+          <Picker.Item label="Easy" value={"Easy"} />
+          <Picker.Item label="Medium" value={"Medium"} />
+          <Picker.Item label="Hard" value={"Hard"} />
         </Picker>
         <Button title="New board" onPress={this.createNewBoard} />
       </View>
