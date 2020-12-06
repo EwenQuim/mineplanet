@@ -13,6 +13,7 @@ import Board from '../Board'
 import { stringToDiff } from '../utils/difficultyString'
 import vibrateOnEnd from '../utils/vibrateOnEnd';
 import createBoard from '../utils/boardCreation';
+import Timer from '../components/Timer';
 
 
 
@@ -114,6 +115,13 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
           board={this.state.board}
           onPress={this.onPressAction}
           onLongPress={this.onLongPressAction} />
+
+        <View style={styles.separator} />
+
+        <Timer
+          running={true}
+          reset={true}
+        />
 
         {this._displayEndingScreen()}
 
