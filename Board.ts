@@ -155,7 +155,7 @@ export default class Board {
         }
       }
 
-      console.log("Revealing cell", x, y);
+      // console.log("Revealing cell", x, y);
     }
   };
 
