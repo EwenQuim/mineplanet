@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         backgroundColor: "lightgrey",
-        borderRadius: 20,
+        borderRadius: 10,
         borderWidth: 2,
         borderColor: "red",
         alignItems: "center",
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     },
     modalViewWin: {
         backgroundColor: "lightgrey",
-        borderRadius: 20,
+        borderRadius: 10,
         borderWidth: 2,
         borderColor: "green",
         alignItems: "center",

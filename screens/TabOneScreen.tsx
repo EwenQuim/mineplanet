@@ -6,6 +6,7 @@ import { View } from '../components/Themed';
 import StatsScreen from '../components/StatsScreen'
 import Chess from '../components/Chess';
 import EndView from '../components/EndView';
+import Sep from '../components/Separator'
 
 import { Cell, Difficulty, GameState } from '../types'
 import Board from '../Board'
@@ -21,35 +22,51 @@ interface MainProps {
 }
 
 interface MainState {
-  board: Board;
-  difficulty: Difficulty
+  board: Board,
+  difficulty: Difficulty,
+  timerRunning: boolean,
+  timerReset: boolean
 }
 
 
 export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   diffTemp = ""
+  time = 0
+  private getFinalTime = (s: number) => {
+    this.time = s
+  };
 
   constructor(props: MainProps) {
     super(props);
     this.state = {
       board: new Board(8, 12, 16),
-      difficulty: Difficulty.Medium
+      difficulty: Difficulty.Medium,
+      timerRunning: false,
+      timerReset: false
     }
     this.diffTemp = "Medium"
   }
 
 
   private createNewBoard = () => {
-    this.setState({ board: createBoard(this.state.difficulty) });
+    this.setState({ timerRunning: false }, () =>
+      this.setState({
+        board: createBoard(this.state.difficulty),
+        timerReset: !this.state.timerReset
+      }, () =>
+        this.setState({ timerRunning: true, })))
   }
 
   // Reveal
   private onPressAction = (cell: Cell) => {
     let newBoard = this.state.board;
     newBoard.revealCell(cell.x, cell.y) // and its neighbors if necessary
-    vibrateOnEnd(newBoard.gameState)
+    //vibrateOnEnd(newBoard.gameState)
     this.setState({ board: newBoard })
+    if (this.state.board.gameState === GameState.Won || this.state.board.gameState === GameState.Lost) {
+      this.setState({ timerRunning: false }, () => console.log("timer running", this.state.timerRunning))
+    }
   }
 
   // Flag / QMark
@@ -57,9 +74,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
     Vibration.vibrate([0, 50, 50, 50])
     let newBoard = this.state.board;
     newBoard.flagCell(cell.x, cell.y)
-    this.setState(
-      { board: newBoard }
-    )
+    this.setState({ board: newBoard })
   }
 
   private _displayEndingScreen() {
@@ -68,6 +83,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
         <EndView
           victory={this.state.board.gameState === GameState.Won}
           newGameButton={this.createNewBoard}
+          endTime={this.time}
         />
       )
     }
@@ -95,9 +111,7 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
   }
 
-  componentDidMount() {
-    this.createNewBoard()
-  }
+  componentDidMount() { this.createNewBoard() }
 
   render() {
     return (
@@ -105,22 +119,23 @@ export class TabOneScreen extends React.Component<MainProps, MainState> {
 
         {this._displayOptions()}
 
-        <View style={styles.separator} />
+        <Sep />
 
         <StatsScreen board={this.state.board} />
 
-        <View style={styles.separator} />
+        <Sep />
 
         <Chess
           board={this.state.board}
           onPress={this.onPressAction}
           onLongPress={this.onLongPressAction} />
 
-        <View style={styles.separator} />
+        <Sep />
 
         <Timer
-          running={true}
-          reset={true}
+          running={this.state.timerRunning}
+          reset={this.state.timerReset}
+          getFinalTime={this.getFinalTime}
         />
 
         {this._displayEndingScreen()}
@@ -138,11 +153,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  separator: {
-    marginVertical: 20,
-    height: 1,
-    width: '80%',
-    backgroundColor: "#8888",
   },
 });
