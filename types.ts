@@ -57,3 +57,10 @@ export class Cell {
     this.bombCount = 0;
   }
 }
+
+export interface ScoreLine {
+  name: string;
+  score: number;
+  time: number;
+  date: Date;
+}
