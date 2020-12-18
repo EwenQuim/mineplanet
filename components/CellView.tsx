@@ -14,7 +14,7 @@ const CellView = ({ cell, pressAction, longPressAction }: { cell: Cell, pressAct
     if (cell.state === CellState.Revealed) {
         return (
             <View style={styles.caseRevealed}>
-                <Text style={{ fontWeight: 'bold', color: colorMatch(cell) }}> {displayCell(cell)} </Text>
+                <Text style={{ paddingLeft: 5, fontWeight: 'bold', color: colorMatch(cell) }}> {displayCell(cell)} </Text>
             </View>
         )
     } else {
