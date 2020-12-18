@@ -6,9 +6,9 @@ const createBoard = (difficulty: Difficulty) => {
     case Difficulty.Easy:
       return new Board(8, 6, 6);
     case Difficulty.Hard:
-      return new Board(12, 12, 28);
+      return new Board(12, 12, 30);
     default:
-      return new Board(8, 12, 16);
+      return new Board(8, 12, 15);
   }
 };
 
