@@ -27,7 +27,11 @@ export const colorMatch = (cell: Cell) => {
     case 3:
       return "red";
     case 4:
-      return "darkblue";
+      return "purple";
+    case 5:
+      return "maroon";
+    case 6:
+      return "darkcyan";
     default:
       return "black";
   }
