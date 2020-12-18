@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, StyleSheet, Vibration } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-import { View } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 import StatsScreen from '../components/StatsScreen'
 import Chess from '../components/Chess';
 import EndView from '../components/EndView';
@@ -15,134 +15,122 @@ import { stringToDiff } from '../utils/difficultyString'
 import vibrateOnEnd from '../utils/vibrateOnEnd';
 import createBoard from '../utils/boardCreation';
 import Timer from '../components/Timer';
+import { useEffect, useState } from 'react';
+import { displayTime } from '../utils/displayTime';
 
 
 
-interface MainProps {
+const useForceUpdate = () => {
+  const [value, setValue] = useState(true); // integer state
+  return () => setValue(!value); // update the state to force render
 }
 
-interface MainState {
-  board: Board,
-  difficulty: Difficulty,
-  timerRunning: boolean,
-  timerReset: boolean
-}
+export const TabOneScreen = () => {
 
+  // Define variables and state
+  const forceUpdate = useForceUpdate();
 
-export class TabOneScreen extends React.Component<MainProps, MainState> {
+  let [board, setBoard] = useState(new Board(8, 12, 15))
+  let [difficulty, setDifficulty] = useState(Difficulty.Medium)
+  let [seconds, setSeconds] = useState(0);
+  let [timerRunning, setTimerRunning] = useState(false)
 
-  diffTemp = ""
-  time = 0
-  private getFinalTime = (s: number) => {
-    this.time = s
-  };
-
-  constructor(props: MainProps) {
-    super(props);
-    this.state = {
-      board: new Board(8, 12, 16),
-      difficulty: Difficulty.Medium,
-      timerRunning: false,
-      timerReset: false
+  // Timer tik-tok
+  useEffect(() => {
+    if (timerRunning) {
+      let timer = setInterval(() => setSeconds(seconds++), 1000);
+      return () => clearInterval(timer)
     }
-    this.diffTemp = "Medium"
+  }, [timerRunning])
+
+  // Create new board
+  const createNewBoard = () => {
+    setBoard(createBoard(difficulty))
+    setTimerRunning(false)
+    setSeconds(0)
   }
 
+  // New board on difficulty change
+  useEffect(createNewBoard, [difficulty])
 
-  private createNewBoard = () => {
-    this.setState({ timerRunning: false }, () =>
-      this.setState({
-        board: createBoard(this.state.difficulty),
-        timerReset: !this.state.timerReset
-      }, () =>
-        this.setState({ timerRunning: true, })))
-  }
-
-  // Reveal
-  private onPressAction = (cell: Cell) => {
-    let newBoard = this.state.board;
-    newBoard.revealCell(cell.x, cell.y) // and its neighbors if necessary
-    //vibrateOnEnd(newBoard.gameState)
-    this.setState({ board: newBoard })
-    if (this.state.board.gameState === GameState.Won || this.state.board.gameState === GameState.Lost) {
-      this.setState({ timerRunning: false }, () => console.log("timer running", this.state.timerRunning))
+  // Reveal cell
+  const onPressAction = (cell: Cell) => {
+    board.revealCell(cell.x, cell.y)
+    forceUpdate()
+    setTimerRunning(true)
+    if (board.gameState === GameState.Won || board.gameState === GameState.Lost) {
+      setTimerRunning(false)
     }
+    vibrateOnEnd(board.gameState)
   }
 
   // Flag / QMark
-  private onLongPressAction = (cell: Cell) => {
+  const onLongPressAction = (cell: Cell) => {
     Vibration.vibrate([0, 50, 50, 50])
-    let newBoard = this.state.board;
-    newBoard.flagCell(cell.x, cell.y)
-    this.setState({ board: newBoard })
+    board.flagCell(cell.x, cell.y);
+    forceUpdate()
   }
 
-  private _displayEndingScreen() {
-    if (this.state.board.gameState === GameState.Won || this.state.board.gameState === GameState.Lost) {
+  const _displayEndingScreen = () => {
+    if (board.gameState === GameState.Won || board.gameState === GameState.Lost) {
       return (
         <EndView
-          victory={this.state.board.gameState === GameState.Won}
-          newGameButton={this.createNewBoard}
-          endTime={this.time}
+          victory={board.gameState === GameState.Won}
+          newGameButton={createNewBoard}
         />
       )
     }
   }
 
 
-  private _displayOptions() {
+  const _displayOptions = () => {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
         <Picker
-          selectedValue={this.diffTemp}
+          selectedValue={difficulty}
           style={{ height: 50, width: 150, color: "grey" }}
           onValueChange={(itemValue, itemIndex) => {
-            this.diffTemp = itemValue.toString()
-            this.setState({ difficulty: stringToDiff(this.diffTemp) }, () => this.createNewBoard());
+            setDifficulty(stringToDiff(itemValue.toString()))
           }
           }>
-          <Picker.Item label="Easy" value={"Easy"} />
-          <Picker.Item label="Medium" value={"Medium"} />
-          <Picker.Item label="Hard" value={"Hard"} />
+          <Picker.Item label="Easy" value={Difficulty.Easy} />
+          <Picker.Item label="Medium" value={Difficulty.Medium} />
+          <Picker.Item label="Hard" value={Difficulty.Hard} />
         </Picker>
-        <Button title="New board" onPress={this.createNewBoard} />
+        <Button title="New Game" onPress={createNewBoard} />
       </View>
     )
 
   }
 
-  componentDidMount() { this.createNewBoard() }
 
-  render() {
-    return (
-      <View style={styles.container}>
 
-        {this._displayOptions()}
+  //componentDidMount() { createNewBoard() }
 
-        <Sep />
+  return (
+    <View style={styles.container}>
 
-        <StatsScreen board={this.state.board} />
+      {_displayOptions()}
 
-        <Sep />
+      <Sep />
 
-        <Chess
-          board={this.state.board}
-          onPress={this.onPressAction}
-          onLongPress={this.onLongPressAction} />
+      <StatsScreen board={board} />
 
-        <Sep />
+      <Sep />
 
-        <Timer
-          running={this.state.timerRunning}
-          reset={this.state.timerReset}
-          getFinalTime={this.getFinalTime}
-        />
+      <Chess
+        board={board}
+        onPress={onPressAction}
+        onLongPress={onLongPressAction} />
 
-        {this._displayEndingScreen()}
+      <Sep />
 
-      </View>
-    )
-  }
+      <Text style={{ color: "white", fontSize: 16, marginBottom: 15 }}> {displayTime(seconds)}</Text >
+
+      {_displayEndingScreen()}
+
+    </View>
+  )
 
 
 
