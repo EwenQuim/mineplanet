@@ -14,10 +14,8 @@ import Board from '../Board'
 import { stringToDiff } from '../utils/difficultyString'
 import vibrateOnEnd from '../utils/vibrateOnEnd';
 import createBoard from '../utils/boardCreation';
-import Timer from '../components/Timer';
 import { useEffect, useState } from 'react';
 import { displayTime } from '../utils/displayTime';
-
 
 
 const useForceUpdate = () => {
