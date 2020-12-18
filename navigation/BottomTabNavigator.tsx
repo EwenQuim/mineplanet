@@ -34,10 +34,10 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Credits"
+        name="Scores"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-more" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-trophy" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -89,7 +89,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Credits' }}
+        options={{ headerTitle: 'Scores' }}
       />
     </TabTwoStack.Navigator>
   );
