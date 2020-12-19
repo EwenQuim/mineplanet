@@ -1,15 +1,20 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import {
     Animated,
+    Button,
     Easing,
     Pressable,
     StyleSheet,
     Text,
     View
 } from "react-native";
+import Board from "../Board";
+import { ScoreLine } from "../types";
+import { computeScore } from "../utils/computeScore";
 
 
-const EndView = ({ victory, newGameButton }: { victory: boolean, newGameButton: any }) => {
+const EndView = ({ victory, newGameButton, board, seconds }: { victory: boolean, newGameButton: any, board: Board, seconds: number }) => {
 
     let yPos = new Animated.Value(1200);
     let width = new Animated.Value(200);
@@ -17,6 +22,13 @@ const EndView = ({ victory, newGameButton }: { victory: boolean, newGameButton: 
         inputRange: [200, 280],
         outputRange: [200, 280]
     })
+
+    const postScore = (scoreLine: ScoreLine) => {
+        console.log("Posting score online");
+        axios.post('https://minebackend.herokuapp.com/leaderboard', scoreLine)
+            .then((response) => console.log(response.data))
+            .catch((err) => console.error(err))
+    }
 
     const animate = () => {
 
@@ -49,7 +61,9 @@ const EndView = ({ victory, newGameButton }: { victory: boolean, newGameButton: 
         ]).start();
     }
 
-    useEffect(() => { animate() })
+    useEffect(() => {
+        animate()
+    }, [])
 
     const comingFromTheBottom = [styles.blankFullScreen, { top: yPos }];
 
@@ -74,14 +88,19 @@ const EndView = ({ victory, newGameButton }: { victory: boolean, newGameButton: 
                             : "Sorry, you lost..."}
                     </Text>
 
-                    <Pressable
-                        style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    <Button title="Retry !"
                         onPress={() => newGameButton()}
-                    >
-                        <Text style={styles.textStyle}>
-                            Retry !
-                        </Text>
-                    </Pressable>
+                    />
+
+                    <Button title="Post online!"
+                        onPress={
+                            () => postScore({
+                                name: "test",
+                                score: computeScore(board, seconds),
+                                time: seconds,
+                                date: new Date(), //placeholder: real date is generated in the back when received 
+                            })
+                        } />
 
                 </View>
             </Animated.View>

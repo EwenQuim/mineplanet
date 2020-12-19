@@ -16,6 +16,7 @@ import vibrateOnEnd from '../utils/vibrateOnEnd';
 import createBoard from '../utils/boardCreation';
 import { useEffect, useState } from 'react';
 import { displayTime } from '../utils/displayTime';
+import { computeScore } from '../utils/computeScore';
 
 
 const useForceUpdate = () => {
@@ -53,6 +54,7 @@ export const TabOneScreen = () => {
 
   // Reveal cell
   const onPressAction = (cell: Cell) => {
+    Vibration.vibrate(50);
     board.revealCell(cell.x, cell.y)
     forceUpdate()
     setTimerRunning(true)
@@ -75,6 +77,8 @@ export const TabOneScreen = () => {
         <EndView
           victory={board.gameState === GameState.Won}
           newGameButton={createNewBoard}
+          board={board}
+          seconds={seconds}
         />
       )
     }
@@ -139,5 +143,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 5
   },
 });
