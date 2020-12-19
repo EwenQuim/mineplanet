@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
@@ -10,37 +10,41 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import TabRulesScreen from '../screens/TabRulesScreen'
 import { BottomTabParamList, TabOneParamList, TabRulesParamList, TabTwoParamList } from '../types';
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+const Tab = createMaterialTopTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
-    <BottomTab.Navigator
+    <Tab.Navigator
+      tabBarPosition="bottom"
       initialRouteName="Game"
+      lazy
+      lazyPreloadDistance={1}
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
-      <BottomTab.Screen
+
+      <Tab.Screen
         name="Game"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="logo-game-controller-a" color={color} />,
+          tabBarIcon: ({ focused, color }: { focused: boolean, color: string }) => <TabBarIcon name="logo-game-controller-a" color={color} />,
         }}
       />
-      <BottomTab.Screen
+      <Tab.Screen
+        name="Scores"
+        component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-podium" color={color} />,
+        }}
+      />
+      <Tab.Screen
         name="Rules"
         component={TabRulesNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-list" color={color} />,
         }}
       />
-      <BottomTab.Screen
-        name="Scores"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-trophy" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
+    </Tab.Navigator>
   );
 }
 
