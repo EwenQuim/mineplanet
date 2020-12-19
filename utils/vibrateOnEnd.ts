@@ -14,7 +14,7 @@ const vibrateOnEnd = (state: GameState) => {
       break;
 
     default:
-      Vibration.vibrate(50);
+      break;
   }
 };
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, FlatList, StyleSheet } from 'react-native';
+import { ActivityIndicator, Button, FlatList, StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { ScoreLine } from '../types';
@@ -13,21 +13,17 @@ interface ServerResponse {
 export default function TabTwoScreen() {
 
   let [scores, setScores] = useState<ScoreLine[]>([])
-  let [canDisplay, setCanDisplay] = useState(false)
+  let [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getData()
     console.log("get data");
-
   }, [])
-  useEffect(() => {
-    setCanDisplay(true)
-    console.log("canDisplay");
-  }, [scores])
-
 
 
   const getData = () => {
+    console.log('fetching data');
+
     axios.get('https://minebackend.herokuapp.com/leaderboard', {
       headers: {
         "Content-Type": "application/json"
@@ -35,6 +31,9 @@ export default function TabTwoScreen() {
     })
       .then((response) => {
         setScores(response.data)
+        setLoading(false)
+        console.log('done');
+
       })
       .catch((err) => console.error(err))
 
@@ -51,7 +50,9 @@ export default function TabTwoScreen() {
   //   getData();
   // }, []);
   const displayScores = () => {
-    if (canDisplay) {
+    if (loading) {
+      return <ActivityIndicator size="large" color="gray" />
+    } else {
       return <FlatList
         data={scores}
         keyExtractor={item => item.date.toString()}
@@ -68,8 +69,7 @@ export default function TabTwoScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Realized by Ewen Quimerc'h </Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Text style={styles.title}>in React Native</Text>
-      <Button title={"Get Scores"} onPress={() => getData()} />
+      <Button title={"Refresh Scores"} onPress={() => getData()} />
       <Button title={"Post Score"} onPress={
         () => postScore({
           name: "Ewen",
