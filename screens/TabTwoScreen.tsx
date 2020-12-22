@@ -2,10 +2,12 @@ import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, FlatList, StyleSheet } from 'react-native';
-import { diff } from 'react-native-reanimated';
+import { Picker } from '@react-native-picker/picker';
+
 
 import { Text, View } from '../components/Themed';
-import { ScoreLine } from '../types';
+import { Difficulty, ScoreLine } from '../types';
+import { stringToDiff } from '../utils/difficultyString';
 import { displayTime } from '../utils/displayTime';
 
 interface ServerResponse {
@@ -15,12 +17,20 @@ interface ServerResponse {
 export default function TabTwoScreen() {
 
   let [scores, setScores] = useState<ScoreLine[]>([])
+  let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium)
   let [loading, setLoading] = useState(true)
 
+  // Load first time
   useEffect(() => {
     getData()
     console.log("get data");
   }, [])
+
+  // Load when difficulty is changed
+  useEffect(() => {
+    getData()
+    console.log("get data");
+  }, [difficultySelected])
 
 
   const getData = () => {
@@ -42,31 +52,56 @@ export default function TabTwoScreen() {
 
   }
 
+  const _displayOptions = () => {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
+        <Picker
+          selectedValue={difficultySelected}
+          style={{ height: 50, width: 150, color: "grey" }}
+          onValueChange={(itemValue, itemIndex) => {
+            setDifficultySelected(stringToDiff(itemValue.toString()))
+          }
+          }>
+          <Picker.Item label="Easy" value={Difficulty.Easy} />
+          <Picker.Item label="Medium" value={Difficulty.Medium} />
+          <Picker.Item label="Hard" value={Difficulty.Hard} />
+        </Picker>
+      </View>
+    )
+
+  }
 
   // useEffect(() => {
   //   getData();
   // }, []);
+
   const displayScores = () => {
-    if (loading) {
-      return <ActivityIndicator size="large" color="gray" />
-    } else {
-      return <FlatList
-        data={scores}
-        keyExtractor={item => item.date.toString()}
-        renderItem={({ item: score, index }: { item: ScoreLine, index: number }) => {
+    console.log(difficultySelected);
+    let displayedData = scores.filter(a => a.level === difficultySelected)
 
-          return <Text>{index + 1} - {score.name} : {displayTime(score.time)}</Text>
+    return <FlatList
+      data={displayedData}
+      keyExtractor={item => item.date.toString()}
+      renderItem={({ item: score, index }: { item: ScoreLine, index: number }) => {
 
-        }}
-      />
-    }
+        return <Text>{index + 1} - {score.name} : {displayTime(score.time)}</Text>
+
+      }}
+    />
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Realized by Ewen Quimerc'h </Text>
+
+      <View style={{ height: 38, flexDirection: 'row' }}>
+        {_displayOptions()}
+        <Button title={"Refresh Scores"} onPress={() => getData()} />
+      </View>
+
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Button title={"Refresh Scores"} onPress={() => getData()} />
+
+
+      { (loading) ? <ActivityIndicator size="large" color="gray" /> : null}
 
       {displayScores()}
     </View>
