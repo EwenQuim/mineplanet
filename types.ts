@@ -63,4 +63,5 @@ export interface ScoreLine {
   score: number;
   time: number;
   date: Date;
+  level: Difficulty;
 }

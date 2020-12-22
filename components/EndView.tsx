@@ -10,11 +10,11 @@ import {
     View
 } from "react-native";
 import Board from "../Board";
-import { ScoreLine } from "../types";
+import { Difficulty, ScoreLine } from "../types";
 import { computeScore } from "../utils/computeScore";
 
 
-const EndView = ({ victory, newGameButton, board, seconds }: { victory: boolean, newGameButton: any, board: Board, seconds: number }) => {
+const EndView = ({ victory, newGameButton, board, seconds, difficulty }: { victory: boolean, newGameButton: any, board: Board, seconds: number, difficulty: Difficulty }) => {
 
     let yPos = new Animated.Value(1200);
     let width = new Animated.Value(200);
@@ -93,14 +93,17 @@ const EndView = ({ victory, newGameButton, board, seconds }: { victory: boolean,
                     />
 
                     <Button title="Post online!"
+                        disabled={!victory}
                         onPress={
                             () => postScore({
                                 name: "test",
                                 score: computeScore(board, seconds),
                                 time: seconds,
+                                level: difficulty,
                                 date: new Date(), //placeholder: real date is generated in the back when received 
                             })
                         } />
+
 
                 </View>
             </Animated.View>
