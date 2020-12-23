@@ -1,4 +1,4 @@
-import { Cell, CellState, GameState } from "./types";
+import { Cell, CellState, GameState } from './types';
 
 export default class Board {
   bombsTotal: number;
@@ -178,6 +178,6 @@ export default class Board {
         this.grid[x][y].state = CellState.Idle;
         break;
     }
-    console.log("Flagging cell", x, y);
+    console.log('Flagging cell', x, y);
   };
 }
