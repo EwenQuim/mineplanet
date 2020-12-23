@@ -20,54 +20,46 @@ export default function Chess({
   onLongPress: any;
 }) {
   return (
-    <ScrollView
-      directionalLockEnabled={false}
-      horizontal={true}
-      contentContainerStyle={{ width: board.width * 30 + 60, height: 500 }}
-    >
-      <View style={styles.container}>
-        <View>
-          <FlatList
-            data={board.grid}
-            extraData={board.grid}
-            keyExtractor={(item) =>
-              item[0].x.toString() + ':' + item[0].y.toString()
-            }
-            getItemLayout={(data, index) => ({
-              length: board.height,
-              offset: board.height * index,
-              index
-            })}
-            renderItem={(rowItem) => {
-              return (
-                <FlatList
-                  style={styles.row}
-                  data={rowItem.item}
-                  extraData={rowItem.item}
-                  keyExtractor={(item) =>
-                    item.x.toString() + ',' + item.y.toString()
-                  }
-                  getItemLayout={(data, index) => ({
-                    length: board.width,
-                    offset: board.width * index,
-                    index
-                  })}
-                  renderItem={({ item: cellItem }: { item: Cell }) => {
-                    return (
-                      <CellView
-                        cell={cellItem}
-                        pressAction={() => onPress(cellItem)}
-                        longPressAction={() => onLongPress(cellItem)}
-                      />
-                    );
-                  }}
-                />
-              );
-            }}
-          />
-        </View>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <FlatList
+        data={board.grid}
+        extraData={board.grid}
+        keyExtractor={(item) =>
+          item[0].x.toString() + ':' + item[0].y.toString()
+        }
+        getItemLayout={(data, index) => ({
+          length: board.height,
+          offset: board.height * index,
+          index
+        })}
+        renderItem={(rowItem) => {
+          return (
+            <FlatList
+              style={styles.row}
+              data={rowItem.item}
+              extraData={rowItem.item}
+              keyExtractor={(item) =>
+                item.x.toString() + ',' + item.y.toString()
+              }
+              getItemLayout={(data, index) => ({
+                length: board.width,
+                offset: board.width * index,
+                index
+              })}
+              renderItem={({ item: cellItem }: { item: Cell }) => {
+                return (
+                  <CellView
+                    cell={cellItem}
+                    pressAction={() => onPress(cellItem)}
+                    longPressAction={() => onLongPress(cellItem)}
+                  />
+                );
+              }}
+            />
+          );
+        }}
+      />
+    </View>
   );
 }
 
@@ -75,7 +67,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'red'
   },
   row: {
     flex: 1,
