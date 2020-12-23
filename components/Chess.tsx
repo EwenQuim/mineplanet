@@ -22,42 +22,23 @@ export default function Chess({
   return (
     <View style={styles.container}>
       <FlatList
-        data={board.grid}
+        data={board.grid.flat()}
         extraData={board.grid}
-        keyExtractor={(item) =>
-          item[0].x.toString() + ':' + item[0].y.toString()
-        }
+        key={board.width}
+        numColumns={board.width}
+        keyExtractor={(item) => `${item.x} : ${item.y}`}
         getItemLayout={(data, index) => ({
-          length: board.height,
+          length: board.height * 30,
           offset: board.height * index,
           index
         })}
-        renderItem={(rowItem) => {
-          return (
-            <FlatList
-              style={styles.row}
-              data={rowItem.item}
-              extraData={rowItem.item}
-              keyExtractor={(item) =>
-                item.x.toString() + ',' + item.y.toString()
-              }
-              getItemLayout={(data, index) => ({
-                length: board.width,
-                offset: board.width * index,
-                index
-              })}
-              renderItem={({ item: cellItem }: { item: Cell }) => {
-                return (
-                  <CellView
-                    cell={cellItem}
-                    pressAction={() => onPress(cellItem)}
-                    longPressAction={() => onLongPress(cellItem)}
-                  />
-                );
-              }}
-            />
-          );
-        }}
+        renderItem={({ item: cellItem }: { item: Cell }) => (
+          <CellView
+            cell={cellItem}
+            pressAction={() => onPress(cellItem)}
+            longPressAction={() => onLongPress(cellItem)}
+          />
+        )}
       />
     </View>
   );
@@ -69,9 +50,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'red'
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row'
   }
 });
