@@ -7,8 +7,13 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { TabOneScreen } from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import TabRulesScreen from '../screens/TabRulesScreen'
-import { BottomTabParamList, TabOneParamList, TabRulesParamList, TabTwoParamList } from '../types';
+import TabRulesScreen from '../screens/TabRulesScreen';
+import {
+  BottomTabParamList,
+  TabOneParamList,
+  TabRulesParamList,
+  TabTwoParamList
+} from '../types';
 
 const Tab = createMaterialTopTabNavigator<BottomTabParamList>();
 
@@ -21,27 +26,37 @@ export default function BottomTabNavigator() {
       initialRouteName="Game"
       lazy
       lazyPreloadDistance={1}
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
-
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+    >
       <Tab.Screen
         name="Game"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ focused, color }: { focused: boolean, color: string }) => <TabBarIcon name="logo-game-controller-a" color={color} />,
+          tabBarIcon: ({
+            focused,
+            color
+          }: {
+            focused: boolean;
+            color: string;
+          }) => <TabBarIcon name="logo-game-controller-a" color={color} />
         }}
       />
       <Tab.Screen
         name="Scores"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-podium" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-podium" color={color} />
+          )
         }}
       />
       <Tab.Screen
         name="Rules"
         component={TabRulesNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-list" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-list" color={color} />
+          )
         }}
       />
     </Tab.Navigator>
@@ -83,7 +98,6 @@ function TabRulesNavigator() {
     </TabRulesStack.Navigator>
   );
 }
-
 
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 

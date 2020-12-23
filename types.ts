@@ -25,13 +25,13 @@ export enum GameState {
   WaitingToPlay,
   Playing,
   Won,
-  Lost,
+  Lost
 }
 
 export enum Difficulty {
-  Easy = "Easy",
-  Medium = "Medium",
-  Hard = "Hard",
+  Easy = 'Easy',
+  Medium = 'Medium',
+  Hard = 'Hard'
 }
 
 export enum CellState {
@@ -39,7 +39,7 @@ export enum CellState {
   Flagged,
   QMark,
   Revealed,
-  WronglyFlagged,
+  WronglyFlagged
 }
 
 export class Cell {
