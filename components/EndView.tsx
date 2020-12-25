@@ -12,6 +12,7 @@ import {
 import Board from '../Board';
 import { Difficulty, ScoreLine } from '../types';
 import { computeScore } from '../utils/computeScore';
+import { scoreManager } from '../utils/scoresManager';
 
 const EndView = ({
   victory,
@@ -32,14 +33,6 @@ const EndView = ({
     inputRange: [200, 280],
     outputRange: [200, 280]
   });
-
-  const postScore = (scoreLine: ScoreLine) => {
-    console.log('Posting score online');
-    axios
-      .post('https://minebackend.herokuapp.com/leaderboard', scoreLine)
-      .then((response) => console.log(response.data))
-      .catch((err) => console.error(err));
-  };
 
   const animate = () => {
     yPos.setValue(1200);
@@ -94,17 +87,9 @@ const EndView = ({
           <Button title="Retry !" onPress={() => newGameButton()} />
 
           <Button
-            title="Post online!"
+            title="Post score!"
             disabled={!victory}
-            onPress={() =>
-              postScore({
-                name: 'test',
-                score: computeScore(board, seconds),
-                time: seconds,
-                level: difficulty,
-                date: new Date() //placeholder: real date is generated in the back when received
-              })
-            }
+            onPress={() => scoreManager(board, seconds, difficulty, 'Ewen')}
           />
         </View>
       </Animated.View>
