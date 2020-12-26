@@ -17,10 +17,6 @@ import { displayTime } from '../utils/displayTime';
 import Sep from '../components/Separator';
 import { deleteLocalScores, getLocalScores } from '../utils/storage';
 
-interface ServerResponse {
-  data: ScoreLine[];
-}
-
 export default function TabTwoScreen() {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [loading, setLoading] = useState(true);
@@ -59,7 +55,7 @@ export default function TabTwoScreen() {
   };
 
   const getLocalData = async () => {
-    const data: ScoreLine[] = await getLocalScores();
+    const data = await getLocalScores();
     setLocalScores(data);
   };
 
