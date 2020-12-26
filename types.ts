@@ -31,7 +31,8 @@ export enum GameState {
 export enum Difficulty {
   Easy = 'Easy',
   Medium = 'Medium',
-  Hard = 'Hard'
+  Hard = 'Hard',
+  Extreme = 'Extreme'
 }
 
 export enum CellState {

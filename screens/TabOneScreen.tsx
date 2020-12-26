@@ -107,6 +107,7 @@ export const TabOneScreen = () => {
           <Picker.Item label="Easy" value={Difficulty.Easy} />
           <Picker.Item label="Medium" value={Difficulty.Medium} />
           <Picker.Item label="Hard" value={Difficulty.Hard} />
+          <Picker.Item label="Extreme" value={Difficulty.Extreme} />
         </Picker>
         <Button title="New Game" onPress={createNewBoard} />
       </View>
