@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
 import StatsScreen from '../components/StatsScreen';
-import Chess from '../components/Chess';
+import Chess from '../components/game/Chess';
 import EndView from '../components/EndView';
 import Sep from '../components/Separator';
 

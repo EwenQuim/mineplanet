@@ -2,7 +2,7 @@ import React from 'react';
 import Board from '../Board';
 import { Text, View } from './Themed';
 import { Cell } from '../types';
-import CellView from './CellView';
+import CellView from './game/CellView';
 
 export default function StatsScreen({ board }: { board: Board }) {
   return (

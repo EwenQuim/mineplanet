@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Image, View } from 'react-native';
 
 import { Text } from '../components/Themed';
 import { Cell, CellState } from '../types';
-import CellView from '../components/CellView';
+import CellView from '../components/game/CellView';
 
 /**
  * Displays a help screen : how to play ? what are the rules

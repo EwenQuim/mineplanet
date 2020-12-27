@@ -16,6 +16,7 @@ import { stringToDiff } from '../utils/difficultyString';
 import { displayTime } from '../utils/displayTime';
 import Sep from '../components/Separator';
 import { deleteLocalScores, getLocalScores } from '../utils/storage';
+import NameField from '../components/name/NameField';
 
 export default function TabTwoScreen() {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
@@ -111,24 +112,7 @@ export default function TabTwoScreen() {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          height: 38,
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}
-      >
-        <Text style={{ marginHorizontal: 15 }}>Name</Text>
-        <TextInput
-          placeholder="  Enter your name"
-          style={{
-            width: 160,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white'
-          }}
-        />
-      </View>
+      <NameField />
 
       <View style={{ height: 38, flexDirection: 'row' }}>
         {_displayOptions()}
