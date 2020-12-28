@@ -34,9 +34,6 @@ const getBestScoreFromLocal = async (
 };
 
 const postScore = (scoreLine: ScoreLine) => {
-  console.log('Posting score online');
-  console.log(scoreLine);
-
   axios
     .post(BACKEND_URL + '/leaderboard', scoreLine)
     .then((response) => console.log(response.data))

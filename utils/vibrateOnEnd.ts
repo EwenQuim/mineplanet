@@ -1,16 +1,16 @@
-import { Vibration } from "react-native";
-import { GameState } from "../types";
+import { Vibration } from 'react-native';
+import { GameState } from '../types';
 
 const vibrateOnEnd = (state: GameState) => {
   switch (state) {
     case GameState.Lost:
       Vibration.vibrate(2000);
-      console.log("Defeat...");
+      console.log('Defeat...');
       break;
 
     case GameState.Won:
       Vibration.vibrate(Array(12).fill(100));
-      console.log("Victory !");
+      console.log('Victory !');
       break;
 
     default:

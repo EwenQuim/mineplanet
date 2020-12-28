@@ -4,9 +4,6 @@ import { Difficulty, ScoreLine } from '../types';
 export const addLocalScores = async (value: ScoreLine): Promise<void> => {
   try {
     const scoresJSON = await getLocalScores();
-    console.log(scoresJSON);
-    console.log(value);
-
     scoresJSON.push(value);
     const scoresString = JSON.stringify(scoresJSON);
     await AsyncStorage.setItem('@local_scores', scoresString);

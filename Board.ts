@@ -178,6 +178,6 @@ export default class Board {
         this.grid[x][y].state = CellState.Idle;
         break;
     }
-    console.log('Flagging cell', x, y);
+    // console.log('Flagging cell', x, y);
   };
 }
