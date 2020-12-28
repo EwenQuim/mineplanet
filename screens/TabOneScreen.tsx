@@ -134,7 +134,7 @@ export const TabOneScreen = () => {
 
       <Sep />
 
-      <Text style={{ color: 'white', fontSize: 16, marginBottom: 15 }}>
+      <Text style={{ fontSize: 16, marginBottom: 15 }}>
         {displayTime(seconds)}
       </Text>
 
