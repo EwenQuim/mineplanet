@@ -19,32 +19,25 @@ export default function TabTwoScreen() {
   let [localScores, setLocalScores] = useState<ScoreLine[]>([]);
 
   // Load first time
-  useEffect(() => {
-    getOnlineData();
-    getLocalData();
-    console.log('get data');
-  }, []);
+  useEffect(() => refresh(), []);
 
   // Load when difficulty is changed
-  useEffect(() => {
+  useEffect(() => refresh(), [difficultySelected]);
+
+  const refresh = () => {
     getOnlineData();
     getLocalData();
-    console.log('get data online & offline');
-  }, [difficultySelected]);
+  };
 
   const getOnlineData = () => {
-    console.log('fetching data');
     setLoading(true);
     axios
       .get('https://minebackend.herokuapp.com/leaderboard', {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       })
       .then((response) => {
         setScores(response.data);
         setLoading(false);
-        console.log('data fetched');
       })
       .catch((err) => console.error(err));
   };
@@ -56,16 +49,10 @@ export default function TabTwoScreen() {
 
   const _displayOptions = () => {
     return (
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row'
-        }}
-      >
+      <View style={{ justifyContent: 'center' }}>
         <Picker
           selectedValue={difficultySelected}
-          style={{ height: 50, width: 150, color: 'grey' }}
+          style={{ height: 50, width: 125, color: 'grey' }}
           onValueChange={(itemValue, itemIndex) => {
             setDifficultySelected(stringToDiff(itemValue.toString()));
           }}
@@ -81,21 +68,19 @@ export default function TabTwoScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: 38, flexDirection: 'row' }}>
-        {_displayOptions()}
-        <Button
-          title={'Refresh Scores'}
-          onPress={() => {
-            getOnlineData();
-            getLocalData();
-          }}
-        />
-      </View>
-
-      <Sep />
-
       <View style={styles.flexx}>
-        <Text style={[styles.title, { marginBottom: 20 }]}>Best scores</Text>
+        <View
+          style={{ height: 38, flexDirection: 'row', alignItems: 'center' }}
+        >
+          <Text style={[styles.title, { marginBottom: 10 }]}>Best scores</Text>
+          {_displayOptions()}
+          <Pressable
+            onPress={refresh}
+            style={[styles.button, { borderColor: 'lightblue' }]}
+          >
+            <Text>🔄</Text>
+          </Pressable>
+        </View>
 
         {loading ? <ActivityIndicator size="large" color="gray" /> : null}
 
@@ -111,17 +96,24 @@ export default function TabTwoScreen() {
         <View
           style={{
             marginBottom: 5,
-            height: 38,
+            height: 32,
             flexDirection: 'row',
             alignItems: 'center'
           }}
         >
           <Text style={styles.title}>My scores</Text>
-          <Pressable onPress={() => deleteLocalScores()}>
-            <Text>❌🗑</Text>
+          <Pressable
+            onPress={() => {
+              deleteLocalScores();
+              getLocalData();
+            }}
+            style={[styles.button, { borderColor: 'red' }]}
+          >
+            <Text>❌→🗑</Text>
           </Pressable>
         </View>
         <NameField />
+        {loading ? <ActivityIndicator size="large" color="gray" /> : null}
         <ScoresView
           listToDisplay={localScores}
           difficultySelected={difficultySelected}
@@ -141,5 +133,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold'
+  },
+  button: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'red',
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    paddingHorizontal: 10
   }
 });

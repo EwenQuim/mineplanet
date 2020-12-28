@@ -53,7 +53,7 @@ export const ScoresView = ({
                 color: color
               }}
             >
-              {score.name + ' ' + nameToColor(score.name).substr(4, 3)}
+              {score.name}
             </Text>
             <Text style={{ marginHorizontal: 8, marginVertical: 2 }}>
               {displayTime(score.time)}
