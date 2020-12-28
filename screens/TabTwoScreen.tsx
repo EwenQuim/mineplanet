@@ -13,7 +13,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Text, View } from '../components/Themed';
 import { Difficulty, ScoreLine } from '../types';
 import { stringToDiff } from '../utils/difficultyString';
-import { displayTime } from '../utils/displayTime';
+import { displayIndex, displayTime } from '../utils/display';
 import Sep from '../components/Separator';
 import { deleteLocalScores, getLocalScores } from '../utils/storage';
 import NameField from '../components/name/NameField';
@@ -102,9 +102,33 @@ export default function TabTwoScreen() {
           index: number;
         }) => {
           return (
-            <Text>
-              {index + 1} - {score.name} : {displayTime(score.time)}
-            </Text>
+            <View
+              style={[
+                { flexDirection: 'row' },
+                index % 2 === 0
+                  ? { backgroundColor: '#9995' }
+                  : { backgroundColor: '#7775' }
+              ]}
+            >
+              <Text
+                style={{
+                  marginHorizontal: 8,
+                  marginVertical: 2,
+                  width: 30,
+                  textAlign: 'right'
+                }}
+              >
+                {displayIndex(index)}
+              </Text>
+              <Text
+                style={{ marginHorizontal: 8, marginVertical: 2, width: 130 }}
+              >
+                {score.name}
+              </Text>
+              <Text style={{ marginHorizontal: 8, marginVertical: 2 }}>
+                {displayTime(score.time)}
+              </Text>
+            </View>
           );
         }}
       />

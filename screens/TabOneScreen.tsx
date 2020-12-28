@@ -15,7 +15,7 @@ import { stringToDiff } from '../utils/difficultyString';
 import vibrateOnEnd from '../utils/vibrateOnEnd';
 import createBoard from '../utils/boardCreation';
 import { useEffect, useState } from 'react';
-import { displayTime } from '../utils/displayTime';
+import { displayTime } from '../utils/display';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state
