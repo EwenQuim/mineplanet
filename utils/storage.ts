@@ -41,7 +41,7 @@ export const deleteLocalScores = async (): Promise<boolean> => {
   }
 };
 
-export const getName = async (): Promise<string> => {
+export const getStoredName = async (): Promise<string> => {
   try {
     const jsonValue = await AsyncStorage.getItem('@username');
     if (jsonValue) {
@@ -55,7 +55,7 @@ export const getName = async (): Promise<string> => {
   }
 };
 
-export const setName = (username: string) => {
+export const setStoredName = (username: string) => {
   try {
     AsyncStorage.setItem('@username', JSON.stringify(username));
   } catch (e) {

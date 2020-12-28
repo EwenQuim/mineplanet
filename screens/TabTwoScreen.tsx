@@ -17,6 +17,7 @@ import { displayTime } from '../utils/displayTime';
 import Sep from '../components/Separator';
 import { deleteLocalScores, getLocalScores } from '../utils/storage';
 import NameField from '../components/name/NameField';
+import NameView from '../components/name/Name';
 
 export default function TabTwoScreen() {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
