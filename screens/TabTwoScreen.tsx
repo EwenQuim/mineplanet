@@ -1,7 +1,13 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, Pressable, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Modal,
+  Pressable,
+  StyleSheet
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
@@ -17,6 +23,7 @@ export default function TabTwoScreen() {
   let [loading, setLoading] = useState(true);
   let [scores, setScores] = useState<ScoreLine[]>([]);
   let [localScores, setLocalScores] = useState<ScoreLine[]>([]);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   // Load first time
   useEffect(() => refresh(), []);
@@ -52,7 +59,7 @@ export default function TabTwoScreen() {
       <View style={{ justifyContent: 'center' }}>
         <Picker
           selectedValue={difficultySelected}
-          style={{ height: 50, width: 125, color: 'grey' }}
+          style={{ height: 50, width: 125, color: 'lightblue' }}
           onValueChange={(itemValue, itemIndex) => {
             setDifficultySelected(stringToDiff(itemValue.toString()));
           }}
@@ -104,12 +111,11 @@ export default function TabTwoScreen() {
           <Text style={styles.title}>My scores</Text>
           <Pressable
             onPress={() => {
-              deleteLocalScores();
-              getLocalData();
+              setConfirmModalVisible(true);
             }}
-            style={[styles.button, { borderColor: 'red' }]}
+            style={[styles.button, { marginLeft: 50, borderColor: 'red' }]}
           >
-            <Text>❌→🗑</Text>
+            <Text>📃→🗑</Text>
           </Pressable>
         </View>
         <NameField />
@@ -119,6 +125,51 @@ export default function TabTwoScreen() {
           difficultySelected={difficultySelected}
         />
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={confirmModalVisible}
+        onRequestClose={() => setConfirmModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Do you want to erase your local scores for all levels ?
+            </Text>
+            <Text style={styles.modalText}>
+              Your highest scores will safely remain online.
+            </Text>
+            <Text style={[styles.modalText, { fontStyle: 'italic' }]}>
+              Contact the dev if you want to erase published scores
+            </Text>
+            <View
+              style={{
+                height: 32,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+            >
+              <Pressable
+                style={{ ...styles.button }}
+                onPress={() => {
+                  setConfirmModalVisible(false);
+                  deleteLocalScores();
+                  getLocalData();
+                }}
+              >
+                <Text style={styles.textStyle}>📃→🗑</Text>
+              </Pressable>
+              <Pressable
+                style={{ ...styles.button, borderColor: 'green' }}
+                onPress={() => setConfirmModalVisible(false)}
+              >
+                <Text style={styles.textStyle}>No</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -143,5 +194,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 10,
     paddingHorizontal: 10
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent'
+  },
+  modalView: {
+    margin: 20,
+    width: 250,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 4,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center'
   }
 });
