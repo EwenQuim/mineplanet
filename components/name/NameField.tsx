@@ -1,13 +1,13 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, StyleSheet, TextInput } from 'react-native';
+import { Button, Pressable, StyleSheet, TextInput } from 'react-native';
 
 import { Text, View } from '../Themed';
 import { getStoredName, setStoredName } from '../../utils/storage';
+import { nameToColor } from '../../utils/display';
 
 export default function NameField() {
-  let temporaryName = '';
   let [name, setName] = useState('');
   let [editing, setEditing] = useState(false);
 
@@ -26,47 +26,58 @@ export default function NameField() {
     }
   }, [editing]);
 
+  const submitEditing = () => {
+    if (name.length > 1) {
+      setStoredName(name);
+    } else {
+      getStoredName().then((name) => {
+        setName(name);
+      });
+    }
+    setEditing(false);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={{ marginHorizontal: 15 }}>Name</Text>
-
-      {editing ? (
-        <TextInput
-          placeholder={'Enter your name'}
-          defaultValue={name}
-          onSubmitEditing={() => {
-            if (temporaryName.length > 1) {
-              setStoredName(temporaryName);
-              setName(temporaryName);
-            }
-            setEditing(false);
-          }}
-          autoCompleteType="name"
-          blurOnSubmit
-          ref={(button) => {
-            refe = button;
-          }}
-          onChangeText={(text) => (temporaryName = text)}
-          maxLength={15}
-          style={styles.input}
-        />
-      ) : (
-        <Text style={{ marginHorizontal: 15 }}>{name}</Text>
-      )}
-
-      <Button
-        title={editing ? 'Done' : 'Change'}
-        onPress={() => setEditing(!editing)}
-      />
+    <View style={[styles.container, { marginBottom: 10 }]}>
+      <Text style={{ marginHorizontal: 15 }}>Username</Text>
+      <View style={[styles.box, { borderColor: nameToColor(name) }]}>
+        {editing ? (
+          <View style={[styles.container, { backgroundColor: 'transparent' }]}>
+            <TextInput
+              placeholder={'Enter your name'}
+              defaultValue={name}
+              onSubmitEditing={submitEditing}
+              autoCompleteType="name"
+              blurOnSubmit
+              ref={(button) => (refe = button)}
+              onChangeText={(text) => setName(text)}
+              maxLength={15}
+              style={styles.input}
+            />
+            <Pressable onPress={submitEditing} style={{ marginHorizontal: 10 }}>
+              <Text>✅</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <Pressable onPress={() => setEditing(true)} style={styles.container}>
+            <Text style={{ marginHorizontal: 10 }}>{name}</Text>
+            <Text style={{ marginHorizontal: 10 }}>✏️</Text>
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 38,
+    height: 32,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  box: {
+    borderWidth: 1,
+    borderRadius: 4
   },
   title: {
     fontSize: 20,
@@ -74,9 +85,9 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 160,
-    borderColor: 'gray',
     borderWidth: 1,
-    backgroundColor: 'white',
-    paddingLeft: 30
+    color: 'white',
+    borderColor: '#0000',
+    paddingLeft: 15
   }
 });

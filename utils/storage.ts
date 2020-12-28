@@ -47,11 +47,11 @@ export const getStoredName = async (): Promise<string> => {
     if (jsonValue) {
       return JSON.parse(jsonValue);
     } else {
-      return 'Enter your name';
+      return 'Anon Player';
     }
   } catch (e) {
     console.error(e);
-    return '';
+    return 'Anon Player';
   }
 };
 

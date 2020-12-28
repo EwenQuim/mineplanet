@@ -1,23 +1,16 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  FlatList,
-  StyleSheet,
-  TextInput
-} from 'react-native';
+import { ActivityIndicator, Button, Pressable, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
 import { Difficulty, ScoreLine } from '../types';
 import { stringToDiff } from '../utils/difficultyString';
-import { displayIndex, displayTime } from '../utils/display';
 import Sep from '../components/Separator';
 import { deleteLocalScores, getLocalScores } from '../utils/storage';
 import NameField from '../components/name/NameField';
-import NameView from '../components/name/Name';
+import { ScoresView } from '../components/Scores';
 
 export default function TabTwoScreen() {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
@@ -86,59 +79,8 @@ export default function TabTwoScreen() {
     );
   };
 
-  const displayScores = (listToDisplay: ScoreLine[] = scores) => {
-    let displayedData = listToDisplay.filter(
-      (a) => a.level === difficultySelected
-    );
-    return (
-      <FlatList
-        data={displayedData}
-        keyExtractor={(item) => item.date.toString()}
-        renderItem={({
-          item: score,
-          index
-        }: {
-          item: ScoreLine;
-          index: number;
-        }) => {
-          return (
-            <View
-              style={[
-                { flexDirection: 'row' },
-                index % 2 === 0
-                  ? { backgroundColor: '#9995' }
-                  : { backgroundColor: '#7775' }
-              ]}
-            >
-              <Text
-                style={{
-                  marginHorizontal: 8,
-                  marginVertical: 2,
-                  width: 30,
-                  textAlign: 'right'
-                }}
-              >
-                {displayIndex(index)}
-              </Text>
-              <Text
-                style={{ marginHorizontal: 8, marginVertical: 2, width: 130 }}
-              >
-                {score.name}
-              </Text>
-              <Text style={{ marginHorizontal: 8, marginVertical: 2 }}>
-                {displayTime(score.time)}
-              </Text>
-            </View>
-          );
-        }}
-      />
-    );
-  };
-
   return (
     <View style={styles.container}>
-      <NameField />
-
       <View style={{ height: 38, flexDirection: 'row' }}>
         {_displayOptions()}
         <Button
@@ -151,20 +93,40 @@ export default function TabTwoScreen() {
       </View>
 
       <Sep />
-      <Text style={styles.title}>Best scores</Text>
 
-      {loading ? <ActivityIndicator size="large" color="gray" /> : null}
+      <View style={styles.flexx}>
+        <Text style={[styles.title, { marginBottom: 20 }]}>Best scores</Text>
 
-      {displayScores()}
+        {loading ? <ActivityIndicator size="large" color="gray" /> : null}
+
+        <ScoresView
+          listToDisplay={scores}
+          difficultySelected={difficultySelected}
+        />
+      </View>
 
       <Sep />
 
-      <View style={{ height: 38, flexDirection: 'row' }}>
-        <Text style={styles.title}>My scores</Text>
-        <Button title="Show" onPress={() => console.log(localScores)} />
-        <Button title="Del" onPress={() => deleteLocalScores()} />
+      <View style={styles.flexx}>
+        <View
+          style={{
+            marginBottom: 5,
+            height: 38,
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+        >
+          <Text style={styles.title}>My scores</Text>
+          <Pressable onPress={() => deleteLocalScores()}>
+            <Text>❌🗑</Text>
+          </Pressable>
+        </View>
+        <NameField />
+        <ScoresView
+          listToDisplay={localScores}
+          difficultySelected={difficultySelected}
+        />
       </View>
-      {displayScores(localScores)}
     </View>
   );
 }
@@ -175,6 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  flexx: { flex: 1, alignItems: 'center' },
   title: {
     fontSize: 20,
     fontWeight: 'bold'
