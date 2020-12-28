@@ -28,7 +28,8 @@ export default function NameField() {
 
   const submitEditing = () => {
     if (name.length > 1) {
-      setStoredName(name);
+      setStoredName(name.trim());
+      setName(name.trim());
     } else {
       getStoredName().then((name) => {
         setName(name);
@@ -50,7 +51,7 @@ export default function NameField() {
               autoCompleteType="name"
               blurOnSubmit
               ref={(button) => (refe = button)}
-              onChangeText={(text) => setName(text)}
+              onChangeText={(text) => setName(text.trim())}
               maxLength={15}
               style={styles.input}
             />
