@@ -31,7 +31,7 @@ const EndView = ({
   let width = new Animated.Value(200);
   let height = width.interpolate({
     inputRange: [200, 280],
-    outputRange: [200, 280]
+    outputRange: [150, 210]
   });
 
   const animate = () => {
@@ -65,6 +65,12 @@ const EndView = ({
 
   useEffect(() => {
     animate();
+
+    if (victory) {
+      getStoredName().then((name) => {
+        scoreManager(board, seconds, difficulty, name);
+      });
+    }
   }, []);
 
   const comingFromTheBottom = [styles.blankFullScreen, { top: yPos }];
@@ -85,14 +91,6 @@ const EndView = ({
           </Text>
 
           <Button title="Retry !" onPress={() => newGameButton()} />
-
-          <Button
-            title="Post score!"
-            disabled={!victory}
-            onPress={async () =>
-              scoreManager(board, seconds, difficulty, await getStoredName())
-            }
-          />
         </View>
       </Animated.View>
     </Animated.View>
