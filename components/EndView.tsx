@@ -10,9 +10,9 @@ import {
   View
 } from 'react-native';
 import Board from '../Board';
-import { Difficulty, ScoreLine } from '../types';
-import { computeScore } from '../utils/computeScore';
+import { Difficulty } from '../types';
 import { scoreManager } from '../utils/scoresManager';
+import { getStoredName } from '../utils/storage';
 
 const EndView = ({
   victory,
@@ -89,7 +89,9 @@ const EndView = ({
           <Button
             title="Post score!"
             disabled={!victory}
-            onPress={() => scoreManager(board, seconds, difficulty, 'Ewen')}
+            onPress={async () =>
+              scoreManager(board, seconds, difficulty, await getStoredName())
+            }
           />
         </View>
       </Animated.View>
