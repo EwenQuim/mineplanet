@@ -3,7 +3,7 @@ import Board from '../Board';
 import { BACKEND_URL } from '../constants/Backend';
 import { Difficulty, ScoreLine } from '../types';
 import { computeScore } from './computeScore';
-import { addLocalScores, getLocalScores } from './storage';
+import { addLocalScores, getLocalScores, getStoredName } from './storage';
 
 export const scoreManager = async (
   board: Board,
@@ -28,8 +28,9 @@ const getBestScoreFromLocal = async (
   difficulty: Difficulty
 ): Promise<ScoreLine> => {
   const scores = await getLocalScores();
+  const name = await getStoredName();
 
-  return scores.filter((a) => a.level === difficulty)[0];
+  return scores.filter((a) => a.name === name && a.level === difficulty)[0];
 };
 
 const postScore = (scoreLine: ScoreLine) => {
