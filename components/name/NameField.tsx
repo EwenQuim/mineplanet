@@ -13,7 +13,7 @@ enum EditingStatus {
   edited = '🔐'
 }
 
-export default function NameField() {
+export default function NameField({ refresh }: { refresh: () => void }) {
   let [name, setName] = useState('');
   let [editing, setEditing] = useState(EditingStatus.idle);
 
@@ -33,12 +33,8 @@ export default function NameField() {
         setName(name);
       });
     }
+    refresh();
     setEditing(EditingStatus.edited);
-
-    console.log('state', name);
-    getStoredName().then((name) => {
-      console.log('stored', name);
-    });
   };
 
   return (

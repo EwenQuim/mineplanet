@@ -88,7 +88,7 @@ export default function TabTwoScreen({ navigation }: Props) {
       />
 
       <View style={styles.bottomBar}>
-        <NameField />
+        <NameField refresh={() => refresh()} />
         <View style={{ marginHorizontal: 20 }}></View>
         <Pressable
           onPress={() => navigation.navigate('TabTwoMyScores')}
