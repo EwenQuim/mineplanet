@@ -20,7 +20,7 @@ import {
   getStoredName
 } from '../utils/storage';
 import NameField from '../components/name/NameField';
-import { ScoresView } from '../components/Scores';
+import { ScoresView } from '../components/scores/Scores';
 import ModalDeleteScores from '../components/manager/EraseScores';
 import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
@@ -92,19 +92,12 @@ export default function TabTwoScreen({ navigation }) {
         playerName={playerName}
       />
 
-      <View
-        style={{
-          height: 32,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 15
-        }}
-      >
+      <View style={styles.bottomBar}>
         <NameField />
         <View style={{ marginHorizontal: 20 }}></View>
         <Pressable
           onPress={() => navigation.navigate('TabTwoMyScores')}
-          style={{ backgroundColor: '#8888', borderRadius: 4, padding: 5 }}
+          style={styles.navButton}
         >
           <Text>→ my scores</Text>
         </Pressable>
@@ -113,7 +106,7 @@ export default function TabTwoScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -128,5 +121,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10
+  },
+  bottomBar: {
+    height: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 15
+  },
+  navButton: {
+    backgroundColor: '#8888',
+    borderRadius: 4,
+    padding: 5
   }
 });

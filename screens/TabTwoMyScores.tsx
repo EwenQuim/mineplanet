@@ -1,31 +1,22 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  Modal,
-  Pressable,
-  StyleSheet
-} from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
 import { Difficulty, ScoreLine } from '../types';
 import { stringToDiff } from '../utils/difficultyString';
 import Sep from '../components/Separator';
-import {
-  deleteLocalScores,
-  getLocalScores,
-  getStoredName
-} from '../utils/storage';
+import { getLocalScores, getStoredName } from '../utils/storage';
 import NameField from '../components/name/NameField';
-import { ScoresView } from '../components/Scores';
+import { ScoresView } from '../components/scores/Scores';
 import ModalDeleteScores from '../components/manager/EraseScores';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
+import { styles } from './TabTwoScreen';
 
-export default function TabTwoMyScores() {
+export default function TabTwoMyScores({ navigation }) {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [playerName, setPlayerName] = useState('');
   let [localScores, setLocalScores] = useState<ScoreLine[]>([]);
@@ -89,7 +80,24 @@ export default function TabTwoMyScores() {
         playerName={playerName}
       />
 
-      <NameField />
+      <View
+        style={{
+          height: 32,
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: 15
+        }}
+      >
+        <NameField />
+        <View style={{ marginHorizontal: 20 }}>
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={styles.navButton}
+          >
+            <Text>← all scores</Text>
+          </Pressable>
+        </View>
+      </View>
 
       <ModalDeleteScores
         modalVisible={confirmModalVisible}
@@ -98,55 +106,3 @@ export default function TabTwoMyScores() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  flexx: { flex: 1, alignItems: 'center', alignSelf: 'stretch' },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  button: {
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: 'white',
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 10,
-    paddingHorizontal: 10
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent'
-  },
-  modalView: {
-    margin: 20,
-    width: 250,
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    elevation: 5
-  },
-  openButton: {
-    backgroundColor: '#F194FF',
-    borderRadius: 4,
-    padding: 10,
-    elevation: 2
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center'
-  }
-});
