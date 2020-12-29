@@ -77,7 +77,7 @@ export default function TabTwoMyScores({ navigation }: Props) {
       >
         {_displayOptions()}
         <Pressable onPress={() => setConfirmModalVisible(true)}>
-          <Feather name="trash" size={18} color="white" />
+          <Feather name="trash" size={18} color="grey" />
         </Pressable>
       </View>
 
@@ -86,25 +86,6 @@ export default function TabTwoMyScores({ navigation }: Props) {
         difficultySelected={difficultySelected}
         playerName={playerName}
       />
-
-      <View
-        style={{
-          height: 32,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 15
-        }}
-      >
-        <NameField />
-        <View style={{ marginHorizontal: 20 }}>
-          <Pressable
-            onPress={() => navigation.goBack()}
-            style={styles.navButton}
-          >
-            <Text>← all scores</Text>
-          </Pressable>
-        </View>
-      </View>
 
       <ModalDeleteScores
         modalVisible={confirmModalVisible}
