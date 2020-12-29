@@ -24,6 +24,11 @@ export const displayIndex = (index: number): string => {
   }
 };
 
+export const displayDate = (dateString: Date): string => {
+  const date = new Date(dateString);
+  return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+};
+
 export const nameToColor = (name: string) => {
   // return '#FFF';
 
@@ -42,35 +47,23 @@ function hashCode(name: string): number {
 
 function intToRGB(i: number): string {
   // base: le nombre détermino-aléatoire est entre 0 et 360
-  let base = Math.abs(i) % 360;
+  let base = Math.abs(i);
 
-  // frequency
-  let code = base + 0.5 * (360 - 60 * Math.log(base));
+  let colors = [
+    'pink',
+    '#9b88ee',
+    'gainsboro',
+    'yellow',
+    'skyblue',
+    'salmon',
+    'sandybrown',
+    'palegreen',
+    'paleturquoise',
+    'bisque'
+  ];
 
-  // goes towards the 6 main spots
-  let correction = -trueRemainder(code, 60);
-  correction *= 0.5;
-
-  let hue = (code + correction) % 360;
-
-  let lightCorrect = 60 - Math.abs(trueRemainder(code, 60));
-  lightCorrect *= 0.1;
-
-  let light = 80 - lightCorrect;
-
-  return `hsl(${hue}, 100%, ${light}%)`;
-  // return (
-  //   '#' +
-  //   ((parseInt(code.substr(0, 1), 16) + 1) % 16).toString(16) +
-  //   code.substr(1)
-  // );
+  return colors[trueMod(base, colors.length)];
 }
-
-const trueRemainder = (n: number, m: number): number => {
-  let mod = trueMod(n, m);
-  mod -= mod > m / 2 ? m : 0;
-  return mod;
-};
 
 function trueMod(n: number, m: number): number {
   return ((n % m) + m) % m;

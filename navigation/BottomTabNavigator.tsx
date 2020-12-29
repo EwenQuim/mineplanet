@@ -14,6 +14,7 @@ import {
   TabRulesParamList,
   TabTwoParamList
 } from '../types';
+import TabTwoMyScores from '../screens/TabTwoMyScores';
 
 const Tab = createMaterialTopTabNavigator<BottomTabParamList>();
 
@@ -107,7 +108,12 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Scores' }}
+        options={{ headerTitle: 'Best Scores' }}
+      />
+      <TabTwoStack.Screen
+        name="TabTwoMyScores"
+        component={TabTwoMyScores}
+        options={{ headerTitle: 'My Scores' }}
       />
     </TabTwoStack.Navigator>
   );

@@ -22,14 +22,14 @@ import {
 import NameField from '../components/name/NameField';
 import { ScoresView } from '../components/Scores';
 import ModalDeleteScores from '../components/manager/EraseScores';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
 
-export default function TabTwoScreen({ navigation }) {
+export default function TabTwoMyScores() {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
-  let [loading, setLoading] = useState(true);
   let [playerName, setPlayerName] = useState('');
-  let [scores, setScores] = useState<ScoreLine[]>([]);
+  let [localScores, setLocalScores] = useState<ScoreLine[]>([]);
+  let [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   // Load first time
   useEffect(() => refresh(), []);
@@ -38,30 +38,22 @@ export default function TabTwoScreen({ navigation }) {
   useEffect(() => refresh(), [difficultySelected]);
 
   const refresh = () => {
-    getOnlineData();
+    getLocalData();
+  };
+
+  const getLocalData = () => {
+    getLocalScores().then((data) => {
+      setLocalScores(data);
+    });
     getStoredName().then((string) => setPlayerName(string));
   };
 
-  const getOnlineData = () => {
-    setLoading(true);
-    axios
-      .get('https://minebackend.herokuapp.com/leaderboard', {
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then((response) => {
-        setScores(response.data);
-        setLoading(false);
-      })
-      .catch((err) => console.error(err));
-  };
-
   const _displayOptions = () => {
-    let nameColor = nameToColor(playerName);
     return (
       <View style={{ justifyContent: 'center' }}>
         <Picker
           selectedValue={difficultySelected}
-          style={{ height: 50, width: 125, color: nameColor }}
+          style={{ height: 50, width: 125, color: nameToColor(playerName) }}
           onValueChange={(itemValue, itemIndex) => {
             setDifficultySelected(stringToDiff(itemValue.toString()));
           }}
@@ -77,38 +69,32 @@ export default function TabTwoScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topBar}>
+      <View
+        style={{
+          height: 38,
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: 10
+        }}
+      >
         {_displayOptions()}
-        <Pressable onPress={refresh}>
-          <Feather name="refresh-ccw" size={18} color="white" />
+        <Pressable onPress={() => setConfirmModalVisible(true)}>
+          <Feather name="trash" size={18} color="white" />
         </Pressable>
       </View>
 
-      {loading ? <ActivityIndicator size="large" color="gray" /> : null}
-
       <ScoresView
-        listToDisplay={scores}
+        listToDisplay={localScores}
         difficultySelected={difficultySelected}
         playerName={playerName}
       />
 
-      <View
-        style={{
-          height: 32,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 15
-        }}
-      >
-        <NameField />
-        <View style={{ marginHorizontal: 20 }}></View>
-        <Pressable
-          onPress={() => navigation.navigate('TabTwoMyScores')}
-          style={{ backgroundColor: '#8888', borderRadius: 4, padding: 5 }}
-        >
-          <Text>→ my scores</Text>
-        </Pressable>
-      </View>
+      <NameField />
+
+      <ModalDeleteScores
+        modalVisible={confirmModalVisible}
+        hideModal={() => setConfirmModalVisible(false)}
+      />
     </View>
   );
 }
@@ -119,14 +105,48 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  flexx: { flex: 1, alignItems: 'center', alignSelf: 'stretch' },
   title: {
     fontSize: 20,
     fontWeight: 'bold'
   },
-  topBar: {
-    height: 38,
-    flexDirection: 'row',
+  button: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'white',
+    height: 32,
     alignItems: 'center',
-    marginVertical: 10
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    paddingHorizontal: 10
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent'
+  },
+  modalView: {
+    margin: 20,
+    width: 250,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 4,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center'
   }
 });
