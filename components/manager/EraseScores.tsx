@@ -61,16 +61,6 @@ export default function ModalDeleteScores({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  flexx: { flex: 1, alignItems: 'center' },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
   button: {
     borderWidth: 1,
     borderRadius: 4,
@@ -95,14 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 5
   },
-  openButton: {
-    backgroundColor: '#F194FF',
-    borderRadius: 4,
-    padding: 10,
-    elevation: 2
-  },
   textStyle: {
-    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center'
   },

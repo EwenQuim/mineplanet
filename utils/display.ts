@@ -46,23 +46,22 @@ function hashCode(name: string): number {
 }
 
 function intToRGB(i: number): string {
-  // base: le nombre détermino-aléatoire est entre 0 et 360
   let base = Math.abs(i);
 
   let colors = [
     'pink',
     '#9b88ee',
-    'gainsboro',
+    'GainsBoRo',
     'yellow',
-    'skyblue',
+    'skyBlue',
     'salmon',
-    'sandybrown',
-    'palegreen',
-    'paleturquoise',
+    'sandyBrown',
+    'paleGreen',
+    'paleTurquoise',
     'bisque'
   ];
 
-  return colors[trueMod(base, colors.length)];
+  return colors[trueMod(base, colors.length)].toLowerCase();
 }
 
 function trueMod(n: number, m: number): number {
