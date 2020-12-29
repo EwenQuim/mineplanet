@@ -1,31 +1,26 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  Modal,
-  Pressable,
-  StyleSheet
-} from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
-import { Difficulty, ScoreLine } from '../types';
+import { Difficulty, ScoreLine, TabTwoParamList } from '../types';
 import { stringToDiff } from '../utils/difficultyString';
-import Sep from '../components/Separator';
-import {
-  deleteLocalScores,
-  getLocalScores,
-  getStoredName
-} from '../utils/storage';
+import { getStoredName } from '../utils/storage';
 import NameField from '../components/name/NameField';
 import { ScoresView } from '../components/scores/Scores';
-import ModalDeleteScores from '../components/manager/EraseScores';
 import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export default function TabTwoScreen({ navigation }) {
+type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
+
+type Props = {
+  navigation: ScoresScreenNavigationProp;
+};
+
+export default function TabTwoScreen({ navigation }: Props) {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [loading, setLoading] = useState(true);
   let [playerName, setPlayerName] = useState('');
@@ -80,7 +75,7 @@ export default function TabTwoScreen({ navigation }) {
       <View style={styles.topBar}>
         {_displayOptions()}
         <Pressable onPress={refresh}>
-          <Feather name="refresh-ccw" size={18} color="white" />
+          <Feather name="refresh-ccw" size={18} color="grey" />
         </Pressable>
       </View>
 

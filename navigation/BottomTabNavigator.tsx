@@ -27,7 +27,6 @@ export default function BottomTabNavigator() {
       initialRouteName="Game"
       lazy
       lazyPreloadDistance={1}
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <Tab.Screen
         name="Game"

@@ -5,7 +5,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
-import { Difficulty, ScoreLine } from '../types';
+import { Difficulty, ScoreLine, TabTwoParamList } from '../types';
 import { stringToDiff } from '../utils/difficultyString';
 import Sep from '../components/Separator';
 import { getLocalScores, getStoredName } from '../utils/storage';
@@ -15,8 +15,15 @@ import ModalDeleteScores from '../components/manager/EraseScores';
 import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
 import { styles } from './TabTwoScreen';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export default function TabTwoMyScores({ navigation }) {
+type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
+
+type Props = {
+  navigation: ScoresScreenNavigationProp;
+};
+
+export default function TabTwoMyScores({ navigation }: Props) {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [playerName, setPlayerName] = useState('');
   let [localScores, setLocalScores] = useState<ScoreLine[]>([]);

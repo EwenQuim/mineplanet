@@ -19,6 +19,7 @@ export type TabRulesParamList = {
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+  TabTwoMyScores: undefined;
 };
 
 export enum GameState {
