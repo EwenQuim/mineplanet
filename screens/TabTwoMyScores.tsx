@@ -15,15 +15,8 @@ import ModalDeleteScores from '../components/manager/EraseScores';
 import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
 import { styles } from './TabTwoScreen';
-import { StackNavigationProp } from '@react-navigation/stack';
 
-type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
-
-type Props = {
-  navigation: ScoresScreenNavigationProp;
-};
-
-export default function TabTwoMyScores({ navigation }: Props) {
+export default function TabTwoMyScores() {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [playerName, setPlayerName] = useState('');
   let [localScores, setLocalScores] = useState<ScoreLine[]>([]);
