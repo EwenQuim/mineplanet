@@ -17,6 +17,8 @@ import createBoard from '../utils/boardCreation';
 import { useEffect, useState } from 'react';
 import { displayTime } from '../utils/display';
 import { Feather } from '@expo/vector-icons';
+import { ChooseLevel } from '../components/manager/ChooseLevel';
+import { useStateContext } from '../state/state';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state
@@ -28,9 +30,10 @@ export const TabOneScreen = () => {
   const forceUpdate = useForceUpdate();
 
   let [board, setBoard] = useState(new Board(8, 12, 15));
-  let [difficulty, setDifficulty] = useState(Difficulty.Medium);
   let [seconds, setSeconds] = useState(0);
   let [timerRunning, setTimerRunning] = useState(false);
+  const { state, dispatch } = useStateContext();
+  const { difficulty } = state;
 
   // Timer tik-tok
   useEffect(() => {
@@ -98,18 +101,7 @@ export const TabOneScreen = () => {
           flexDirection: 'row'
         }}
       >
-        <Picker
-          selectedValue={difficulty}
-          style={{ height: 50, width: 150, color: 'grey' }}
-          onValueChange={(itemValue, itemIndex) => {
-            setDifficulty(stringToDiff(itemValue.toString()));
-          }}
-        >
-          <Picker.Item label="Easy" value={Difficulty.Easy} />
-          <Picker.Item label="Medium" value={Difficulty.Medium} />
-          <Picker.Item label="Hard" value={Difficulty.Hard} />
-          <Picker.Item label="Extreme" value={Difficulty.Extreme} />
-        </Picker>
+        <ChooseLevel playerName="Ewen" />
         <Pressable
           style={{
             width: 40,

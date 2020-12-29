@@ -15,18 +15,19 @@ import ModalDeleteScores from '../components/manager/EraseScores';
 import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
 import { styles } from './TabTwoScreen';
+import { ChooseLevel } from '../components/manager/ChooseLevel';
+import { useStateContext } from '../state/state';
 
 export default function TabTwoMyScores() {
-  let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [playerName, setPlayerName] = useState('');
   let [localScores, setLocalScores] = useState<ScoreLine[]>([]);
   let [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
+  const { state, dispatch } = useStateContext();
+  const { difficulty } = state;
+
   // Load first time
   useEffect(() => refresh(), []);
-
-  // Load when difficulty is changed
-  useEffect(() => refresh(), [difficultySelected]);
 
   const refresh = () => {
     getLocalData();
@@ -39,25 +40,6 @@ export default function TabTwoMyScores() {
     getStoredName().then((string) => setPlayerName(string));
   };
 
-  const _displayOptions = () => {
-    return (
-      <View style={{ justifyContent: 'center' }}>
-        <Picker
-          selectedValue={difficultySelected}
-          style={{ height: 50, width: 125, color: nameToColor(playerName) }}
-          onValueChange={(itemValue, itemIndex) => {
-            setDifficultySelected(stringToDiff(itemValue.toString()));
-          }}
-        >
-          <Picker.Item label="Easy" value={Difficulty.Easy} />
-          <Picker.Item label="Medium" value={Difficulty.Medium} />
-          <Picker.Item label="Hard" value={Difficulty.Hard} />
-          <Picker.Item label="Extreme" value={Difficulty.Extreme} />
-        </Picker>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <View
@@ -68,7 +50,7 @@ export default function TabTwoMyScores() {
           marginVertical: 10
         }}
       >
-        {_displayOptions()}
+        <ChooseLevel playerName="Ewen" />
         <Pressable onPress={() => setConfirmModalVisible(true)}>
           <Feather name="trash" size={18} color="grey" />
         </Pressable>
@@ -76,7 +58,7 @@ export default function TabTwoMyScores() {
 
       <ScoresView
         listToDisplay={localScores}
-        difficultySelected={difficultySelected}
+        difficultySelected={difficulty}
         playerName={playerName}
       />
 

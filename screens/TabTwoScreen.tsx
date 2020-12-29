@@ -13,6 +13,8 @@ import { ScoresView } from '../components/scores/Scores';
 import { Feather } from '@expo/vector-icons';
 import { nameToColor } from '../utils/display';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ChooseLevel } from '../components/manager/ChooseLevel';
+import { useStateContext } from '../state/state';
 
 type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
 
@@ -25,6 +27,9 @@ export default function TabTwoScreen({ navigation }: Props) {
   let [loading, setLoading] = useState(true);
   let [playerName, setPlayerName] = useState('');
   let [scores, setScores] = useState<ScoreLine[]>([]);
+
+  const { state, dispatch } = useStateContext();
+  const { difficulty } = state;
 
   // Load first time
   useEffect(() => refresh(), []);
@@ -50,30 +55,10 @@ export default function TabTwoScreen({ navigation }: Props) {
       .catch((err) => console.error(err));
   };
 
-  const _displayOptions = () => {
-    let nameColor = nameToColor(playerName);
-    return (
-      <View style={{ justifyContent: 'center' }}>
-        <Picker
-          selectedValue={difficultySelected}
-          style={{ height: 50, width: 125, color: nameColor }}
-          onValueChange={(itemValue, itemIndex) => {
-            setDifficultySelected(stringToDiff(itemValue.toString()));
-          }}
-        >
-          <Picker.Item label="Easy" value={Difficulty.Easy} />
-          <Picker.Item label="Medium" value={Difficulty.Medium} />
-          <Picker.Item label="Hard" value={Difficulty.Hard} />
-          <Picker.Item label="Extreme" value={Difficulty.Extreme} />
-        </Picker>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        {_displayOptions()}
+        <ChooseLevel playerName="Ewen" />
         <Pressable onPress={refresh}>
           <Feather name="refresh-ccw" size={18} color="grey" />
         </Pressable>
@@ -83,7 +68,7 @@ export default function TabTwoScreen({ navigation }: Props) {
 
       <ScoresView
         listToDisplay={scores}
-        difficultySelected={difficultySelected}
+        difficultySelected={difficulty}
         playerName={playerName}
       />
 
