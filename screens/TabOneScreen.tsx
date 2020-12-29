@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, StyleSheet, Vibration } from 'react-native';
+import { Pressable, StyleSheet, Vibration } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
@@ -16,6 +16,7 @@ import vibrateOnEnd from '../utils/vibrateOnEnd';
 import createBoard from '../utils/boardCreation';
 import { useEffect, useState } from 'react';
 import { displayTime } from '../utils/display';
+import { Feather } from '@expo/vector-icons';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state
@@ -109,7 +110,17 @@ export const TabOneScreen = () => {
           <Picker.Item label="Hard" value={Difficulty.Hard} />
           <Picker.Item label="Extreme" value={Difficulty.Extreme} />
         </Picker>
-        <Button title="New Game" onPress={createNewBoard} />
+        <Pressable
+          style={{
+            width: 40,
+            height: 40,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          onPress={createNewBoard}
+        >
+          <Feather name="rotate-ccw" size={24} color="grey" />
+        </Pressable>
       </View>
     );
   };
