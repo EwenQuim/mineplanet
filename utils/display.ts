@@ -26,12 +26,18 @@ export const displayIndex = (index: number): string => {
 
 export const displayDate = (dateString: Date): string => {
   const date = new Date(dateString);
-  return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+  const today = new Date();
+  if (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  ) {
+    return 'today';
+  }
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 };
 
 export const nameToColor = (name: string) => {
-  // return '#FFF';
-
   return intToRGB(hashCode(name));
 };
 
