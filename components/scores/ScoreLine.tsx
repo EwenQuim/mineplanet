@@ -21,7 +21,13 @@ export const ScoreLineComponent = ({
     (index % 2 === 0 ? '#999' : '#777') +
     (playerName === score.name ? '2' : '5');
   return (
-    <View style={[{ flexDirection: 'row', backgroundColor: backgroundColor }]}>
+    <View
+      style={{
+        flexDirection: 'row',
+        backgroundColor: backgroundColor,
+        alignSelf: 'stretch'
+      }}
+    >
       <Text
         style={{
           marginHorizontal: 8,

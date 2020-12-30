@@ -21,7 +21,6 @@ export const ScoresView = ({
     <FlatList
       data={displayedData}
       keyExtractor={(item) => item.date.toString()}
-      style={{ alignSelf: 'stretch' }}
       renderItem={({
         item: score,
         index
