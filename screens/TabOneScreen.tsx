@@ -20,6 +20,7 @@ import { Feather } from '@expo/vector-icons';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
 import { useStateContext } from '../state/state';
 import { getStoredName } from '../utils/storage';
+import { sharedStyles } from '../styles/sharedStyles';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state
@@ -96,36 +97,14 @@ export const TabOneScreen = () => {
     }
   };
 
-  const _displayOptions = () => {
-    return (
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row'
-        }}
-      >
-        <ChooseLevel playerName={playerName} />
-        <Pressable
-          style={{
-            width: 40,
-            height: 40,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          onPress={createNewBoard}
-        >
-          <Feather name="rotate-ccw" size={24} color="grey" />
-        </Pressable>
-      </View>
-    );
-  };
-
-  //componentDidMount() { createNewBoard() }
-
   return (
     <View style={styles.container}>
-      {_displayOptions()}
+      <View style={sharedStyles.topBar}>
+        <ChooseLevel playerName={playerName} />
+        <Pressable style={sharedStyles.topButton} onPress={createNewBoard}>
+          <Feather name="rotate-ccw" size={18} color="grey" />
+        </Pressable>
+      </View>
 
       <Sep />
 

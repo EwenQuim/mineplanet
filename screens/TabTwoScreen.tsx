@@ -16,6 +16,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
 import { useStateContext } from '../state/state';
 import { ScoreLineComponent } from '../components/scores/ScoreLine';
+import { sharedStyles } from '../styles/sharedStyles';
 
 type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
 
@@ -42,6 +43,7 @@ export default function TabTwoScreen({ navigation }: Props) {
   const { difficulty } = state;
 
   useEffect(() => refreshScores(), []); // Load first time
+  useEffect(() => refreshName(), []); // Load first time
   useEffect(() => refreshScores(), [difficulty]);
   useEffect(() => getMyScore(), [playerName]);
   useEffect(() => getMyScore(), [scores]);
@@ -87,10 +89,10 @@ export default function TabTwoScreen({ navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
+    <View style={sharedStyles.container}>
+      <View style={sharedStyles.topBar}>
         <ChooseLevel playerName={playerName} />
-        <Pressable onPress={refreshScores}>
+        <Pressable style={sharedStyles.topButton} onPress={refreshScores}>
           <Feather name="refresh-ccw" size={18} color="grey" />
         </Pressable>
       </View>

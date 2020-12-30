@@ -17,6 +17,7 @@ import { nameToColor } from '../utils/display';
 import { styles } from './TabTwoScreen';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
 import { useStateContext } from '../state/state';
+import { sharedStyles } from '../styles/sharedStyles';
 
 export default function TabTwoMyScores() {
   let [playerName, setPlayerName] = useState('');
@@ -42,16 +43,12 @@ export default function TabTwoMyScores() {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          height: 38,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 10
-        }}
-      >
+      <View style={sharedStyles.topBar}>
         <ChooseLevel playerName={playerName} />
-        <Pressable onPress={() => setConfirmModalVisible(true)}>
+        <Pressable
+          style={sharedStyles.topButton}
+          onPress={() => setConfirmModalVisible(true)}
+        >
           <Feather name="trash" size={18} color="grey" />
         </Pressable>
       </View>
