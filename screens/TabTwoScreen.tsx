@@ -24,7 +24,7 @@ type Props = {
 };
 
 const fakeScore = {
-  name: 'name',
+  name: 'not ranked',
   score: 0,
   time: 0,
   date: new Date(),
@@ -41,15 +41,19 @@ export default function TabTwoScreen({ navigation }: Props) {
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
 
-  // Load first time
-  useEffect(() => refresh(), []);
-  useEffect(() => {
-    let a = setTimeout(() => getMyScore(), 1000);
-  }, [playerName]);
+  useEffect(() => refreshScores(), []); // Load first time
+  useEffect(() => refreshScores(), [difficulty]);
+  useEffect(() => getMyScore(), [playerName]);
+  useEffect(() => getMyScore(), [scores]);
 
-  const refresh = () => {
+  const refreshScores = () => {
     getOnlineData();
-    getStoredName().then((string) => setPlayerName(string));
+  };
+
+  const refreshName = () => {
+    getStoredName().then((string) => {
+      setPlayerName(string);
+    });
   };
 
   const getOnlineData = () => {
@@ -61,25 +65,32 @@ export default function TabTwoScreen({ navigation }: Props) {
       .then((response) => {
         setScores(response.data);
         setLoading(false);
-        getMyScore();
       })
       .catch((err) => console.error(err));
   };
 
   const getMyScore = () => {
-    scores.forEach((score, index) => {
-      if (score.name === playerName && difficulty === score.level) {
-        setMyScore(score);
-        setMyIndex(index);
-      }
-    });
+    let nothingFound = true;
+    scores
+      .filter((score) => difficulty === score.level)
+      .forEach((score, index) => {
+        if (score.name === playerName) {
+          setMyScore(score);
+          setMyIndex(index);
+          nothingFound = false;
+        }
+      });
+    if (nothingFound) {
+      setMyScore({ ...fakeScore, level: difficulty });
+      setMyIndex(0);
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
         <ChooseLevel playerName={playerName} />
-        <Pressable onPress={refresh}>
+        <Pressable onPress={refreshScores}>
           <Feather name="refresh-ccw" size={18} color="grey" />
         </Pressable>
       </View>
@@ -99,7 +110,7 @@ export default function TabTwoScreen({ navigation }: Props) {
       />
 
       <View style={styles.bottomBar}>
-        <NameField refresh={() => refresh()} />
+        <NameField refresh={() => refreshName()} />
         <View style={{ marginHorizontal: 20 }}></View>
         <Pressable
           onPress={() => navigation.navigate('TabTwoMyScores')}
