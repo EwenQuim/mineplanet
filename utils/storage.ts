@@ -44,11 +44,11 @@ export const getStoredName = async (): Promise<string> => {
     if (jsonValue) {
       return JSON.parse(jsonValue);
     } else {
-      return 'Anon Player';
+      return 'Player Name';
     }
   } catch (e) {
     console.error(e);
-    return 'Anon Player';
+    return 'Player Name';
   }
 };
 
