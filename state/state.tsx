@@ -1,11 +1,10 @@
-import React, { useContext, useState, useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { Difficulty } from '../types';
-import { reducer, Action, ActionType } from './reducer';
+import { reducer, Action } from './reducer';
 
 export interface StateContext {
   difficulty: Difficulty;
 }
-
 export interface Store {
   state: StateContext;
   dispatch: React.Dispatch<Action>;
