@@ -11,10 +11,11 @@ import TabRulesScreen from '../screens/TabRulesScreen';
 import {
   BottomTabParamList,
   TabOneParamList,
-  TabRulesParamList,
+  TabOptionsParamList,
   TabTwoParamList
 } from '../types';
 import TabTwoMyScores from '../screens/TabTwoMyScores';
+import TabOptions from '../screens/TabOptions';
 
 const Tab = createMaterialTopTabNavigator<BottomTabParamList>();
 
@@ -43,7 +44,7 @@ export default function BottomTabNavigator() {
       />
       <Tab.Screen
         name="Scores"
-        component={TabTwoNavigator}
+        component={TabScoresNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-podium" color={color} />
@@ -51,8 +52,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Rules"
-        component={TabRulesNavigator}
+        name="Options"
+        component={TabOptionsNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-list" color={color} />
@@ -85,35 +86,40 @@ function TabOneNavigator() {
   );
 }
 
-const TabRulesStack = createStackNavigator<TabRulesParamList>();
+const TabOptionsStack = createStackNavigator<TabOptionsParamList>();
 
-function TabRulesNavigator() {
+function TabOptionsNavigator() {
   return (
-    <TabRulesStack.Navigator>
-      <TabRulesStack.Screen
+    <TabOptionsStack.Navigator>
+      <TabOptionsStack.Screen
+        name="TabOptionsScreen"
+        component={TabOptions}
+        options={{ headerTitle: 'Options' }}
+      />
+      <TabOptionsStack.Screen
         name="TabRulesScreen"
         component={TabRulesScreen}
         options={{ headerTitle: 'Rules' }}
       />
-    </TabRulesStack.Navigator>
+    </TabOptionsStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const TabScoresStack = createStackNavigator<TabTwoParamList>();
 
-function TabTwoNavigator() {
+function TabScoresNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
+    <TabScoresStack.Navigator>
+      <TabScoresStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{ headerTitle: 'Best Scores' }}
       />
-      <TabTwoStack.Screen
+      <TabScoresStack.Screen
         name="TabTwoMyScores"
         component={TabTwoMyScores}
         options={{ headerTitle: 'My Scores' }}
       />
-    </TabTwoStack.Navigator>
+    </TabScoresStack.Navigator>
   );
 }

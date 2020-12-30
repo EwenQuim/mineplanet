@@ -1,20 +1,14 @@
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { Pressable } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { Difficulty, ScoreLine, TabTwoParamList } from '../types';
-import { stringToDiff } from '../utils/difficultyString';
-import Sep from '../components/Separator';
+import { ScoreLine } from '../types';
 import { getLocalScores, getStoredName } from '../utils/storage';
-import NameField from '../components/name/NameField';
 import { ScoresView } from '../components/scores/Scores';
 import ModalDeleteScores from '../components/manager/EraseScores';
 import { Feather } from '@expo/vector-icons';
-import { nameToColor } from '../utils/display';
-import { styles } from './TabTwoScreen';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
 import { useStateContext } from '../state/state';
 import { sharedStyles } from '../styles/sharedStyles';
@@ -42,7 +36,7 @@ export default function TabTwoMyScores() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={sharedStyles.container}>
       <View style={sharedStyles.topBar}>
         <ChooseLevel playerName={playerName} />
         <Pressable

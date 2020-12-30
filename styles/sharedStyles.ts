@@ -26,7 +26,7 @@ export const sharedStyles = StyleSheet.create({
   navButton: {
     backgroundColor: '#8888',
     borderRadius: 4,
-    padding: 5
+    padding: 8
   },
   topButton: {
     width: 40,
