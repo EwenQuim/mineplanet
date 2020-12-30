@@ -50,7 +50,7 @@ export default function TabTwoMyScores() {
           marginVertical: 10
         }}
       >
-        <ChooseLevel playerName="Ewen" />
+        <ChooseLevel playerName={playerName} />
         <Pressable onPress={() => setConfirmModalVisible(true)}>
           <Feather name="trash" size={18} color="grey" />
         </Pressable>
