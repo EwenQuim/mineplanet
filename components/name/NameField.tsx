@@ -53,7 +53,7 @@ export default function NameField({ refresh }: { refresh: () => void }) {
         onChangeText={(text) => {
           setName(text.trim());
         }}
-        maxLength={15}
+        maxLength={12}
         style={styles.input}
       />
     </View>
