@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Pressable, StyleSheet, Vibration } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 
 import { Text, View } from '../components/Themed';
 import StatsScreen from '../components/StatsScreen';
@@ -11,8 +10,7 @@ import Sep from '../components/Separator';
 import { Cell, Difficulty, GameState } from '../types';
 import Board from '../Board';
 
-import { stringToDiff } from '../utils/difficultyString';
-import vibrateOnEnd from '../utils/vibrateOnEnd';
+import { vibrateOnTouch } from '../hooks/useVibrations';
 import createBoard from '../utils/boardCreation';
 import { useEffect, useState } from 'react';
 import { displayTime } from '../utils/display';
@@ -60,7 +58,7 @@ export const TabOneScreen = () => {
 
   // Reveal cell
   const onPressAction = (cell: Cell) => {
-    Vibration.vibrate(50);
+    vibrateOnTouch(true);
     board.revealCell(cell.x, cell.y);
     forceUpdate();
     setTimerRunning(true);
@@ -70,12 +68,12 @@ export const TabOneScreen = () => {
     ) {
       setTimerRunning(false);
     }
-    vibrateOnEnd(board.gameState);
+    vibrateOnTouch(undefined, board.gameState);
   };
 
   // Flag / QMark
   const onLongPressAction = (cell: Cell) => {
-    Vibration.vibrate([0, 50, 50, 50]);
+    vibrateOnTouch(false);
     board.flagCell(cell.x, cell.y);
     forceUpdate();
   };
