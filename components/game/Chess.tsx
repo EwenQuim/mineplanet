@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
-import { Cell } from '../../types';
+import { FlatList, StyleSheet, View } from 'react-native';
 import Board from '../../Board';
+import { Cell } from '../../types';
 import CellView from './CellView';
 
 /**

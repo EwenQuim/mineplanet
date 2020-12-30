@@ -1,19 +1,18 @@
+import { Feather } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable } from 'react-native';
-
+import { ChooseLevel } from '../components/manager/ChooseLevel';
+import NameField from '../components/name/NameField';
+import { ScoreLineComponent } from '../components/scores/ScoreLine';
+import { ScoresView } from '../components/scores/Scores';
 import { Text, View } from '../components/Themed';
+import { useStateContext } from '../state/state';
+import { sharedStyles } from '../styles/sharedStyles';
 import { Difficulty, ScoreLine, TabTwoParamList } from '../types';
 import { getStoredName } from '../utils/storage';
-import NameField from '../components/name/NameField';
-import { ScoresView } from '../components/scores/Scores';
-import { Feather } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { ChooseLevel } from '../components/manager/ChooseLevel';
-import { useStateContext } from '../state/state';
-import { ScoreLineComponent } from '../components/scores/ScoreLine';
-import { sharedStyles } from '../styles/sharedStyles';
 
 type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
 

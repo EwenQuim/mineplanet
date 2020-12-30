@@ -1,8 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import { Difficulty, ScoreLine } from '../../types';
-
-import { View, Text } from '../Themed';
 import { ScoreLineComponent } from './ScoreLine';
 
 export const ScoresView = ({

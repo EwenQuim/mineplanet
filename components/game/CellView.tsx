@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Cell, CellState } from '../../types';
-import { displayCell, colorMatch } from '../../utils/cellDisplay';
+import { colorMatch, displayCell } from '../../utils/cellDisplay';
 
 /**
  * Drawing a cell from its description

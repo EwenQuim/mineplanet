@@ -6,7 +6,7 @@ import {
   displayTime,
   nameToColor
 } from '../../utils/display';
-import { View, Text } from '../Themed';
+import { Text, View } from '../Themed';
 
 export const ScoreLineComponent = ({
   score,

@@ -1,17 +1,15 @@
-import axios from 'axios';
+import { Feather } from '@expo/vector-icons';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
-
-import { Text, View } from '../components/Themed';
-import { ScoreLine } from '../types';
-import { getLocalScores, getStoredName } from '../utils/storage';
-import { ScoresView } from '../components/scores/Scores';
-import ModalDeleteScores from '../components/manager/EraseScores';
-import { Feather } from '@expo/vector-icons';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
+import ModalDeleteScores from '../components/manager/EraseScores';
+import { ScoresView } from '../components/scores/Scores';
+import { View } from '../components/Themed';
 import { useStateContext } from '../state/state';
 import { sharedStyles } from '../styles/sharedStyles';
+import { ScoreLine } from '../types';
+import { getLocalScores, getStoredName } from '../utils/storage';
 
 export default function TabTwoMyScores() {
   let [playerName, setPlayerName] = useState('');

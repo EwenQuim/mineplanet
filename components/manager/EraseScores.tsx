@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Modal, Pressable, StyleSheet } from 'react-native';
-
-import { Text, View } from '../Themed';
 import { deleteLocalScores } from '../../utils/storage';
+import { Text, View } from '../Themed';
 
 export default function ModalDeleteScores({
   modalVisible,

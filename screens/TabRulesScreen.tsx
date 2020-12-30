@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, Image, View } from 'react-native';
-
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import CellView from '../components/game/CellView';
 import { Text } from '../components/Themed';
 import { Cell, CellState } from '../types';
-import CellView from '../components/game/CellView';
 
 /**
  * Displays a help screen : how to play ? what are the rules

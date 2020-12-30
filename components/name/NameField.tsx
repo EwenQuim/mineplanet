@@ -1,11 +1,9 @@
-import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, Pressable, StyleSheet } from 'react-native';
-
-import { Text, View, TextInput } from '../Themed';
-import { getStoredName, setStoredName } from '../../utils/storage';
+import { StyleSheet } from 'react-native';
 import { nameToColor } from '../../utils/display';
+import { getStoredName, setStoredName } from '../../utils/storage';
+import { Text, TextInput, View } from '../Themed';
 
 enum EditingStatus {
   idle = '✏️',

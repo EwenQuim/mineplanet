@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Difficulty, ScoreLine } from '../types';
+import { ScoreLine } from '../types';
 
 export const addLocalScores = async (value: ScoreLine): Promise<void> => {
   try {

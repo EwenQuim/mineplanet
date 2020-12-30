@@ -1,24 +1,21 @@
-import * as React from 'react';
-import { Pressable, StyleSheet, Vibration } from 'react-native';
-
-import { Text, View } from '../components/Themed';
-import StatsScreen from '../components/StatsScreen';
-import Chess from '../components/game/Chess';
-import EndView from '../components/EndView';
-import Sep from '../components/Separator';
-
-import { Cell, Difficulty, GameState } from '../types';
-import Board from '../Board';
-
-import { vibrateOnTouch } from '../hooks/useVibrations';
-import createBoard from '../utils/boardCreation';
-import { useEffect, useState } from 'react';
-import { displayTime } from '../utils/display';
 import { Feather } from '@expo/vector-icons';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
+import Board from '../Board';
+import EndView from '../components/EndView';
+import Chess from '../components/game/Chess';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
+import Sep from '../components/Separator';
+import StatsScreen from '../components/StatsScreen';
+import { Text, View } from '../components/Themed';
+import { vibrateOnTouch } from '../hooks/useVibrations';
 import { useStateContext } from '../state/state';
-import { getStoredName } from '../utils/storage';
 import { sharedStyles } from '../styles/sharedStyles';
+import { Cell, GameState } from '../types';
+import createBoard from '../utils/boardCreation';
+import { displayTime } from '../utils/display';
+import { getStoredName } from '../utils/storage';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state

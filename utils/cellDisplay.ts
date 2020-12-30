@@ -1,4 +1,4 @@
-import { Cell } from "../types";
+import { Cell } from '../types';
 
 /**
  * Displays what is under the cell, once revealed
@@ -6,11 +6,11 @@ import { Cell } from "../types";
  */
 export const displayCell = (cell: Cell): string => {
   if (cell.bomb) {
-    return "💣";
+    return '💣';
   } else if (cell.bombCount > 0) {
     return cell.bombCount.toString();
   } else {
-    return "";
+    return '';
   }
 };
 
@@ -21,18 +21,18 @@ export const displayCell = (cell: Cell): string => {
 export const colorMatch = (cell: Cell) => {
   switch (cell.bombCount) {
     case 1:
-      return "blue";
+      return 'blue';
     case 2:
-      return "green";
+      return 'green';
     case 3:
-      return "red";
+      return 'red';
     case 4:
-      return "purple";
+      return 'purple';
     case 5:
-      return "maroon";
+      return 'maroon';
     case 6:
-      return "darkcyan";
+      return 'darkcyan';
     default:
-      return "black";
+      return 'black';
   }
 };

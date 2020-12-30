@@ -1,14 +1,5 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
-import {
-  Animated,
-  Button,
-  Easing,
-  Pressable,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Animated, Button, Easing, StyleSheet, Text, View } from 'react-native';
 import Board from '../Board';
 import { Difficulty } from '../types';
 import { scoreManager } from '../utils/scoresManager';

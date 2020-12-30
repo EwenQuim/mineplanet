@@ -1,27 +1,11 @@
-import axios from 'axios';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-
-import { Text, View } from '../components/Themed';
-import {
-  Difficulty,
-  ScoreLine,
-  TabOptionsParamList,
-  TabTwoParamList
-} from '../types';
-import { stringToDiff } from '../utils/difficultyString';
-import { getStoredName } from '../utils/storage';
-import NameField from '../components/name/NameField';
-import { ScoresView } from '../components/scores/Scores';
-import { Feather } from '@expo/vector-icons';
-import { nameToColor } from '../utils/display';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ChooseLevel } from '../components/manager/ChooseLevel';
+import * as React from 'react';
+import { useState } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
+import { Text, View } from '../components/Themed';
 import { useStateContext } from '../state/state';
-import { ScoreLineComponent } from '../components/scores/ScoreLine';
 import { sharedStyles } from '../styles/sharedStyles';
+import { Difficulty, ScoreLine, TabOptionsParamList } from '../types';
 
 type OptionsScreenNavigationProp = StackNavigationProp<TabOptionsParamList>;
 

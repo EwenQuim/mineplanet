@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { ActionType } from '../../state/reducer';
-import { StateProvider, useStateContext } from '../../state/state';
+import { useStateContext } from '../../state/state';
 import { Difficulty } from '../../types';
 import { stringToDiff } from '../../utils/difficultyString';
 import { nameToColor } from '../../utils/display';

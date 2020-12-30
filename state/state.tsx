@@ -1,6 +1,6 @@
 import React, { useContext, useReducer } from 'react';
 import { Difficulty } from '../types';
-import { reducer, Action } from './reducer';
+import { Action, reducer } from './reducer';
 
 export interface StateContext {
   difficulty: Difficulty;
