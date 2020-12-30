@@ -15,6 +15,7 @@ import { nameToColor } from '../utils/display';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
 import { useStateContext } from '../state/state';
+import { ScoreLineComponent } from '../components/scores/ScoreLine';
 
 type ScoresScreenNavigationProp = StackNavigationProp<TabTwoParamList>;
 
@@ -22,20 +23,30 @@ type Props = {
   navigation: ScoresScreenNavigationProp;
 };
 
+const fakeScore = {
+  name: 'name',
+  score: 0,
+  time: 0,
+  date: new Date(),
+  level: Difficulty.Easy
+};
+
 export default function TabTwoScreen({ navigation }: Props) {
   let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [loading, setLoading] = useState(true);
   let [playerName, setPlayerName] = useState('');
   let [scores, setScores] = useState<ScoreLine[]>([]);
+  let [myScore, setMyScore] = useState<ScoreLine>(fakeScore);
+  let [myIndex, setMyIndex] = useState(0);
 
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
 
   // Load first time
   useEffect(() => refresh(), []);
-
-  // Load when difficulty is changed
-  useEffect(() => refresh(), [difficultySelected]);
+  useEffect(() => {
+    let a = setTimeout(() => getMyScore(), 1000);
+  }, [playerName]);
 
   const refresh = () => {
     getOnlineData();
@@ -51,14 +62,24 @@ export default function TabTwoScreen({ navigation }: Props) {
       .then((response) => {
         setScores(response.data);
         setLoading(false);
+        getMyScore();
       })
       .catch((err) => console.error(err));
+  };
+
+  const getMyScore = () => {
+    scores.forEach((score, index) => {
+      if (score.name === playerName && difficulty === score.level) {
+        setMyScore(score);
+        setMyIndex(index);
+      }
+    });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <ChooseLevel playerName="Ewen" />
+        <ChooseLevel playerName={playerName} />
         <Pressable onPress={refresh}>
           <Feather name="refresh-ccw" size={18} color="grey" />
         </Pressable>
@@ -70,6 +91,12 @@ export default function TabTwoScreen({ navigation }: Props) {
         listToDisplay={scores}
         difficultySelected={difficulty}
         playerName={playerName}
+      />
+
+      <ScoreLineComponent
+        score={myScore}
+        playerName={playerName}
+        index={myIndex}
       />
 
       <View style={styles.bottomBar}>
