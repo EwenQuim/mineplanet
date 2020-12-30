@@ -1,11 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
-import { useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Pressable, Switch } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { useStateContext } from '../state/state';
 import { sharedStyles } from '../styles/sharedStyles';
-import { Difficulty, ScoreLine, TabOptionsParamList } from '../types';
+import { TabOptionsParamList } from '../types';
+import { getVibrations, toggleVibrationsTo } from '../utils/storage';
 
 type OptionsScreenNavigationProp = StackNavigationProp<TabOptionsParamList>;
 
@@ -13,58 +14,43 @@ type Props = {
   navigation: OptionsScreenNavigationProp;
 };
 
-const fakeScore = {
-  name: 'not ranked',
-  score: 0,
-  time: 0,
-  date: new Date(),
-  level: Difficulty.Easy
-};
-
-export default function TabOptions({ navigation }: Props) {
-  let [loading, setLoading] = useState(true);
-  let [playerName, setPlayerName] = useState('');
-  let [scores, setScores] = useState<ScoreLine[]>([]);
-  let [myScore, setMyScore] = useState<ScoreLine>(fakeScore);
-  let [myIndex, setMyIndex] = useState(0);
+export default ({ navigation }: Props) => {
+  const [isVibrating, setIsVibrating] = useState(true);
 
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
 
+  const getPreviousVibrateParam = () => {
+    getVibrations().then((ans) => setIsVibrating(ans));
+  };
+
+  const toggleSwitch = () => {
+    setIsVibrating((previousState) => !previousState);
+  };
+
+  useEffect(() => getPreviousVibrateParam(), []);
+  useEffect(() => toggleVibrationsTo(isVibrating), [isVibrating]);
+
   return (
     <View style={sharedStyles.container}>
+      <View style={sharedStyles.bottomBar}>
+        <Text>Vibrations</Text>
+        <Switch
+          trackColor={{ false: '#333', true: 'skyblue' }}
+          thumbColor={isVibrating ? 'lightgrey' : 'darkgrey'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isVibrating}
+        />
+      </View>
       <View style={sharedStyles.bottomBar}>
         <Pressable
           onPress={() => navigation.navigate('TabRulesScreen')}
           style={sharedStyles.navButton}
         >
-          <Text>Rules</Text>
+          <Text>How To Play</Text>
         </Pressable>
       </View>
     </View>
   );
-}
-
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  topBar: {
-    height: 38,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10
-  },
-  bottomBar: {
-    height: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 15
-  }
-});
+};

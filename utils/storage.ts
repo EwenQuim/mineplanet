@@ -59,3 +59,21 @@ export const setStoredName = (username: string) => {
     console.error(e);
   }
 };
+
+export const toggleVibrationsTo = (toggle: boolean) => {
+  try {
+    AsyncStorage.setItem('@options_vibrations', toggle.toString());
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getVibrations = async (): Promise<boolean> => {
+  try {
+    const ans = await AsyncStorage.getItem('@options_vibrations');
+    return ans === 'true';
+  } catch (e) {
+    console.error(e);
+  }
+  return true;
+};
