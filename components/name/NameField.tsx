@@ -33,7 +33,6 @@ export default function NameField({ refresh }: { refresh: () => void }) {
         setName(name);
       });
     }
-    refresh();
     setEditing(EditingStatus.edited);
   };
 
@@ -43,7 +42,10 @@ export default function NameField({ refresh }: { refresh: () => void }) {
       <TextInput
         placeholder={'Enter your name'}
         defaultValue={name}
-        onBlur={submitEditing}
+        onBlur={() => {
+          submitEditing();
+          refresh();
+        }}
         onSubmitEditing={submitEditing}
         autoCompleteType="name"
         blurOnSubmit
