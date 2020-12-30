@@ -19,26 +19,22 @@ export default function Chess({
   onPress: any;
   onLongPress: any;
 }) {
+  const renderFunction = ({ item: cellItem }: { item: Cell }) => (
+    <CellView
+      cell={cellItem}
+      pressAction={() => onPress(cellItem)}
+      longPressAction={() => onLongPress(cellItem)}
+    />
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
         data={board.grid.flat()}
-        extraData={board.grid}
         key={board.width}
         numColumns={board.width}
-        keyExtractor={(item) => `${item.x} : ${item.y}`}
-        getItemLayout={(data, index) => ({
-          length: board.height * 30,
-          offset: board.height * index,
-          index
-        })}
-        renderItem={({ item: cellItem }: { item: Cell }) => (
-          <CellView
-            cell={cellItem}
-            pressAction={() => onPress(cellItem)}
-            longPressAction={() => onLongPress(cellItem)}
-          />
-        )}
+        keyExtractor={(item) => `${item.x} ${item.y}`}
+        renderItem={renderFunction}
       />
     </View>
   );

@@ -17,14 +17,12 @@ export const ChooseLevel = ({ playerName }: { playerName: string }) => {
       <Picker
         selectedValue={difficulty}
         style={{ height: 50, width: 125, color: nameColor }}
-        onValueChange={(itemValue, itemIndex) => {
-          console.log('dispatching');
-
+        onValueChange={(itemValue, itemIndex) =>
           dispatch({
             type: ActionType.CHANGE_DIFFICULTY,
             payload: stringToDiff(itemValue.toString())
-          });
-        }}
+          })
+        }
       >
         <Picker.Item label="Easy" value={Difficulty.Easy} />
         <Picker.Item label="Medium" value={Difficulty.Medium} />
