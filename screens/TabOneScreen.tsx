@@ -19,6 +19,7 @@ import { displayTime } from '../utils/display';
 import { Feather } from '@expo/vector-icons';
 import { ChooseLevel } from '../components/manager/ChooseLevel';
 import { useStateContext } from '../state/state';
+import { getStoredName } from '../utils/storage';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state
@@ -32,6 +33,8 @@ export const TabOneScreen = () => {
   let [board, setBoard] = useState(new Board(8, 12, 15));
   let [seconds, setSeconds] = useState(0);
   let [timerRunning, setTimerRunning] = useState(false);
+  let [playerName, setPlayerName] = useState('');
+
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
 
@@ -48,6 +51,7 @@ export const TabOneScreen = () => {
     setBoard(createBoard(difficulty));
     setTimerRunning(false);
     setSeconds(0);
+    getStoredName().then((string) => setPlayerName(string));
   };
 
   // New board on difficulty change
@@ -101,7 +105,7 @@ export const TabOneScreen = () => {
           flexDirection: 'row'
         }}
       >
-        <ChooseLevel playerName="Ewen" />
+        <ChooseLevel playerName={playerName} />
         <Pressable
           style={{
             width: 40,

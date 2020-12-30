@@ -32,7 +32,6 @@ const fakeScore = {
 };
 
 export default function TabTwoScreen({ navigation }: Props) {
-  let [difficultySelected, setDifficultySelected] = useState(Difficulty.Medium);
   let [loading, setLoading] = useState(true);
   let [playerName, setPlayerName] = useState('');
   let [scores, setScores] = useState<ScoreLine[]>([]);
