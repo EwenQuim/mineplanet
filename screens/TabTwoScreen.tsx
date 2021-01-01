@@ -38,11 +38,13 @@ export default function TabTwoScreen({ navigation }: Props) {
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
 
-  useEffect(() => refreshScores(), []); // Load first time
   useEffect(() => refreshName(), []); // Load first time
   useEffect(() => refreshScores(), [difficulty]);
   useEffect(() => getMyScore(), [playerName]);
   useEffect(() => getMyScore(), [scores]);
+  useEffect(() => navigation.addListener('focus', () => refreshScores()), [
+    navigation
+  ]);
 
   const refreshScores = () => {
     getOnlineData();
