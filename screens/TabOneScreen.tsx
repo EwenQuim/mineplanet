@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
@@ -12,7 +13,7 @@ import { Text, View } from '../components/Themed';
 import { vibrateOnTouch } from '../hooks/useVibrations';
 import { useStateContext } from '../state/state';
 import { sharedStyles } from '../styles/sharedStyles';
-import { Cell, GameState } from '../types';
+import { Cell, GameState, TabOneParamList } from '../types';
 import createBoard from '../utils/boardCreation';
 import { displayTime } from '../utils/display';
 import { getStoredName } from '../utils/storage';
@@ -22,7 +23,13 @@ const useForceUpdate = () => {
   return () => setValue(!value); // update the state to force render
 };
 
-export const TabOneScreen = () => {
+type GameScreenNavigationProp = StackNavigationProp<TabOneParamList>;
+
+type Props = {
+  navigation: GameScreenNavigationProp;
+};
+
+export const TabOneScreen = ({ navigation }: Props) => {
   // Define variables and state
   const forceUpdate = useForceUpdate();
 
@@ -33,6 +40,15 @@ export const TabOneScreen = () => {
 
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
+
+  // Updates name on screen focus
+  useEffect(
+    () =>
+      navigation.addListener('focus', () =>
+        getStoredName().then((string) => setPlayerName(string))
+      ),
+    [navigation]
+  );
 
   // Timer tik-tok
   useEffect(() => {
