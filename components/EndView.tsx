@@ -1,22 +1,27 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { Animated, Button, Easing, StyleSheet, Text, View } from 'react-native';
 import Board from '../Board';
-import { Difficulty } from '../types';
+import { Difficulty, TabOneParamList } from '../types';
 import { scoreManager } from '../utils/scoresManager';
 import { getStoredName } from '../utils/storage';
+
+type GameScreenNavigationProp = StackNavigationProp<TabOneParamList>;
 
 const EndView = ({
   victory,
   newGameButton,
   board,
   seconds,
-  difficulty
+  difficulty,
+  navigation
 }: {
   victory: boolean;
   newGameButton: any;
   board: Board;
   seconds: number;
   difficulty: Difficulty;
+  navigation: GameScreenNavigationProp;
 }) => {
   let yPos = new Animated.Value(1200);
   let width = new Animated.Value(200);
@@ -82,6 +87,10 @@ const EndView = ({
           </Text>
 
           <Button title="Retry !" onPress={() => newGameButton()} />
+          <Button
+            title="See scores !"
+            onPress={() => navigation.navigate('TabTwoScreen')}
+          />
         </View>
       </Animated.View>
     </Animated.View>

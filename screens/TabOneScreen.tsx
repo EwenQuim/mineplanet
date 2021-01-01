@@ -103,6 +103,7 @@ export const TabOneScreen = ({ navigation }: Props) => {
           board={board}
           seconds={seconds}
           difficulty={difficulty}
+          navigation={navigation}
         />
       );
     }
