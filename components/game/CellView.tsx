@@ -18,7 +18,7 @@ const CellView = ({
   pressAction: any;
   longPressAction: any;
 }) => {
-  if (cell.state === CellState.Revealed) {
+  if (cell.state === CellState.Revealed && cell.bombCount > 0) {
     return (
       <View style={styles.caseRevealed}>
         <Text
@@ -28,8 +28,20 @@ const CellView = ({
             color: colorMatch(cell)
           }}
         >
-          {' '}
-          {displayCell(cell)}{' '}
+          {' ' + displayCell(cell)}
+        </Text>
+      </View>
+    );
+  } else if (cell.state === CellState.Revealed) {
+    return (
+      <View style={styles.caseRevealed}>
+        <Text
+          style={{
+            paddingLeft: 5,
+            fontWeight: 'bold'
+          }}
+        >
+          {displayCell(cell)}
         </Text>
       </View>
     );
@@ -61,17 +73,15 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: '#bbb',
     borderWidth: 3,
-    borderTopColor: '#eee',
-    borderLeftColor: '#eee',
-    borderRightColor: '#7d7d7d',
-    borderBottomColor: '#7d7d7d'
+    borderTopColor: '#eee8',
+    borderLeftColor: '#eee8',
+    borderRightColor: '#8888',
+    borderBottomColor: '#8888'
   },
   caseRevealed: {
     width: 30,
     height: 30,
-    backgroundColor: '#ccc',
-    borderWidth: 1,
-    borderColor: '#bbb',
+    backgroundColor: '#ccc4',
     alignContent: 'center',
     justifyContent: 'center'
   }
