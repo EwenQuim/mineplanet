@@ -23,8 +23,8 @@ type Props = {
 const fakeScore = {
   name: 'not ranked',
   score: 0,
-  time: 0,
-  date: new Date(),
+  time: -1,
+  date: new Date('0'),
   level: Difficulty.Easy
 };
 
@@ -79,8 +79,8 @@ export default function TabTwoScreen({ navigation }: Props) {
         }
       });
     if (nothingFound) {
-      setMyScore({ ...fakeScore, level: difficulty });
-      setMyIndex(0);
+      setMyScore({ ...fakeScore, name: playerName, level: difficulty });
+      setMyIndex(-1);
     }
   };
 
