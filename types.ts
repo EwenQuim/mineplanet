@@ -24,6 +24,12 @@ export type TabTwoParamList = {
   TabTwoMyScores: undefined;
 };
 
+export enum PressTime {
+  Short,
+  Long,
+  None
+}
+
 export enum GameState {
   WaitingToPlay,
   Playing,

@@ -13,10 +13,10 @@ import { Text, View } from '../components/Themed';
 import { vibrateOnTouch } from '../hooks/useVibrations';
 import { useStateContext } from '../state/state';
 import { sharedStyles } from '../styles/sharedStyles';
-import { Cell, GameState, TabOneParamList } from '../types';
+import { Cell, GameState, PressTime, TabOneParamList } from '../types';
 import createBoard from '../utils/boardCreation';
 import { displayTime } from '../utils/display';
-import { getStoredName } from '../utils/storage';
+import { getStoredName, getVibrations } from '../utils/storage';
 
 const useForceUpdate = () => {
   const [value, setValue] = useState(true); // integer state
@@ -37,16 +37,18 @@ export const TabOneScreen = ({ navigation }: Props) => {
   let [seconds, setSeconds] = useState(0);
   let [timerRunning, setTimerRunning] = useState(false);
   let [playerName, setPlayerName] = useState('');
+  let [isVibrating, setIsVibrating] = useState(true);
 
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
 
-  // Updates name on screen focus
+  // Updates name and vibrations to state from storage on screen focus
   useEffect(
     () =>
-      navigation.addListener('focus', () =>
-        getStoredName().then((string) => setPlayerName(string))
-      ),
+      navigation.addListener('focus', () => {
+        getStoredName().then((string) => setPlayerName(string));
+        getVibrations().then((boolean) => setIsVibrating(boolean));
+      }),
     [navigation]
   );
 
@@ -71,7 +73,7 @@ export const TabOneScreen = ({ navigation }: Props) => {
 
   // Reveal cell
   const onPressAction = (cell: Cell) => {
-    vibrateOnTouch(true);
+    vibrateOnTouch(isVibrating, PressTime.Short);
     board.revealCell(cell.x, cell.y);
     forceUpdate();
     setTimerRunning(true);
@@ -81,12 +83,12 @@ export const TabOneScreen = ({ navigation }: Props) => {
     ) {
       setTimerRunning(false);
     }
-    vibrateOnTouch(undefined, board.gameState);
+    vibrateOnTouch(isVibrating, PressTime.None, board.gameState);
   };
 
   // Flag / QMark
   const onLongPressAction = (cell: Cell) => {
-    vibrateOnTouch(false);
+    vibrateOnTouch(isVibrating, PressTime.Long);
     board.flagCell(cell.x, cell.y);
     forceUpdate();
   };
