@@ -34,7 +34,8 @@ export enum GameState {
   WaitingToPlay,
   Playing,
   Won,
-  Lost
+  Lost,
+  Analyzing
 }
 
 export enum Difficulty {

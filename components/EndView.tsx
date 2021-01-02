@@ -1,67 +1,37 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { Animated, Button, Easing, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import Board from '../Board';
-import { Difficulty, TabOneParamList } from '../types';
+import { sharedStyles } from '../styles/sharedStyles';
+import { Difficulty, GameState, TabOneParamList } from '../types';
+import { nameToColor } from '../utils/display';
 import { scoreManager } from '../utils/scoresManager';
 import { getStoredName } from '../utils/storage';
+import { Text, View } from './Themed';
 
 type GameScreenNavigationProp = StackNavigationProp<TabOneParamList>;
 
 const EndView = ({
-  victory,
   newGameButton,
+  analysingGameOnEnd,
   board,
   seconds,
   difficulty,
+  name,
   navigation
 }: {
-  victory: boolean;
-  newGameButton: any;
+  newGameButton: () => void;
+  analysingGameOnEnd: () => void;
   board: Board;
   seconds: number;
   difficulty: Difficulty;
+  name: string;
   navigation: GameScreenNavigationProp;
 }) => {
-  let yPos = new Animated.Value(1200);
-  let width = new Animated.Value(200);
-  let height = width.interpolate({
-    inputRange: [200, 280],
-    outputRange: [150, 210]
-  });
-
-  const animate = () => {
-    yPos.setValue(1200);
-
-    Animated.timing(yPos, {
-      duration: 1000,
-      easing: Easing.out(Easing.ease),
-      toValue: 0,
-      useNativeDriver: false
-    }).start();
-
-    width.setValue(200);
-
-    Animated.sequence([
-      Animated.timing(width, {
-        delay: 1000,
-        duration: 200,
-        easing: Easing.cubic,
-        toValue: 280,
-        useNativeDriver: false
-      }),
-      Animated.timing(width, {
-        duration: 200,
-        easing: Easing.cubic,
-        toValue: 200,
-        useNativeDriver: false
-      })
-    ]).start();
-  };
+  const victory = board.gameState === GameState.Won;
 
   useEffect(() => {
-    animate();
-
     if (victory) {
       getStoredName().then((name) => {
         scoreManager(board, seconds, difficulty, name);
@@ -69,95 +39,60 @@ const EndView = ({
     }
   }, []);
 
-  const comingFromTheBottom = [styles.blankFullScreen, { top: yPos }];
-
-  let usedStyle;
-  if (victory) {
-    usedStyle = [styles.modalViewWin, { width: width, height: height }];
-  } else {
-    usedStyle = [styles.modalView, { width: width, height: height }];
-  }
-
   return (
-    <Animated.View style={comingFromTheBottom}>
-      <Animated.View style={usedStyle}>
-        <View style={styles.zoomingFrameCenterView}>
-          <Text style={styles.modalText}>
-            {victory ? 'You Won !' : 'Sorry, you lost...'}
-          </Text>
+    <Animatable.View
+      style={styles.animatedFrame}
+      animation={victory ? 'tada' : 'swing'}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          {victory ? 'You Won !' : 'Sorry, you lost...'}
+        </Text>
+        <Pressable
+          style={[
+            sharedStyles.navButton,
+            { backgroundColor: nameToColor(name), marginVertical: 20 }
+          ]}
+          onPress={newGameButton}
+        >
+          <Text>Retry !</Text>
+        </Pressable>
 
-          <Button title="Retry !" onPress={() => newGameButton()} />
-          <Button
-            title="See scores !"
+        <View style={{ flexDirection: 'row', backgroundColor: 'transparent' }}>
+          <Pressable
+            style={[sharedStyles.navButton, { marginHorizontal: 10 }]}
+            onPress={analysingGameOnEnd}
+          >
+            <Text>See Game</Text>
+          </Pressable>
+          <Pressable
+            style={[sharedStyles.navButton, { marginHorizontal: 10 }]}
             onPress={() => navigation.navigate('TabTwoScreen')}
-          />
+          >
+            <Text>Scores</Text>
+          </Pressable>
         </View>
-      </Animated.View>
-    </Animated.View>
+      </View>
+    </Animatable.View>
   );
 };
 
 const styles = StyleSheet.create({
-  blankFullScreen: {
-    flex: 1,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#0000',
+  animatedFrame: {
     position: 'absolute',
     alignItems: 'center',
-    justifyContent: 'center'
-  },
-  modalView: {
-    backgroundColor: 'lightgrey',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'red',
-    alignItems: 'center',
-    shadowColor: '#222',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84
-  },
-  modalViewWin: {
-    backgroundColor: 'lightgrey',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'green',
-    alignItems: 'center',
-    shadowColor: '#222',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84
-  },
-  zoomingFrameCenterView: {
-    flex: 1,
-    backgroundColor: '#0000',
     justifyContent: 'center',
-    alignItems: 'center'
+    margin: 10
   },
-  openButton: {
-    backgroundColor: '#F194FF',
-    borderRadius: 5,
-    padding: 10,
-    elevation: 2
+  container: {
+    flex: 1,
+    borderRadius: 10,
+    opacity: 0.9,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  modalText: {
-    color: 'black',
-    marginBottom: 15,
-    textAlign: 'center'
-  }
+  title: { fontWeight: 'bold' }
 });
 
 export default EndView;

@@ -93,6 +93,14 @@ export const TabOneScreen = ({ navigation }: Props) => {
     forceUpdate();
   };
 
+  const analyzingGameOnEnd = () => {
+    setBoard((board) => {
+      board.gameState = GameState.Analyzing;
+      return board;
+    });
+    forceUpdate();
+  };
+
   const _displayEndingScreen = () => {
     if (
       board.gameState === GameState.Won ||
@@ -100,12 +108,13 @@ export const TabOneScreen = ({ navigation }: Props) => {
     ) {
       return (
         <EndView
-          victory={board.gameState === GameState.Won}
-          newGameButton={createNewBoard}
           board={board}
           seconds={seconds}
           difficulty={difficulty}
+          name={playerName}
           navigation={navigation}
+          newGameButton={createNewBoard}
+          analysingGameOnEnd={analyzingGameOnEnd}
         />
       );
     }
