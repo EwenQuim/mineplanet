@@ -6,7 +6,12 @@ import { Text, View } from '../components/Themed';
 import { useStateContext } from '../state/state';
 import { sharedStyles } from '../styles/sharedStyles';
 import { TabOptionsParamList } from '../types';
-import { getVibrations, toggleVibrationsTo } from '../utils/storage';
+import { nameToColor } from '../utils/display';
+import {
+  getStoredName,
+  getVibrations,
+  toggleVibrationsTo
+} from '../utils/storage';
 
 type OptionsScreenNavigationProp = StackNavigationProp<TabOptionsParamList>;
 
@@ -16,9 +21,18 @@ type Props = {
 
 export default ({ navigation }: Props) => {
   const [isVibrating, setIsVibrating] = useState(true);
+  const [playerName, setPlayerName] = useState('');
 
   const { state, dispatch } = useStateContext();
   const { difficulty } = state;
+
+  useEffect(
+    () =>
+      navigation.addListener('focus', () => {
+        getStoredName().then((string) => setPlayerName(string));
+      }),
+    [navigation]
+  );
 
   const getPreviousVibrateParam = () => {
     getVibrations().then((ans) => setIsVibrating(ans));
@@ -36,7 +50,7 @@ export default ({ navigation }: Props) => {
       <View style={sharedStyles.bottomBar}>
         <Text>Vibrations</Text>
         <Switch
-          trackColor={{ false: '#333', true: 'skyblue' }}
+          trackColor={{ false: '#333', true: nameToColor(playerName) }}
           thumbColor={isVibrating ? 'lightgrey' : 'darkgrey'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}

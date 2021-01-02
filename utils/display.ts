@@ -67,13 +67,13 @@ function intToRGB(i: number): string {
     'pink',
     '#9b88ee',
     'GainsBoRo',
-    'yellow',
+    'yellowGreen',
     'skyBlue',
     'salmon',
     'sandyBrown',
     'paleGreen',
     'paleTurquoise',
-    'bisque'
+    'red'
   ];
 
   return colors[trueMod(base, colors.length)].toLowerCase();
