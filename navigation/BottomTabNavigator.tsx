@@ -26,6 +26,12 @@ export default function BottomTabNavigator() {
       initialRouteName="Game"
       lazy
       lazyPreloadDistance={1}
+      tabBarOptions={{
+        indicatorStyle: {
+          borderBottomWidth: 2,
+          borderColor: 'grey'
+        }
+      }}
     >
       <Tab.Screen
         name="Game"
