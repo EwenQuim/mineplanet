@@ -12,17 +12,17 @@ export const vibrateOnTouch = (
     } else if (pressTime === PressTime.Long) {
       Vibration.vibrate([0, 50, 50, 50]);
     }
-  }
-  switch (state) {
-    case GameState.Lost:
-      Vibration.vibrate(2000);
-      break;
+    switch (state) {
+      case GameState.Lost:
+        Vibration.vibrate(2000);
+        break;
 
-    case GameState.Won:
-      Vibration.vibrate(Array(12).fill(100));
-      break;
+      case GameState.Won:
+        Vibration.vibrate(Array(12).fill(100));
+        break;
 
-    default:
-      break;
+      default:
+        break;
+    }
   }
 };
